@@ -1,3 +1,7 @@
 spring:
   application:
     name: jarvis
+
+github:
+  token: ${GH_TOKEN}
+

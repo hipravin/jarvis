@@ -1,0 +1,14 @@
+###
+GET https://api.github.com/search/code?q=user%3Ahipravin+immutable
+Accept: application/vnd.github+json
+Authorization: Bearer {{gh_token}}
+
+###
+GET https://api.github.com/search/code?q=user%3Ahipravin+immutable
+Accept: application/vnd.github.text-match+json
+Authorization: Bearer {{gh_token}}
+
+###
+GET https://api.github.com/search/code?q=immutable
+Accept: application/vnd.github.text-match+json
+Authorization: Bearer {{gh_token}}

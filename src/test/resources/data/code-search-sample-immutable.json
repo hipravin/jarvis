@@ -1,0 +1,1485 @@
+{
+  "total_count": 14,
+  "incomplete_results": false,
+  "items": [
+    {
+      "name": "queries.sql",
+      "path": "development/playground/playground-sql/postgresql-book/queries.sql",
+      "sha": "faaa9e0f3bb7e8d66b955a049d1972cb82144e41",
+      "url": "https://api.github.com/repositories/453730965/contents/development/playground/playground-sql/postgresql-book/queries.sql?ref=2a9f8aafb729a0975e80eb34c9e94a6c7a00c421",
+      "git_url": "https://api.github.com/repositories/453730965/git/blobs/faaa9e0f3bb7e8d66b955a049d1972cb82144e41",
+      "html_url": "https://github.com/hipravin/devcompanion/blob/2a9f8aafb729a0975e80eb34c9e94a6c7a00c421/development/playground/playground-sql/postgresql-book/queries.sql",
+      "repository": {
+        "id": 453730965,
+        "node_id": "R_kgDOGwtilQ",
+        "name": "devcompanion",
+        "full_name": "hipravin/devcompanion",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/devcompanion",
+        "description": "Reference and educational project. Tech stack: Java 17, Spring boot, spring cloud, k8s, kind of microservices, reactjs and more...",
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/devcompanion",
+        "forks_url": "https://api.github.com/repos/hipravin/devcompanion/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/devcompanion/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/devcompanion/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/devcompanion/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/devcompanion/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/devcompanion/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/devcompanion/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/devcompanion/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/devcompanion/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/devcompanion/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/devcompanion/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/devcompanion/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/devcompanion/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/devcompanion/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/devcompanion/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/devcompanion/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/devcompanion/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/devcompanion/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/devcompanion/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/devcompanion/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/devcompanion/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/devcompanion/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/devcompanion/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/devcompanion/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/devcompanion/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/devcompanion/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/devcompanion/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/devcompanion/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/devcompanion/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/devcompanion/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/devcompanion/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/devcompanion/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/devcompanion/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/devcompanion/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/devcompanion/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/devcompanion/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/453730965/contents/development/playground/playground-sql/postgresql-book/queries.sql?ref=2a9f8aafb729a0975e80eb34c9e94a6c7a00c421",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "END; $$\n    LANGUAGE 'plpgsql' IMMUTABLE;\n",
+          "matches": [
+            {
+              "indices": [
+                31,
+                40
+              ],
+              "text": "IMMUTABLE"
+            }
+          ]
+        },
+        {
+          "object_url": "https://api.github.com/repositories/453730965/contents/development/playground/playground-sql/postgresql-book/queries.sql?ref=2a9f8aafb729a0975e80eb34c9e94a6c7a00c421",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "END;\n$$ LANGUAGE 'plpgsql' IMMUTABLE;\n",
+          "matches": [
+            {
+              "indices": [
+                27,
+                36
+              ],
+              "text": "IMMUTABLE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PostIndexInMemoryRepository.java",
+      "path": "postal-codes-autocomplete/src/main/java/com/hipravin/post/PostIndexInMemoryRepository.java",
+      "sha": "e3598ecb5304f9f5004e0675cb89b2faa9ddd1c3",
+      "url": "https://api.github.com/repositories/611609249/contents/postal-codes-autocomplete/src/main/java/com/hipravin/post/PostIndexInMemoryRepository.java?ref=15225a253c4dc020d21c2b1f02006cbec5b559a2",
+      "git_url": "https://api.github.com/repositories/611609249/git/blobs/e3598ecb5304f9f5004e0675cb89b2faa9ddd1c3",
+      "html_url": "https://github.com/hipravin/samples-java-util-stream/blob/15225a253c4dc020d21c2b1f02006cbec5b559a2/postal-codes-autocomplete/src/main/java/com/hipravin/post/PostIndexInMemoryRepository.java",
+      "repository": {
+        "id": 611609249,
+        "node_id": "R_kgDOJHRqoQ",
+        "name": "samples-java-util-stream",
+        "full_name": "hipravin/samples-java-util-stream",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/samples-java-util-stream",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/samples-java-util-stream",
+        "forks_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/611609249/contents/postal-codes-autocomplete/src/main/java/com/hipravin/post/PostIndexInMemoryRepository.java?ref=15225a253c4dc020d21c2b1f02006cbec5b559a2",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "import java.util.stream.Stream;\n\n/**\n * Immutable, contents can't be changed after initialization.\n */\npublic class PostIndexInMemoryRepository implements PostIndexRepository {\n    private final SortedMap<String, PostIndex> byIndex;",
+          "matches": [
+            {
+              "indices": [
+                40,
+                49
+              ],
+              "text": "Immutable"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ImmutableMap.java",
+      "path": "plain-java/src/main/java/hipravin/samples/collection/ImmutableMap.java",
+      "sha": "eb15eb0e912349b95e6703bf37da6071497f493f",
+      "url": "https://api.github.com/repositories/810674759/contents/plain-java/src/main/java/hipravin/samples/collection/ImmutableMap.java?ref=5f908d426e65b86014fe2b0bd5d15fd288eb009e",
+      "git_url": "https://api.github.com/repositories/810674759/git/blobs/eb15eb0e912349b95e6703bf37da6071497f493f",
+      "html_url": "https://github.com/hipravin/samples/blob/5f908d426e65b86014fe2b0bd5d15fd288eb009e/plain-java/src/main/java/hipravin/samples/collection/ImmutableMap.java",
+      "repository": {
+        "id": 810674759,
+        "node_id": "R_kgDOMFHqRw",
+        "name": "samples",
+        "full_name": "hipravin/samples",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/samples",
+        "description": "Miscellaneous code samples, basically everything in single project",
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/samples",
+        "forks_url": "https://api.github.com/repos/hipravin/samples/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/samples/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/samples/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/samples/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/samples/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/samples/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/samples/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/samples/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/samples/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/samples/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/samples/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/samples/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/samples/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/samples/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/samples/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/samples/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/samples/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/samples/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/samples/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/samples/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/samples/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/samples/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/samples/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/samples/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/samples/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/samples/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/samples/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/samples/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/samples/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/samples/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/samples/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/samples/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/samples/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/samples/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/samples/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/samples/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/810674759/contents/plain-java/src/main/java/hipravin/samples/collection/ImmutableMap.java?ref=5f908d426e65b86014fe2b0bd5d15fd288eb009e",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "\npublic class ImmutableMap {\n    public static void main(String[] args) {",
+          "matches": [
+            {
+              "indices": [
+                14,
+                23
+              ],
+              "text": "Immutable"
+            }
+          ]
+        },
+        {
+          "object_url": "https://api.github.com/repositories/810674759/contents/plain-java/src/main/java/hipravin/samples/collection/ImmutableMap.java?ref=5f908d426e65b86014fe2b0bd5d15fd288eb009e",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "\n        var immutableCopy = Map.copyOf(mutable);\n        var unmodifiableView = Collections.unmodifiableMap(mutable);",
+          "matches": [
+            {
+              "indices": [
+                13,
+                22
+              ],
+              "text": "immutable"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2020-04-28-chess.html",
+      "path": "_posts/2020-04-28-chess.html",
+      "sha": "f1a52cc58312284847584d5a7679255dd4ac63b7",
+      "url": "https://api.github.com/repositories/246100645/contents/_posts/2020-04-28-chess.html?ref=292e748cb54c587a3cc0528a33165fc4d28a38b6",
+      "git_url": "https://api.github.com/repositories/246100645/git/blobs/f1a52cc58312284847584d5a7679255dd4ac63b7",
+      "html_url": "https://github.com/hipravin/hipravin.github.io/blob/292e748cb54c587a3cc0528a33165fc4d28a38b6/_posts/2020-04-28-chess.html",
+      "repository": {
+        "id": 246100645,
+        "node_id": "MDEwOlJlcG9zaXRvcnkyNDYxMDA2NDU=",
+        "name": "hipravin.github.io",
+        "full_name": "hipravin/hipravin.github.io",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/hipravin.github.io",
+        "description": "Java dev blog",
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/hipravin.github.io",
+        "forks_url": "https://api.github.com/repos/hipravin/hipravin.github.io/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/hipravin.github.io/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/hipravin.github.io/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/hipravin.github.io/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/hipravin.github.io/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/hipravin.github.io/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/hipravin.github.io/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/hipravin.github.io/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/hipravin.github.io/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/hipravin.github.io/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/hipravin.github.io/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/hipravin.github.io/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/hipravin.github.io/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/hipravin.github.io/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/hipravin.github.io/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/hipravin.github.io/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/hipravin.github.io/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/hipravin.github.io/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/hipravin.github.io/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/hipravin.github.io/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/hipravin.github.io/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/hipravin.github.io/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/hipravin.github.io/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/hipravin.github.io/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/hipravin.github.io/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/hipravin.github.io/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/hipravin.github.io/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/hipravin.github.io/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/hipravin.github.io/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/hipravin.github.io/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/hipravin.github.io/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/hipravin.github.io/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/hipravin.github.io/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/hipravin.github.io/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/hipravin.github.io/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/hipravin.github.io/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/246100645/contents/_posts/2020-04-28-chess.html?ref=292e748cb54c587a3cc0528a33165fc4d28a38b6",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "    {% endhighlight %}\n    Вместо null было бы неплохо использовать Optional, но тогда половина кода превращается в манипуляции с ним,\n    поэтому я оставил null для случаев, когда при перемещении мы выходим за границы поля.\n    Но за пределы класса Position значение null на практике не выходит. Также отмечу, что класс Position используется как неизменяемый (immutable) объект.\n    Любой сдвиг - создание нового экземпляра объекта. Теперь напишем функцию up(), возвращающую все поля выше текущего до границы поля.\n    {% highlight java %}\n    public Stream<Position> up() {",
+          "matches": [
+            {
+              "indices": [
+                595,
+                604
+              ],
+              "text": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EmployeeImmutable.java",
+      "path": "src/main/java/com/hipravin/samples/inmemory/EmployeeImmutable.java",
+      "sha": "3941108afa7aa3a21eac06dd605b1c1d6181c8e0",
+      "url": "https://api.github.com/repositories/401011633/contents/src/main/java/com/hipravin/samples/inmemory/EmployeeImmutable.java?ref=ed6347b492a2e7f156c7ea0e7271d62dec922f39",
+      "git_url": "https://api.github.com/repositories/401011633/git/blobs/3941108afa7aa3a21eac06dd605b1c1d6181c8e0",
+      "html_url": "https://github.com/hipravin/samples-inmem-redis-postgres/blob/ed6347b492a2e7f156c7ea0e7271d62dec922f39/src/main/java/com/hipravin/samples/inmemory/EmployeeImmutable.java",
+      "repository": {
+        "id": 401011633,
+        "node_id": "MDEwOlJlcG9zaXRvcnk0MDEwMTE2MzM=",
+        "name": "samples-inmem-redis-postgres",
+        "full_name": "hipravin/samples-inmem-redis-postgres",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/samples-inmem-redis-postgres",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres",
+        "forks_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/401011633/contents/src/main/java/com/hipravin/samples/inmemory/EmployeeImmutable.java?ref=ed6347b492a2e7f156c7ea0e7271d62dec922f39",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "\npublic class EmployeeImmutable {\n    private final Long id;",
+          "matches": [
+            {
+              "indices": [
+                22,
+                31
+              ],
+              "text": "Immutable"
+            }
+          ]
+        },
+        {
+          "object_url": "https://api.github.com/repositories/401011633/contents/src/main/java/com/hipravin/samples/inmemory/EmployeeImmutable.java?ref=ed6347b492a2e7f156c7ea0e7271d62dec922f39",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "\n    public EmployeeImmutable(Long id, String email, String firstName, String lastName) {\n        this.id = id;",
+          "matches": [
+            {
+              "indices": [
+                20,
+                29
+              ],
+              "text": "Immutable"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ImmutableList.java",
+      "path": "plain-java/src/main/java/hipravin/samples/collection/ImmutableList.java",
+      "sha": "4a1f3051510092b8b5d3c78ccc8f402057624da3",
+      "url": "https://api.github.com/repositories/810674759/contents/plain-java/src/main/java/hipravin/samples/collection/ImmutableList.java?ref=5f908d426e65b86014fe2b0bd5d15fd288eb009e",
+      "git_url": "https://api.github.com/repositories/810674759/git/blobs/4a1f3051510092b8b5d3c78ccc8f402057624da3",
+      "html_url": "https://github.com/hipravin/samples/blob/5f908d426e65b86014fe2b0bd5d15fd288eb009e/plain-java/src/main/java/hipravin/samples/collection/ImmutableList.java",
+      "repository": {
+        "id": 810674759,
+        "node_id": "R_kgDOMFHqRw",
+        "name": "samples",
+        "full_name": "hipravin/samples",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/samples",
+        "description": "Miscellaneous code samples, basically everything in single project",
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/samples",
+        "forks_url": "https://api.github.com/repos/hipravin/samples/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/samples/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/samples/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/samples/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/samples/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/samples/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/samples/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/samples/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/samples/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/samples/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/samples/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/samples/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/samples/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/samples/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/samples/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/samples/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/samples/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/samples/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/samples/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/samples/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/samples/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/samples/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/samples/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/samples/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/samples/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/samples/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/samples/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/samples/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/samples/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/samples/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/samples/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/samples/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/samples/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/samples/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/samples/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/samples/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/810674759/contents/plain-java/src/main/java/hipravin/samples/collection/ImmutableList.java?ref=5f908d426e65b86014fe2b0bd5d15fd288eb009e",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "\npublic class ImmutableList {\n    public static void main(String[] args) {",
+          "matches": [
+            {
+              "indices": [
+                14,
+                23
+              ],
+              "text": "Immutable"
+            }
+          ]
+        },
+        {
+          "object_url": "https://api.github.com/repositories/810674759/contents/plain-java/src/main/java/hipravin/samples/collection/ImmutableList.java?ref=5f908d426e65b86014fe2b0bd5d15fd288eb009e",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "        List<Integer> mutable = new ArrayList<>(Arrays.asList(1, 2, 3));\n        var immutableCopy = List.copyOf(mutable);\n        var unmodifiableView = Collections.unmodifiableList(mutable);",
+          "matches": [
+            {
+              "indices": [
+                85,
+                94
+              ],
+              "text": "immutable"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2023-04-19-java-util-stream-notes.html",
+      "path": "_posts/2023-04-19-java-util-stream-notes.html",
+      "sha": "b8ad901dbca74a1fc3b2679518194b3c5c65e6e7",
+      "url": "https://api.github.com/repositories/246100645/contents/_posts/2023-04-19-java-util-stream-notes.html?ref=292e748cb54c587a3cc0528a33165fc4d28a38b6",
+      "git_url": "https://api.github.com/repositories/246100645/git/blobs/b8ad901dbca74a1fc3b2679518194b3c5c65e6e7",
+      "html_url": "https://github.com/hipravin/hipravin.github.io/blob/292e748cb54c587a3cc0528a33165fc4d28a38b6/_posts/2023-04-19-java-util-stream-notes.html",
+      "repository": {
+        "id": 246100645,
+        "node_id": "MDEwOlJlcG9zaXRvcnkyNDYxMDA2NDU=",
+        "name": "hipravin.github.io",
+        "full_name": "hipravin/hipravin.github.io",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/hipravin.github.io",
+        "description": "Java dev blog",
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/hipravin.github.io",
+        "forks_url": "https://api.github.com/repos/hipravin/hipravin.github.io/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/hipravin.github.io/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/hipravin.github.io/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/hipravin.github.io/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/hipravin.github.io/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/hipravin.github.io/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/hipravin.github.io/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/hipravin.github.io/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/hipravin.github.io/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/hipravin.github.io/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/hipravin.github.io/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/hipravin.github.io/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/hipravin.github.io/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/hipravin.github.io/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/hipravin.github.io/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/hipravin.github.io/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/hipravin.github.io/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/hipravin.github.io/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/hipravin.github.io/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/hipravin.github.io/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/hipravin.github.io/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/hipravin.github.io/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/hipravin.github.io/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/hipravin.github.io/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/hipravin.github.io/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/hipravin.github.io/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/hipravin.github.io/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/hipravin.github.io/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/hipravin.github.io/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/hipravin.github.io/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/hipravin.github.io/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/hipravin.github.io/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/hipravin.github.io/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/hipravin.github.io/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/hipravin.github.io/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/hipravin.github.io/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/246100645/contents/_posts/2023-04-19-java-util-stream-notes.html?ref=292e748cb54c587a3cc0528a33165fc4d28a38b6",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "            накладываемых на элементы внутри Iterator у нас нет.\n    Можно было бы указать ORDERED или ORDERED | NONNULL | IMMUTABLE, но лучше сделать так же, как в Iterable и передать 0.\n    По крайней мере, пока нет глубокого понимания, что из себя представляют все эти флаги.",
+          "matches": [
+            {
+              "indices": [
+                180,
+                189
+              ],
+              "text": "дать 0.\n "
+            }
+          ]
+        },
+        {
+          "object_url": "https://api.github.com/repositories/246100645/contents/_posts/2023-04-19-java-util-stream-notes.html?ref=292e748cb54c587a3cc0528a33165fc4d28a38b6",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "        <li>NONNULL - все элементы отличны от null</li>\n        <li>IMMUTABLE - элементы не могут быть добавлены, удалены или заменены</li>\n        <li>CONCURRENT - элементы могут быть добавлены, изменены или удалены в процессе перебора элементов из источника</li>",
+          "matches": [
+            {
+              "indices": [
+                88,
+                97
+              ],
+              "text": " не могут"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EmployeeDto.java",
+      "path": "src/main/java/com/hipravin/samples/api/EmployeeDto.java",
+      "sha": "9eb9d85a9d9d81b9ad75043b7b6662c190cd1d47",
+      "url": "https://api.github.com/repositories/401011633/contents/src/main/java/com/hipravin/samples/api/EmployeeDto.java?ref=ed6347b492a2e7f156c7ea0e7271d62dec922f39",
+      "git_url": "https://api.github.com/repositories/401011633/git/blobs/9eb9d85a9d9d81b9ad75043b7b6662c190cd1d47",
+      "html_url": "https://github.com/hipravin/samples-inmem-redis-postgres/blob/ed6347b492a2e7f156c7ea0e7271d62dec922f39/src/main/java/com/hipravin/samples/api/EmployeeDto.java",
+      "repository": {
+        "id": 401011633,
+        "node_id": "MDEwOlJlcG9zaXRvcnk0MDEwMTE2MzM=",
+        "name": "samples-inmem-redis-postgres",
+        "full_name": "hipravin/samples-inmem-redis-postgres",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/samples-inmem-redis-postgres",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres",
+        "forks_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/401011633/contents/src/main/java/com/hipravin/samples/api/EmployeeDto.java?ref=ed6347b492a2e7f156c7ea0e7271d62dec922f39",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "import com.hipravin.samples.database.EmployeeEntity;\nimport com.hipravin.samples.inmemory.EmployeeImmutable;\nimport com.hipravin.samples.redis.EmployeeRedisHash;",
+          "matches": [
+            {
+              "indices": [
+                98,
+                107
+              ],
+              "text": "Immutable"
+            }
+          ]
+        },
+        {
+          "object_url": "https://api.github.com/repositories/401011633/contents/src/main/java/com/hipravin/samples/api/EmployeeDto.java?ref=ed6347b492a2e7f156c7ea0e7271d62dec922f39",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "\n    public static EmployeeDto fromEmployeeImmutable(EmployeeImmutable employeeImmutable) {\n        return new EmployeeDto(",
+          "matches": [
+            {
+              "indices": [
+                43,
+                52
+              ],
+              "text": "Immutable"
+            },
+            {
+              "indices": [
+                61,
+                70
+              ],
+              "text": "Immutable"
+            },
+            {
+              "indices": [
+                79,
+                88
+              ],
+              "text": "Immutable"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PostIndexInMemoryRepositoryListImpl.java",
+      "path": "postal-codes-autocomplete/src/main/java/com/hipravin/post/PostIndexInMemoryRepositoryListImpl.java",
+      "sha": "602300eda5b52a9a835a31f6a85c4b8f8ecc380e",
+      "url": "https://api.github.com/repositories/611609249/contents/postal-codes-autocomplete/src/main/java/com/hipravin/post/PostIndexInMemoryRepositoryListImpl.java?ref=15225a253c4dc020d21c2b1f02006cbec5b559a2",
+      "git_url": "https://api.github.com/repositories/611609249/git/blobs/602300eda5b52a9a835a31f6a85c4b8f8ecc380e",
+      "html_url": "https://github.com/hipravin/samples-java-util-stream/blob/15225a253c4dc020d21c2b1f02006cbec5b559a2/postal-codes-autocomplete/src/main/java/com/hipravin/post/PostIndexInMemoryRepositoryListImpl.java",
+      "repository": {
+        "id": 611609249,
+        "node_id": "R_kgDOJHRqoQ",
+        "name": "samples-java-util-stream",
+        "full_name": "hipravin/samples-java-util-stream",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/samples-java-util-stream",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/samples-java-util-stream",
+        "forks_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/611609249/contents/postal-codes-autocomplete/src/main/java/com/hipravin/post/PostIndexInMemoryRepositoryListImpl.java?ref=15225a253c4dc020d21c2b1f02006cbec5b559a2",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "import static com.hipravin.post.PostIndex.BY_INDEX_THEN_OTHER_COMPARATOR;\n\n/**\n * Immutable, contents can't be changed after initialization.\n */\npublic class PostIndexInMemoryRepositoryListImpl implements PostIndexRepository {\n    /**",
+          "matches": [
+            {
+              "indices": [
+                82,
+                91
+              ],
+              "text": "Immutable"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EmployeeInMemoryService.java",
+      "path": "src/main/java/com/hipravin/samples/inmemory/EmployeeInMemoryService.java",
+      "sha": "1f28a5232fb773ceae04f402ae00802d089e8d75",
+      "url": "https://api.github.com/repositories/401011633/contents/src/main/java/com/hipravin/samples/inmemory/EmployeeInMemoryService.java?ref=ed6347b492a2e7f156c7ea0e7271d62dec922f39",
+      "git_url": "https://api.github.com/repositories/401011633/git/blobs/1f28a5232fb773ceae04f402ae00802d089e8d75",
+      "html_url": "https://github.com/hipravin/samples-inmem-redis-postgres/blob/ed6347b492a2e7f156c7ea0e7271d62dec922f39/src/main/java/com/hipravin/samples/inmemory/EmployeeInMemoryService.java",
+      "repository": {
+        "id": 401011633,
+        "node_id": "MDEwOlJlcG9zaXRvcnk0MDEwMTE2MzM=",
+        "name": "samples-inmem-redis-postgres",
+        "full_name": "hipravin/samples-inmem-redis-postgres",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/samples-inmem-redis-postgres",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres",
+        "forks_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/401011633/contents/src/main/java/com/hipravin/samples/inmemory/EmployeeInMemoryService.java?ref=ed6347b492a2e7f156c7ea0e7271d62dec922f39",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "        return employeeInMemoryRepository.findById(id)\n                .map(EmployeeDto::fromEmployeeImmutable);\n    }",
+          "matches": [
+            {
+              "indices": [
+                101,
+                110
+              ],
+              "text": "Immutable"
+            }
+          ]
+        },
+        {
+          "object_url": "https://api.github.com/repositories/401011633/contents/src/main/java/com/hipravin/samples/inmemory/EmployeeInMemoryService.java?ref=ed6347b492a2e7f156c7ea0e7271d62dec922f39",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "        return employeeInMemoryRepository.findByEmailExact(email)\n                .stream().map(EmployeeDto::fromEmployeeImmutable)\n                .collect(Collectors.toList());",
+          "matches": [
+            {
+              "indices": [
+                121,
+                130
+              ],
+              "text": "Immutable"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EmployeeInMemoryRepository.java",
+      "path": "src/main/java/com/hipravin/samples/inmemory/EmployeeInMemoryRepository.java",
+      "sha": "5273535871aa8b534ec488a125ce6c4b1a09baf8",
+      "url": "https://api.github.com/repositories/401011633/contents/src/main/java/com/hipravin/samples/inmemory/EmployeeInMemoryRepository.java?ref=ed6347b492a2e7f156c7ea0e7271d62dec922f39",
+      "git_url": "https://api.github.com/repositories/401011633/git/blobs/5273535871aa8b534ec488a125ce6c4b1a09baf8",
+      "html_url": "https://github.com/hipravin/samples-inmem-redis-postgres/blob/ed6347b492a2e7f156c7ea0e7271d62dec922f39/src/main/java/com/hipravin/samples/inmemory/EmployeeInMemoryRepository.java",
+      "repository": {
+        "id": 401011633,
+        "node_id": "MDEwOlJlcG9zaXRvcnk0MDEwMTE2MzM=",
+        "name": "samples-inmem-redis-postgres",
+        "full_name": "hipravin/samples-inmem-redis-postgres",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/samples-inmem-redis-postgres",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres",
+        "forks_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/samples-inmem-redis-postgres/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/401011633/contents/src/main/java/com/hipravin/samples/inmemory/EmployeeInMemoryRepository.java?ref=ed6347b492a2e7f156c7ea0e7271d62dec922f39",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "\n    private final Map<Long, EmployeeImmutable> idToEmployee = new HashMap<>();\n",
+          "matches": [
+            {
+              "indices": [
+                37,
+                46
+              ],
+              "text": "Immutable"
+            }
+          ]
+        },
+        {
+          "object_url": "https://api.github.com/repositories/401011633/contents/src/main/java/com/hipravin/samples/inmemory/EmployeeInMemoryRepository.java?ref=ed6347b492a2e7f156c7ea0e7271d62dec922f39",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "            employeeEntityStream.forEach(ee -> {\n                EmployeeImmutable ei = EmployeeImmutable.fromEntity(ee);\n                idToEmployee.put(ei.getId(), ei);",
+          "matches": [
+            {
+              "indices": [
+                73,
+                82
+              ],
+              "text": "Immutable"
+            },
+            {
+              "indices": [
+                96,
+                105
+              ],
+              "text": "Immutable"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SampleClass.java",
+      "path": "repo-service/src/test/resources/test-repo-root/test-repo-0/SampleClass.java",
+      "sha": "edbac1cc6380bac1ff9eb2018750ba934df71ca2",
+      "url": "https://api.github.com/repositories/453730965/contents/repo-service/src/test/resources/test-repo-root/test-repo-0/SampleClass.java?ref=2a9f8aafb729a0975e80eb34c9e94a6c7a00c421",
+      "git_url": "https://api.github.com/repositories/453730965/git/blobs/edbac1cc6380bac1ff9eb2018750ba934df71ca2",
+      "html_url": "https://github.com/hipravin/devcompanion/blob/2a9f8aafb729a0975e80eb34c9e94a6c7a00c421/repo-service/src/test/resources/test-repo-root/test-repo-0/SampleClass.java",
+      "repository": {
+        "id": 453730965,
+        "node_id": "R_kgDOGwtilQ",
+        "name": "devcompanion",
+        "full_name": "hipravin/devcompanion",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/devcompanion",
+        "description": "Reference and educational project. Tech stack: Java 17, Spring boot, spring cloud, k8s, kind of microservices, reactjs and more...",
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/devcompanion",
+        "forks_url": "https://api.github.com/repos/hipravin/devcompanion/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/devcompanion/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/devcompanion/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/devcompanion/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/devcompanion/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/devcompanion/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/devcompanion/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/devcompanion/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/devcompanion/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/devcompanion/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/devcompanion/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/devcompanion/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/devcompanion/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/devcompanion/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/devcompanion/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/devcompanion/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/devcompanion/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/devcompanion/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/devcompanion/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/devcompanion/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/devcompanion/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/devcompanion/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/devcompanion/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/devcompanion/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/devcompanion/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/devcompanion/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/devcompanion/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/devcompanion/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/devcompanion/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/devcompanion/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/devcompanion/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/devcompanion/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/devcompanion/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/devcompanion/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/devcompanion/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/devcompanion/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/453730965/contents/repo-service/src/test/resources/test-repo-root/test-repo-0/SampleClass.java?ref=2a9f8aafb729a0975e80eb34c9e94a6c7a00c421",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "     * copying any mutable objects that comprise the internal \"deep structure\"\n     * of the object being cloned and replacing the references to these\n     * objects with references to the copies.  If a class contains only\n     * primitive fields or references to immutable objects, then it is usually\n     * the case that no fields in the object returned by {@code super.clone}\n     * need to be modified.\n     *",
+          "matches": [
+            {
+              "indices": [
+                264,
+                273
+              ],
+              "text": "immutable"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "StreamToCollectionSamples.java",
+      "path": "postal-codes-autocomplete/src/test/java/com/hipravin/post/StreamToCollectionSamples.java",
+      "sha": "540e64bc1268cdb6f4b2aee83d7bf1cdc11de853",
+      "url": "https://api.github.com/repositories/611609249/contents/postal-codes-autocomplete/src/test/java/com/hipravin/post/StreamToCollectionSamples.java?ref=15225a253c4dc020d21c2b1f02006cbec5b559a2",
+      "git_url": "https://api.github.com/repositories/611609249/git/blobs/540e64bc1268cdb6f4b2aee83d7bf1cdc11de853",
+      "html_url": "https://github.com/hipravin/samples-java-util-stream/blob/15225a253c4dc020d21c2b1f02006cbec5b559a2/postal-codes-autocomplete/src/test/java/com/hipravin/post/StreamToCollectionSamples.java",
+      "repository": {
+        "id": 611609249,
+        "node_id": "R_kgDOJHRqoQ",
+        "name": "samples-java-util-stream",
+        "full_name": "hipravin/samples-java-util-stream",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/samples-java-util-stream",
+        "description": null,
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/samples-java-util-stream",
+        "forks_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/samples-java-util-stream/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/611609249/contents/postal-codes-autocomplete/src/test/java/com/hipravin/post/StreamToCollectionSamples.java?ref=15225a253c4dc020d21c2b1f02006cbec5b559a2",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "        List<PostIndex> indices = indicesStream.toList();//since java 16\n        //class java.util.ImmutableCollections$ListN\n        System.out.println(indices.getClass());\n        //((ImmutableCollections.ListN) indices).elements.length = 58444\n        assertEquals(SAMPLE_INDICES_COUNT, indices.size());\n    }\n",
+          "matches": [
+            {
+              "indices": [
+                99,
+                108
+              ],
+              "text": "Immutable"
+            },
+            {
+              "indices": [
+                186,
+                195
+              ],
+              "text": "Immutable"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TreeMap.java",
+      "path": "repo-service/src/test/resources/test-repo-root/test-repo-1/TreeMap.java",
+      "sha": "e1f1fe562c5c48d431cf52bd0f920dbbb19e8d9a",
+      "url": "https://api.github.com/repositories/453730965/contents/repo-service/src/test/resources/test-repo-root/test-repo-1/TreeMap.java?ref=2a9f8aafb729a0975e80eb34c9e94a6c7a00c421",
+      "git_url": "https://api.github.com/repositories/453730965/git/blobs/e1f1fe562c5c48d431cf52bd0f920dbbb19e8d9a",
+      "html_url": "https://github.com/hipravin/devcompanion/blob/2a9f8aafb729a0975e80eb34c9e94a6c7a00c421/repo-service/src/test/resources/test-repo-root/test-repo-1/TreeMap.java",
+      "repository": {
+        "id": 453730965,
+        "node_id": "R_kgDOGwtilQ",
+        "name": "devcompanion",
+        "full_name": "hipravin/devcompanion",
+        "private": false,
+        "owner": {
+          "login": "hipravin",
+          "id": 61986096,
+          "node_id": "MDQ6VXNlcjYxOTg2MDk2",
+          "avatar_url": "https://avatars.githubusercontent.com/u/61986096?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/hipravin",
+          "html_url": "https://github.com/hipravin",
+          "followers_url": "https://api.github.com/users/hipravin/followers",
+          "following_url": "https://api.github.com/users/hipravin/following{/other_user}",
+          "gists_url": "https://api.github.com/users/hipravin/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/hipravin/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/hipravin/subscriptions",
+          "organizations_url": "https://api.github.com/users/hipravin/orgs",
+          "repos_url": "https://api.github.com/users/hipravin/repos",
+          "events_url": "https://api.github.com/users/hipravin/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/hipravin/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "html_url": "https://github.com/hipravin/devcompanion",
+        "description": "Reference and educational project. Tech stack: Java 17, Spring boot, spring cloud, k8s, kind of microservices, reactjs and more...",
+        "fork": false,
+        "url": "https://api.github.com/repos/hipravin/devcompanion",
+        "forks_url": "https://api.github.com/repos/hipravin/devcompanion/forks",
+        "keys_url": "https://api.github.com/repos/hipravin/devcompanion/keys{/key_id}",
+        "collaborators_url": "https://api.github.com/repos/hipravin/devcompanion/collaborators{/collaborator}",
+        "teams_url": "https://api.github.com/repos/hipravin/devcompanion/teams",
+        "hooks_url": "https://api.github.com/repos/hipravin/devcompanion/hooks",
+        "issue_events_url": "https://api.github.com/repos/hipravin/devcompanion/issues/events{/number}",
+        "events_url": "https://api.github.com/repos/hipravin/devcompanion/events",
+        "assignees_url": "https://api.github.com/repos/hipravin/devcompanion/assignees{/user}",
+        "branches_url": "https://api.github.com/repos/hipravin/devcompanion/branches{/branch}",
+        "tags_url": "https://api.github.com/repos/hipravin/devcompanion/tags",
+        "blobs_url": "https://api.github.com/repos/hipravin/devcompanion/git/blobs{/sha}",
+        "git_tags_url": "https://api.github.com/repos/hipravin/devcompanion/git/tags{/sha}",
+        "git_refs_url": "https://api.github.com/repos/hipravin/devcompanion/git/refs{/sha}",
+        "trees_url": "https://api.github.com/repos/hipravin/devcompanion/git/trees{/sha}",
+        "statuses_url": "https://api.github.com/repos/hipravin/devcompanion/statuses/{sha}",
+        "languages_url": "https://api.github.com/repos/hipravin/devcompanion/languages",
+        "stargazers_url": "https://api.github.com/repos/hipravin/devcompanion/stargazers",
+        "contributors_url": "https://api.github.com/repos/hipravin/devcompanion/contributors",
+        "subscribers_url": "https://api.github.com/repos/hipravin/devcompanion/subscribers",
+        "subscription_url": "https://api.github.com/repos/hipravin/devcompanion/subscription",
+        "commits_url": "https://api.github.com/repos/hipravin/devcompanion/commits{/sha}",
+        "git_commits_url": "https://api.github.com/repos/hipravin/devcompanion/git/commits{/sha}",
+        "comments_url": "https://api.github.com/repos/hipravin/devcompanion/comments{/number}",
+        "issue_comment_url": "https://api.github.com/repos/hipravin/devcompanion/issues/comments{/number}",
+        "contents_url": "https://api.github.com/repos/hipravin/devcompanion/contents/{+path}",
+        "compare_url": "https://api.github.com/repos/hipravin/devcompanion/compare/{base}...{head}",
+        "merges_url": "https://api.github.com/repos/hipravin/devcompanion/merges",
+        "archive_url": "https://api.github.com/repos/hipravin/devcompanion/{archive_format}{/ref}",
+        "downloads_url": "https://api.github.com/repos/hipravin/devcompanion/downloads",
+        "issues_url": "https://api.github.com/repos/hipravin/devcompanion/issues{/number}",
+        "pulls_url": "https://api.github.com/repos/hipravin/devcompanion/pulls{/number}",
+        "milestones_url": "https://api.github.com/repos/hipravin/devcompanion/milestones{/number}",
+        "notifications_url": "https://api.github.com/repos/hipravin/devcompanion/notifications{?since,all,participating}",
+        "labels_url": "https://api.github.com/repos/hipravin/devcompanion/labels{/name}",
+        "releases_url": "https://api.github.com/repos/hipravin/devcompanion/releases{/id}",
+        "deployments_url": "https://api.github.com/repos/hipravin/devcompanion/deployments"
+      },
+      "score": 1.0,
+      "text_matches": [
+        {
+          "object_url": "https://api.github.com/repositories/453730965/contents/repo-service/src/test/resources/test-repo-root/test-repo-1/TreeMap.java?ref=2a9f8aafb729a0975e80eb34c9e94a6c7a00c421",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "    /**\n     * Return SimpleImmutableEntry for entry, or null if null\n     */",
+          "matches": [
+            {
+              "indices": [
+                28,
+                37
+              ],
+              "text": "Immutable"
+            }
+          ]
+        },
+        {
+          "object_url": "https://api.github.com/repositories/453730965/contents/repo-service/src/test/resources/test-repo-root/test-repo-1/TreeMap.java?ref=2a9f8aafb729a0975e80eb34c9e94a6c7a00c421",
+          "object_type": "FileContent",
+          "property": "content",
+          "fragment": "        return (e == null) ? null :\n                new AbstractMap.SimpleImmutableEntry<>(e);\n    }",
+          "matches": [
+            {
+              "indices": [
+                74,
+                83
+              ],
+              "text": "Immutable"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
