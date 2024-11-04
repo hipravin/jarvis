@@ -1,15 +1,15 @@
 ###
-GET https://api.github.com/search/code?q=user%3Ahipravin+immutable
+GET https://api.github.com/search/code?q=user%3Ahipravin+OR+user%3Abclozel+immutable
 Accept: application/vnd.github+json
 Authorization: Bearer {{gh_token}}
 
 ###
-GET https://api.github.com/search/code?q=user%3Ahipravin+immutable
+GET https://api.github.com/search/code?q=user%3Abclozel+immutable
 Accept: application/vnd.github.text-match+json
 Authorization: Bearer {{gh_token}}
 
 ###
-GET https://api.github.com/search/code?q=immutable
+https://api.github.com/search/code?q=user%3Ahipravin+OR+user%3Abclozel+OR+user%3Ajosepaumard+immutable GET
 Accept: application/vnd.github.text-match+json
 Authorization: Bearer {{gh_token}}
 

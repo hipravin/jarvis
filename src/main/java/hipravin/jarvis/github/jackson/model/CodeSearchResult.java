@@ -11,4 +11,7 @@ public record CodeSearchResult(
    @JsonProperty("incomplete_results") Boolean incompleteResults,
    @JsonProperty("items") List<CodeSearchItem> codeSearchItems
 ) {
+//    public static CodeSearchResult combine(CodeSearchResult... results) {
+//        return new CodeSearchResult();
+//    }
 }

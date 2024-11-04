@@ -14,6 +14,7 @@ public record CodeSearchItem(
         @JsonProperty("git_url") String gitUrl,
         @JsonProperty("html_url") String htmlUrl,
         @JsonProperty("repository") Repository repository,
+        @JsonProperty("score") double score,
         @JsonProperty("text_matches") List<TextMatches> textMatches
 ) {
 }

@@ -38,6 +38,7 @@ class JacksonGithubMapperImplTest {
                 csi0.gitUrl());
         assertEquals("https://github.com/hipravin/devcompanion/blob/2a9f8aafb729a0975e80eb34c9e94a6c7a00c421/development/playground/playground-sql/postgresql-book/queries.sql",
                 csi0.htmlUrl());
+        assertEquals(1.0, csi0.score(), 0.0001);
 
         List<TextMatches> tms = csi0.textMatches();
         assertEquals(2, tms.size());

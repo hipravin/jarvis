@@ -7,6 +7,7 @@ import org.kohsuke.github.GitHub;
 import org.kohsuke.github.PagedSearchIterable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
 import java.net.URI;
@@ -43,10 +44,11 @@ public class GitHubApiPlaygroundIT {
     @Test
     void testHttpClient() {
         try {
-            var httpClient = HttpClient.newBuilder().build();
+            var httpClient = HttpClient.newBuilder()
+                    .build();
             var request = HttpRequest.newBuilder().uri(URI.create("https://api.github.com/search/code?q=user:hipravin+immutable"))
-                    .header("Accept", "application/vnd.github.text-match+json")
-                    .header("Authorization", "Bearer " + githubToken)
+                    .header(HttpHeaders.ACCEPT, "application/vnd.github.text-match+json")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + githubToken)
                     .GET()
                     .build();
 

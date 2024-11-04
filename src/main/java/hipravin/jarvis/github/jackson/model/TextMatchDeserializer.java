@@ -1,7 +1,6 @@
 package hipravin.jarvis.github.jackson.model;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -9,7 +8,6 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.io.IOException;
-
 
 public class TextMatchDeserializer extends StdDeserializer<TextMatch> {
 
@@ -23,7 +21,7 @@ public class TextMatchDeserializer extends StdDeserializer<TextMatch> {
 
     @Override
     public TextMatch deserialize(JsonParser jp, DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {
+            throws IOException {
         JsonNode node = jp.getCodec().readTree(jp);
         String text = node.get("text").asText();
 
@@ -36,7 +34,7 @@ public class TextMatchDeserializer extends StdDeserializer<TextMatch> {
             start = indices.get(0).asInt();
             end = indices.get(1).asInt();
         } else {
-            throw new JsonMappingException("Unexpected indices: " + node.get("indices").asText());
+            throw new JsonMappingException(jp, "Unexpected indices: " + node.get("indices").asText());
         }
 
         return new TextMatch(start, end, text);
