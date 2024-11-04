@@ -3,7 +3,11 @@ package hipravin.jarvis.github.jackson;
 import hipravin.jarvis.TestUtls;
 import hipravin.jarvis.github.jackson.model.CodeSearchItem;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
+import hipravin.jarvis.github.jackson.model.TextMatch;
+import hipravin.jarvis.github.jackson.model.TextMatches;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -35,6 +39,21 @@ class JacksonGithubMapperImplTest {
         assertEquals("https://github.com/hipravin/devcompanion/blob/2a9f8aafb729a0975e80eb34c9e94a6c7a00c421/development/playground/playground-sql/postgresql-book/queries.sql",
                 csi0.htmlUrl());
 
+        List<TextMatches> tms = csi0.textMatches();
+        assertEquals(2, tms.size());
+
+        TextMatches tm0 = tms.get(0);
+        assertEquals("END; $$\n    LANGUAGE 'plpgsql' IMMUTABLE;\n", tm0.fragment());
+        assertEquals("https://api.github.com/repositories/453730965/contents/development/playground/playground-sql/postgresql-book/queries.sql?ref=2a9f8aafb729a0975e80eb34c9e94a6c7a00c421",
+                tm0.objectUrl());
+        assertEquals("FileContent", tm0.objectType());
+
+        List<TextMatch> tmms = tm0.matches();
+        assertEquals(1, tmms.size());
+        TextMatch tmm0 = tmms.get(0);
+        assertEquals("IMMUTABLE", tmm0.text());
+        assertEquals(31, tmm0.start());
+        assertEquals(40, tmm0.end());
     }
 
 
