@@ -22,8 +22,10 @@ class GithubApiClientImplIT {
                 .map(item -> item.repository().owner().login())
                 .collect(Collectors.toSet());
 
-        System.out.println(authors);
+        System.out.println("total authors: " + authors.size() + ", " + authors);
 
         System.out.printf("incomplete results: %b, total: %d", result.incompleteResults(), result.count());
     }
+
+
 }

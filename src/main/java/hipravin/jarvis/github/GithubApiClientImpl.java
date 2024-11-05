@@ -1,28 +1,32 @@
 package hipravin.jarvis.github;
 
-import hipravin.jarvis.github.jackson.GithubResponseMetadata;
+import com.google.common.collect.Lists;
 import hipravin.jarvis.github.jackson.JacksonGithubMapper;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
     private static final Logger log = LoggerFactory.getLogger(GithubApiClientImpl.class);
+    //apparently github doesn't allow concurrent requests
+    //https://github.com/api-platform/core/issues/3205  (closed, but probably not fixed)
+    private final ExecutorService executor = Executors.newFixedThreadPool(1);
 
     private final GithubProperties githubProperties;
     private final JacksonGithubMapper mapper;
@@ -62,14 +66,42 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
 
     @Override
     public CodeSearchResult searchApprovedAuthors(String searchString) {
-        var orAuthors = githubProperties.approvedAuthors().stream()
-                .limit(5)
-                .map(author -> "user:" + author)
-                .collect(Collectors.joining(" OR "));
-        return search(orAuthors + " " + searchString);
+        List<List<String>> approvedAuthorsBatches = Lists.partition(githubProperties.approvedAuthors(),
+                githubProperties.singleRequestMaxOr());
+
+        var requests = approvedAuthorsBatches.stream()
+                .map(batch -> searchCodeApprovedAuthorsBatchSupplier(batch, searchString))
+                .toList();
+
+        return CodeSearchResult.combine(requestConcurrently(requests));
     }
 
+    private Supplier<CodeSearchResult> searchCodeApprovedAuthorsBatchSupplier(List<String> approvedAuthors, String searchString) {
+        var orAuthors = approvedAuthors.stream()
+                .map(author -> "user:" + author)
+                .collect(Collectors.joining(" OR "));
 
+        return () -> search(orAuthors + " " + searchString);
+    }
+
+    private List<CodeSearchResult> requestConcurrently(List<Supplier<CodeSearchResult>> requests) {
+        List<CompletableFuture<CodeSearchResult>> completableFutures = requests.stream()
+                .map(r -> CompletableFuture.supplyAsync(r, executor))
+                .toList();
+
+        List<CodeSearchResult> responses = new ArrayList<>(requests.size());
+
+        for (CompletableFuture<CodeSearchResult> completableFuture : completableFutures) {
+            try {
+                var response = completableFuture.get(10, TimeUnit.SECONDS);
+                responses.add(response);
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                throw new RuntimeException(e);//TODO: can we safely ignore other Futures after getting first exception?
+            }
+        }
+
+        return responses;
+    }
 
     @Override
     public void destroy() throws Exception {

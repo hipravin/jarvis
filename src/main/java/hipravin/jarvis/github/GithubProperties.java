@@ -9,7 +9,8 @@ import java.util.List;
 @ConfigurationProperties(prefix = "github")
 public record GithubProperties(
         String codeSearchUrl,
-        List<String> approvedAuthors
+        List<String> approvedAuthors,
+        int singleRequestMaxOr
 ) {
     @ConstructorBinding
     public GithubProperties {
