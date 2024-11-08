@@ -10,7 +10,8 @@ import java.util.List;
 public record GithubProperties(
         String codeSearchUrl,
         List<String> approvedAuthors,
-        int singleRequestMaxOr
+        int singleRequestMaxOr,
+        int codeSearchPerPage
 ) {
     @ConstructorBinding
     public GithubProperties {

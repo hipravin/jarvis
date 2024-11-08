@@ -3,6 +3,7 @@ package hipravin.jarvis.github;
 import com.google.common.collect.Lists;
 import hipravin.jarvis.github.jackson.JacksonGithubMapper;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
+import hipravin.jarvis.github.jackson.model.EncodedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -16,16 +17,21 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+/**
+ * <a href="https://docs.github.com/en/search-github/searching-on-github/searching-code">Github docs</a>
+ */
 @Component
 public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
     private static final Logger log = LoggerFactory.getLogger(GithubApiClientImpl.class);
     //apparently github doesn't allow concurrent requests
     //https://github.com/api-platform/core/issues/3205  (closed, but probably not fixed)
+    //anyway documentation explicitly recommends to avoid concurrent requests
     private final ExecutorService executor = Executors.newFixedThreadPool(1);
 
     private final GithubProperties githubProperties;
@@ -44,9 +50,32 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
     }
 
     @Override
+    public String getContent(String uri) {
+        var request = githubHttpRequestBuilder.uri(URI.create(uri))
+                .GET()
+                .build();
+        try {
+            var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                throw new RuntimeException("Request failed: %s: status %d, body: %s".formatted(
+                        request.uri(), response.statusCode(), response.body()));
+            }
+
+            EncodedContent encodedContent = mapper.readContent(response.body());
+            return decode(encodedContent.content(), encodedContent.encoding());
+
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public CodeSearchResult search(String searchString) {
-        var request = githubHttpRequestBuilder.uri(URI.create(githubProperties.codeSearchUrl() + "?q="
-                        + URLEncoder.encode(searchString, StandardCharsets.UTF_8)))
+        var request = githubHttpRequestBuilder.uri(URI.create(
+                "%s?per_page=%d&q=%s".formatted(githubProperties.codeSearchUrl(),
+                        githubProperties.codeSearchPerPage(),
+                        URLEncoder.encode(searchString, StandardCharsets.UTF_8))))
                 .GET()
                 .build();
         try {
@@ -54,7 +83,8 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
 //            var metadata = GithubResponseMetadata.fromHttpResponse(response);
 
             if (response.statusCode() != 200) {
-                throw new RuntimeException("Request failed: %s".formatted(response.statusCode()));
+                throw new RuntimeException("Request failed: %s: status %d, body: %s".formatted(
+                        request.uri(), response.statusCode(), response.body()));
             }
 
             return mapper.readCodeSearchResult(response.body());
@@ -101,6 +131,23 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
         }
 
         return responses;
+    }
+
+    private static String decode(String content, String encoding) {
+        return switch (encoding) {
+            case "base64" -> decodeBase64Multiline(content);
+            default -> throw new IllegalArgumentException("Unknown encoding: " + encoding);
+        };
+    }
+
+    private static String decodeBase64Multiline(String content) {
+        return content.lines()
+                .map(GithubApiClientImpl::decodeBase64)
+                .collect(Collectors.joining());
+    }
+
+    private static String decodeBase64(String encoded) {
+        return new String(Base64.getDecoder().decode(encoded), StandardCharsets.UTF_8);
     }
 
     @Override

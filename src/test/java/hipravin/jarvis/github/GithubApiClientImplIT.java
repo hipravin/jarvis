@@ -1,5 +1,6 @@
 package hipravin.jarvis.github;
 
+import hipravin.jarvis.github.jackson.model.CodeSearchItem;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,15 +18,22 @@ class GithubApiClientImplIT {
     void testSampleSearch() {
 
 //        var result = githubApiClient.search("user:hipravin immutable");
-        var result = githubApiClient.searchApprovedAuthors("int");
+        var result = githubApiClient.searchApprovedAuthors("filename:Dockerfile from egd");
         Set<String> authors = result.codeSearchItems().stream()
                 .map(item -> item.repository().owner().login())
                 .collect(Collectors.toSet());
 
         System.out.println("total authors: " + authors.size() + ", " + authors);
 
-        System.out.printf("incomplete results: %b, total: %d", result.incompleteResults(), result.count());
+        System.out.printf("incomplete results: %b, total: %d%n", result.incompleteResults(), result.count());
+
+        for (CodeSearchItem codeSearchItem : result.codeSearchItems()) {
+            System.out.println(codeSearchItem.repository().owner().login() + ": " + codeSearchItem.name() + " " + codeSearchItem.htmlUrl());
+        }
+        if (result.count() > 0) {
+            var csi = result.codeSearchItems().get(0);
+            var content = githubApiClient.getContent(csi.url());
+            System.out.printf("%n====%s======%n%s%n==========%n", csi.url(), content);
+        }
     }
-
-
 }

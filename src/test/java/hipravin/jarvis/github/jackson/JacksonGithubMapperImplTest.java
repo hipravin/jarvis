@@ -1,26 +1,32 @@
 package hipravin.jarvis.github.jackson;
 
 import hipravin.jarvis.TestUtls;
-import hipravin.jarvis.github.jackson.model.CodeSearchItem;
-import hipravin.jarvis.github.jackson.model.CodeSearchResult;
-import hipravin.jarvis.github.jackson.model.TextMatch;
-import hipravin.jarvis.github.jackson.model.TextMatches;
+import hipravin.jarvis.github.jackson.model.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 class JacksonGithubMapperImplTest {
 
-    String sampleImmutableContent = TestUtls.loadFromClasspath("data/code-search-sample-immutable.json");
+    String sampleContent = TestUtls.loadFromClasspath("data/file-content-sample.json");
+    String sampleSearchImmutableContent = TestUtls.loadFromClasspath("data/code-search-sample-immutable.json");
 
     @Test
-    void testMapping() {
+    void testContentMapping() {
+        JacksonGithubMapper mapper = new JacksonGithubMapperImpl();
+        EncodedContent content = mapper.readContent(sampleContent);
+
+        assertTrue(content.content().startsWith("RlJPTSBvcGVuamRrOjE3LW"));
+        assertTrue(content.content().endsWith("FyTGF1bmNoZXIiXQ==\n"));
+    }
+
+    @Test
+    void testCodeSearchMapping() {
         JacksonGithubMapper mapper = new JacksonGithubMapperImpl();
 
-        CodeSearchResult csr = mapper.readCodeSearchResult(sampleImmutableContent);
+        CodeSearchResult csr = mapper.readCodeSearchResult(sampleSearchImmutableContent);
 
         assertEquals(14, csr.count());
         assertFalse(csr.incompleteResults());

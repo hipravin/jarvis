@@ -6,12 +6,14 @@ github:
   code-search-url: "https://api.github.com/search/code"
   token: ${GH_TOKEN}
   single-request-max-or: 5
+  code-search-per-page: 100
   connection:
     timeout: 10_000
   approved-authors:
     - hipravin
     - spring-petclinic
     - spring-projects
+    - shipilev
     - briangoetz
     - vladmihalcea
     - bclozel
