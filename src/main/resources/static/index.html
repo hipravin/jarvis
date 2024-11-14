@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Coding By CodingNepal - www.codingnepalweb.com -->
 <html lang="en" dir="ltr">
 
 <head>
@@ -14,14 +15,13 @@
   <script src="script.js" defer></script>
 </head>
 
-<body>
-  <button class="chatbot-toggler">
-    <span class="material-symbols-rounded">mode_comment</span>
-    <span class="material-symbols-outlined">close</span>
-  </button>
+<body class="show-chatbot">
+    <div class="code-window">
+      Code...
+    </div>
   <div class="chatbot">
     <header>
-      <h2>Chatbot</h2>
+      <h2>Jarvis</h2>
       <span class="close-btn material-symbols-outlined">close</span>
     </header>
     <ul class="chatbox">
@@ -30,10 +30,12 @@
         <p>Hi there 👋<br>How can I help you today?</p>
       </li>
     </ul>
+
     <div class="chat-input">
       <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
       <span id="send-btn" class="material-symbols-rounded">send</span>
     </div>
+
   </div>
 
 </body>

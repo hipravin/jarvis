@@ -19,6 +19,11 @@ Accept: application/vnd.github.text-match+json
 Authorization: Bearer {{gh_token}}
 
 ###
+https://api.github.com/search/code?q=user%3Ahipravin+user%3Abclozel+user%3Ajosepaumard+filename:Dockerfile+from
+Accept: application/vnd.github.text-match+json
+Authorization: Bearer {{gh_token}}
+
+###
 GET https://api.github.com/search/code?q=a
 Accept: application/vnd.github.text-match+json
 Authorization: Bearer {{gh_token}}

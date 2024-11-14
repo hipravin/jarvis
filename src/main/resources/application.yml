@@ -11,13 +11,17 @@ github:
     timeout: 10_000
   approved-authors:
     - hipravin
+    - spring-tips
     - spring-petclinic
     - spring-projects
+    - eclipse-hawkbit
+    - epam
     - shipilev
     - briangoetz
     - vladmihalcea
     - bclozel
     - josepaumard
+    - SonarSource
 
 logging:
   level:

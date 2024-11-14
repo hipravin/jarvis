@@ -73,9 +73,9 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
     @Override
     public CodeSearchResult search(String searchString) {
         var request = githubHttpRequestBuilder.uri(URI.create(
-                "%s?per_page=%d&q=%s".formatted(githubProperties.codeSearchUrl(),
-                        githubProperties.codeSearchPerPage(),
-                        URLEncoder.encode(searchString, StandardCharsets.UTF_8))))
+                        "%s?per_page=%d&q=%s".formatted(githubProperties.codeSearchUrl(),
+                                githubProperties.codeSearchPerPage(),
+                                URLEncoder.encode(searchString, StandardCharsets.UTF_8))))
                 .GET()
                 .build();
         try {
@@ -103,15 +103,19 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
                 .map(batch -> searchCodeApprovedAuthorsBatchSupplier(batch, searchString))
                 .toList();
 
-        return CodeSearchResult.combine(requestConcurrently(requests));
+        var approvedAuthorsResult = CodeSearchResult.combine(requestConcurrently(requests));
+        var genericSearchResult = search(searchString);
+
+        return CodeSearchResult.combine(approvedAuthorsResult, genericSearchResult);
     }
 
     private Supplier<CodeSearchResult> searchCodeApprovedAuthorsBatchSupplier(List<String> approvedAuthors, String searchString) {
         var orAuthors = approvedAuthors.stream()
                 .map(author -> "user:" + author)
-                .collect(Collectors.joining(" OR "));
+                .collect(Collectors.joining(" ", "", " "));
+//                .collect(Collectors.joining(" OR ", "", " ")); //OR/AND seems to be not supported, rather 'OR' is included to search terms
 
-        return () -> search(orAuthors + " " + searchString);
+        return () -> search(orAuthors + searchString);
     }
 
     private List<CodeSearchResult> requestConcurrently(List<Supplier<CodeSearchResult>> requests) {

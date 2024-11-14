@@ -17,8 +17,8 @@ class GithubApiClientImplIT {
     @Test
     void testSampleSearch() {
 
-//        var result = githubApiClient.search("user:hipravin immutable");
-        var result = githubApiClient.searchApprovedAuthors("filename:Dockerfile from egd");
+        var result = githubApiClient.searchApprovedAuthors("translate.google.com");
+//        var result = githubApiClient.searchApprovedAuthors("filename:Dockerfile from addgroup JarLauncher");
         Set<String> authors = result.codeSearchItems().stream()
                 .map(item -> item.repository().owner().login())
                 .collect(Collectors.toSet());
@@ -35,5 +35,6 @@ class GithubApiClientImplIT {
             var content = githubApiClient.getContent(csi.url());
             System.out.printf("%n====%s======%n%s%n==========%n", csi.url(), content);
         }
+
     }
 }
