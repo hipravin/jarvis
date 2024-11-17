@@ -1,4 +1,4 @@
-package hipravin.jarvis.github.engine;
+package hipravin.jarvis.engine;
 
 public class SearchEngineImpl implements SearchEngine {
     //group, rank, sanitize...

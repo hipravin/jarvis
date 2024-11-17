@@ -4,31 +4,38 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record CodeSearchResult(
-   @JsonProperty("total_count") Integer count,
-   @JsonProperty("incomplete_results") Boolean incompleteResults,
-   @JsonProperty("items") List<CodeSearchItem> codeSearchItems
+        @JsonProperty("total_count") Integer count,
+        @JsonProperty("incomplete_results") Boolean incompleteResults,
+        @JsonProperty("items") List<CodeSearchItem> codeSearchItems
 ) {
     public static CodeSearchResult combine(List<CodeSearchResult> results) {
         return combine(results.toArray(new CodeSearchResult[]{}));
     }
 
     public static CodeSearchResult combine(CodeSearchResult... codeSearchResults) {
-        if(codeSearchResults.length == 0) {
+        if (codeSearchResults.length == 0) {
             throw new IllegalArgumentException("empty array");
         }
 
         boolean incomplete = false;
         List<CodeSearchItem> combinedItems = new ArrayList<>();
 
+        Set<String> urls = new HashSet<>();//to avoid duplicates
         for (CodeSearchResult csr : codeSearchResults) {
             incomplete = incomplete || csr.incompleteResults();
-            combinedItems.addAll(csr.codeSearchItems);
+            csr.codeSearchItems.stream()
+                    .filter(item -> !urls.contains(item.url()))
+                    .forEach(combinedItems::add);
+
+            csr.codeSearchItems.forEach(item -> urls.add(item.url()));
         }
-        //TODO: sort combinedItems?
+
         return new CodeSearchResult(combinedItems.size(), incomplete, combinedItems);
     }
 }

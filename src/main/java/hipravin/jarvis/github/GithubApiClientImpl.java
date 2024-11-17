@@ -2,6 +2,7 @@ package hipravin.jarvis.github;
 
 import com.google.common.collect.Lists;
 import hipravin.jarvis.github.jackson.JacksonGithubMapper;
+import hipravin.jarvis.github.jackson.model.CodeSearchItem;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
 import hipravin.jarvis.github.jackson.model.EncodedContent;
 import org.slf4j.Logger;
@@ -16,12 +17,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import static java.util.Optional.ofNullable;
 
 /**
  * <a href="https://docs.github.com/en/search-github/searching-on-github/searching-code">Github docs</a>
@@ -106,7 +107,30 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
         var approvedAuthorsResult = CodeSearchResult.combine(requestConcurrently(requests));
         var genericSearchResult = search(searchString);
 
-        return CodeSearchResult.combine(approvedAuthorsResult, genericSearchResult);
+        return CodeSearchResult.combine(sort(approvedAuthorsResult), genericSearchResult);
+    }
+
+    private CodeSearchResult sort(CodeSearchResult codeSearchResult) {
+        List<CodeSearchItem> items = new ArrayList<>(codeSearchResult.codeSearchItems());
+        Map<String, Integer> approvedAuthorsPositions = new HashMap<>();
+        for (int i = 0; i < githubProperties.approvedAuthors().size(); i++) {
+            approvedAuthorsPositions.put(githubProperties.approvedAuthors().get(i), i);
+        }
+
+        Comparator<CodeSearchItem> byApprovedAuthorPositions = Comparator.comparingInt(
+                it -> approvedAuthorsPositions.getOrDefault(safeGetLogin(it), Integer.MAX_VALUE));
+        Collections.sort(items, byApprovedAuthorPositions);
+
+        return new CodeSearchResult(codeSearchResult.count(), codeSearchResult.incompleteResults(), List.copyOf(items));
+    }
+
+
+    private String safeGetLogin(CodeSearchItem codeSearchItem) {
+        return ofNullable(codeSearchItem)
+                .flatMap(it -> ofNullable(it.repository()))
+                .flatMap(it -> ofNullable(it.owner()))
+                .flatMap(it -> ofNullable(it.login()))
+                .orElse("");
     }
 
     private Supplier<CodeSearchResult> searchCodeApprovedAuthorsBatchSupplier(List<String> approvedAuthors, String searchString) {
@@ -127,7 +151,7 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
 
         for (CompletableFuture<CodeSearchResult> completableFuture : completableFutures) {
             try {
-                var response = completableFuture.get(10, TimeUnit.SECONDS);
+                var response = completableFuture.get(20, TimeUnit.SECONDS);
                 responses.add(response);
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 throw new RuntimeException(e);//TODO: can we safely ignore other Futures after getting first exception?

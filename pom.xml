@@ -20,12 +20,18 @@
         <github-api.version>1.326</github-api.version>
         <jackson.version>2.18.1</jackson.version>
         <guava.version>33.3.1-jre</guava.version>
+        <rest-assured.version>5.5.0</rest-assured.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
         <dependency>

@@ -1,17 +1,22 @@
 package hipravin.jarvis;
 
 import hipravin.jarvis.github.GithubApiClient;
-import hipravin.jarvis.github.engine.model.JarvisRequest;
-import hipravin.jarvis.github.engine.model.JarvisResponse;
+import hipravin.jarvis.engine.model.JarvisRequest;
+import hipravin.jarvis.engine.model.JarvisResponse;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
 import hipravin.jarvis.github.jackson.model.TextMatches;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.stream.Collectors;
 
 @RestController
-//@Validated //TODO: add
+@Validated
 @RequestMapping(path = "/api/v1/jarvis")
 public class JarvisController {
 
@@ -22,7 +27,7 @@ public class JarvisController {
     }
 
     @PostMapping(value = "/query")
-    public ResponseEntity<JarvisResponse> query(@RequestBody JarvisRequest request) {
+    public ResponseEntity<JarvisResponse> query(@Valid @RequestBody JarvisRequest request) {
         CodeSearchResult csr = githubApiClient.searchApprovedAuthors(request.query());
         String authorsFound = csr.codeSearchItems().stream()
                 .map(r -> r.repository().owner().login())

@@ -45,7 +45,7 @@ const generateResponse = async (chatElement) => {
   } catch (error) {
     // Handle error
     messageElement.classList.add("error");
-    messageElement.textContent = error.message;
+    messageElement.textContent = error.title + " " + error.detail;
   } finally {
     chatbox.scrollTo(0, chatbox.scrollHeight);
   }

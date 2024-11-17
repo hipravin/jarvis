@@ -17,8 +17,9 @@ class GithubApiClientImplIT {
     @Test
     void testSampleSearch() {
 
-        var result = githubApiClient.searchApprovedAuthors("translate.google.com");
+//        var result = githubApiClient.searchApprovedAuthors("translate.google.com");
 //        var result = githubApiClient.searchApprovedAuthors("filename:Dockerfile from addgroup JarLauncher");
+        var result = githubApiClient.searchApprovedAuthors("globalexceptionhandler");
         Set<String> authors = result.codeSearchItems().stream()
                 .map(item -> item.repository().owner().login())
                 .collect(Collectors.toSet());
@@ -26,6 +27,13 @@ class GithubApiClientImplIT {
         System.out.println("total authors: " + authors.size() + ", " + authors);
 
         System.out.printf("incomplete results: %b, total: %d%n", result.incompleteResults(), result.count());
+
+        long distinctUrls = result.codeSearchItems().stream()
+                .map(item -> item.url())
+                .distinct()
+                .count();
+
+        System.out.println("Distinct urls: " + distinctUrls);
 
         for (CodeSearchItem codeSearchItem : result.codeSearchItems()) {
             System.out.println(codeSearchItem.repository().owner().login() + ": " + codeSearchItem.name() + " " + codeSearchItem.htmlUrl());

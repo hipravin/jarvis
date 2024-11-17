@@ -1,4 +1,4 @@
-package hipravin.jarvis.github.engine.model;
+package hipravin.jarvis.engine.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

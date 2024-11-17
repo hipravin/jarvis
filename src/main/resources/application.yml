@@ -11,6 +11,8 @@ github:
     timeout: 10_000
   approved-authors:
     - hipravin
+    - eugenp
+    - Baeldung
     - spring-tips
     - spring-petclinic
     - spring-projects
