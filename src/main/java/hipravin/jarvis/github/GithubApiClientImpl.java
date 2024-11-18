@@ -119,7 +119,7 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
 
         Comparator<CodeSearchItem> byApprovedAuthorPositions = Comparator.comparingInt(
                 it -> approvedAuthorsPositions.getOrDefault(safeGetLogin(it), Integer.MAX_VALUE));
-        Collections.sort(items, byApprovedAuthorPositions);
+        items.sort(byApprovedAuthorPositions);
 
         return new CodeSearchResult(codeSearchResult.count(), codeSearchResult.incompleteResults(), List.copyOf(items));
     }

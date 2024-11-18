@@ -19,7 +19,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleUnhandled(RuntimeException ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        //never expose exception details to user like this, it's a serious security threat
+//        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, null);
         problemDetail.setTitle("Internal Error");
 
         return handleExceptionInternal(ex,

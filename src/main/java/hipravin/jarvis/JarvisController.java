@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.stream.Collectors;
+import java.util.List;
 
 @RestController
 @Validated
@@ -34,13 +35,24 @@ public class JarvisController {
                 .distinct()
                 .collect(Collectors.joining(", "));
 
-        String textFragment = csr.codeSearchItems().stream()
+        String textFragments = csr.codeSearchItems().stream()
                 .flatMap(item -> item.textMatches().stream())
                 .map(TextMatches::fragment)
-                .findFirst().orElse("");
+                .limit(5)
+                .collect(Collectors.joining("\n=======================\n\n"));
+
+        String briefResult = csr.codeSearchItems().stream()
+                .map(csi -> csi.htmlUrl() + "\n" + joinTextMatches(csi.textMatches()))
+                .collect(Collectors.joining("\n=========================\n"));
 
         String response = "%d results, %s".formatted(csr.count(), authorsFound);
 
-        return ResponseEntity.ok(new JarvisResponse(response, textFragment));
+        return ResponseEntity.ok(new JarvisResponse(response, briefResult));
+    }
+
+    private static String joinTextMatches(List<TextMatches> textMatches) {
+        return textMatches.stream()
+                .map(TextMatches::fragment)
+                .collect(Collectors.joining("\n ... \n"));
     }
 }
