@@ -1,14 +1,12 @@
 const chatbox = document.querySelector(".chatbox");
 const chatInput = document.querySelector(".chat-input textarea");
 const sendChatBtn = document.querySelector(".chat-input span");
-const codeBlock = document.querySelector(".code-window");
+// const codeBlock = document.querySelector(".code-window");
+const leftPane = document.querySelector(".left-pane");
 
 let userMessage = null; // Variable to store user's message
 const inputInitHeight = chatInput.scrollHeight;
 
-// API configuration
-const API_KEY = "PASTE-YOUR-API-KEY"; // Your API key here
-// const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`;
 const API_URL = `/api/v1/jarvis/query`;
 
 const createChatLi = (message, className) => {
@@ -21,6 +19,36 @@ const createChatLi = (message, className) => {
     return chatLi; // return chat <li> element
 }
 
+const createLink = (title, href) => {
+    let a = document.createElement('a');
+    let link = document.createTextNode(title);
+    a.appendChild(link);
+    a.title = title;
+    a.href = href;
+    a.target = "_blank";
+
+    return a;
+}
+
+const createCodeBlock = (block) => {
+    let div = document.createElement('div');
+    let p = document.createElement('p');
+    let link = createLink(block.link.title, block.link.href);
+    div.classList.add("code-window", "multiline");
+    p.textContent = block.code;
+    div.appendChild(link);
+    div.appendChild(p);
+
+    return div;
+}
+
+const fillLeftPaneWithCode = (codeSearchResponse) => {
+    leftPane.innerHTML = "";
+
+    codeSearchResponse.code_fragments.forEach(fragment => {
+        leftPane.appendChild(createCodeBlock(fragment));
+    });
+}
 const generateResponse = async (chatElement) => {
     const messageElement = chatElement.querySelector("p");
 
@@ -43,7 +71,7 @@ const generateResponse = async (chatElement) => {
 
         // Get the API response text and update the message element
         messageElement.textContent = data.response;
-        codeBlock.textContent = data.code;
+        fillLeftPaneWithCode(data);
     } catch (error) {
         // Handle error
         messageElement.classList.add("error");
@@ -52,6 +80,7 @@ const generateResponse = async (chatElement) => {
         chatbox.scrollTo(0, chatbox.scrollHeight);
     }
 }
+
 
 const handleChat = () => {
     userMessage = chatInput.value.trim(); // Get user entered message and remove extra whitespace
@@ -71,7 +100,7 @@ const handleChat = () => {
         chatbox.appendChild(incomingChatLi);
         chatbox.scrollTo(0, chatbox.scrollHeight);
         generateResponse(incomingChatLi);
-    }, 600);
+    }, 100);
 }
 
 chatInput.addEventListener("input", () => {

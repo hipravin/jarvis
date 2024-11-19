@@ -1,5 +1,7 @@
 package hipravin.jarvis;
 
+import hipravin.jarvis.engine.model.CodeFragment;
+import hipravin.jarvis.engine.model.Link;
 import hipravin.jarvis.github.GithubApiClient;
 import hipravin.jarvis.engine.model.JarvisRequest;
 import hipravin.jarvis.engine.model.JarvisResponse;
@@ -35,19 +37,18 @@ public class JarvisController {
                 .distinct()
                 .collect(Collectors.joining(", "));
 
-        String textFragments = csr.codeSearchItems().stream()
-                .flatMap(item -> item.textMatches().stream())
-                .map(TextMatches::fragment)
-                .limit(5)
-                .collect(Collectors.joining("\n=======================\n\n"));
-
         String briefResult = csr.codeSearchItems().stream()
                 .map(csi -> csi.htmlUrl() + "\n" + joinTextMatches(csi.textMatches()))
                 .collect(Collectors.joining("\n=========================\n"));
 
         String response = "%d results, %s".formatted(csr.count(), authorsFound);
 
-        return ResponseEntity.ok(new JarvisResponse(response, briefResult));
+        List<CodeFragment> codeFragments = csr.codeSearchItems().stream()
+                .map(csi -> new CodeFragment(joinTextMatches(csi.textMatches()), Link.fromGithubHtmlUrl(csi.htmlUrl()),
+                        csi.repository().owner().login()))
+                .toList();
+
+        return ResponseEntity.ok(new JarvisResponse(response, briefResult, codeFragments));
     }
 
     private static String joinTextMatches(List<TextMatches> textMatches) {

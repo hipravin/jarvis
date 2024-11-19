@@ -196,7 +196,7 @@ header h2 {
   visibility: visible;
 }
 
-.code-window {
+.left-pane {
   position: fixed;
   left: 20px;
   top: 10px;
@@ -206,12 +206,17 @@ header h2 {
   border-radius: 15px;
   overflow-x: hidden;
   overflow-y: scroll;
-  padding: 15px;
+  padding: 5px;
+  margin: 0;
   /*opacity: 0;*/
   /*pointer-events: none;*/
 }
+.code-window {
+  border: 1px solid black;
+  padding: 5px;
+}
 
-.multiline {
+.multiline > p {
   white-space: pre-wrap;
 }
 
