@@ -2,6 +2,24 @@ spring:
   application:
     name: jarvis
 
+server:
+  port: 10010
+
+management:
+  server:
+    port: 10011
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: when_authorized
+      probes:
+        enabled: true
+    loggers:
+      enabled: true
+
 github:
   code-search-url: "https://api.github.com/search/code"
   token: ${GH_TOKEN}
@@ -11,23 +29,26 @@ github:
     timeout: 10_000
   approved-authors:
     - hipravin
+    - mraible
     - vladmihalcea
     - josepaumard
     - bclozel
     - shipilev
     - briangoetz
     - spring-petclinic
-    - spring-projects
     - spring-tips
-    - Baeldung
+    - baeldung
     - eugenp
     - epam
     - eclipse-hawkbit
-    - SonarSource
+    - sonarsource
+    - snicoll
+    - spring-projects
+    - apereo
 
 logging:
   level:
     com.hipravin: DEBUG
     org.springframework: INFO
-
+    org.springframework.security: TRACE
 

@@ -22,6 +22,7 @@ import java.util.concurrent.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static hipravin.jarvis.github.GithubUtils.safeGetLogin;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -97,7 +98,7 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
 
     @Override
     public CodeSearchResult searchApprovedAuthors(String searchString) {
-        List<List<String>> approvedAuthorsBatches = Lists.partition(githubProperties.approvedAuthors(),
+        List<List<String>> approvedAuthorsBatches = Lists.partition(List.copyOf(githubProperties.approvedAuthors()),
                 githubProperties.singleRequestMaxOr());
 
         var requests = approvedAuthorsBatches.stream()
@@ -107,30 +108,33 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
         var approvedAuthorsResult = CodeSearchResult.combine(requestConcurrently(requests));
         var genericSearchResult = search(searchString);
 
-        return CodeSearchResult.combine(sort(approvedAuthorsResult), genericSearchResult);
+        return CodeSearchResult.combine(sortByApprovedAuthor(approvedAuthorsResult), genericSearchResult);
     }
 
-    private CodeSearchResult sort(CodeSearchResult codeSearchResult) {
+    private CodeSearchResult sortByApprovedAuthor(CodeSearchResult codeSearchResult) {
         List<CodeSearchItem> items = new ArrayList<>(codeSearchResult.codeSearchItems());
         Map<String, Integer> approvedAuthorsPositions = new HashMap<>();
-        for (int i = 0; i < githubProperties.approvedAuthors().size(); i++) {
-            approvedAuthorsPositions.put(githubProperties.approvedAuthors().get(i), i);
+        int pos = 0;
+        for (String author : githubProperties.approvedAuthors()) {
+            approvedAuthorsPositions.put(author, pos);
+            pos++;
         }
 
         Comparator<CodeSearchItem> byApprovedAuthorPositions = Comparator.comparingInt(
                 it -> approvedAuthorsPositions.getOrDefault(safeGetLogin(it), Integer.MAX_VALUE));
         items.sort(byApprovedAuthorPositions);
+//        //*.md, *.log last
+//        List<CodeSearchItem> mdFiles = items.stream()
+//                .filter(item -> item.path().toLowerCase().endsWith(".md"))
+//                .toList();
+//        List<CodeSearchItem> logFiles = items.stream()
+//                .filter(item -> item.path().toLowerCase().endsWith(".log"))
+//                .toList();
+//        items.removeIf(item -> item.path().toLowerCase().endsWith(".md") || item.path().toLowerCase().endsWith(".log"));
+//        items.addAll(mdFiles);
+//        items.addAll(logFiles);
 
         return new CodeSearchResult(codeSearchResult.count(), codeSearchResult.incompleteResults(), List.copyOf(items));
-    }
-
-
-    private String safeGetLogin(CodeSearchItem codeSearchItem) {
-        return ofNullable(codeSearchItem)
-                .flatMap(it -> ofNullable(it.repository()))
-                .flatMap(it -> ofNullable(it.owner()))
-                .flatMap(it -> ofNullable(it.login()))
-                .orElse("");
     }
 
     private Supplier<CodeSearchResult> searchCodeApprovedAuthorsBatchSupplier(List<String> approvedAuthors, String searchString) {

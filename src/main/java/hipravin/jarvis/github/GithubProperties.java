@@ -7,13 +7,14 @@ import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Set;
 
 
 @ConfigurationProperties(prefix = "github")
 @Validated
 public record GithubProperties(
         @NotBlank String codeSearchUrl,
-        @NotEmpty List<String> approvedAuthors,
+        @NotEmpty Set<String> approvedAuthors,
         int singleRequestMaxOr,
         int codeSearchPerPage
 ) {

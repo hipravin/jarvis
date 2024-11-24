@@ -50,17 +50,18 @@ const fillLeftPaneWithCode = (codeSearchResponse) => {
     });
 }
 const generateResponse = async (chatElement) => {
-    const messageElement = chatElement.querySelector("p");
-
-    // Define the properties and message for the API request
     const requestOptions = {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: {
+            "Content-Type": "application/json",
+            "X-XSRF-TOKEN": getCsrfToken()
+        },
         body: JSON.stringify({
             query: userMessage
         }),
     }
 
+    const messageElement = chatElement.querySelector("p");
     // Send POST request to API, get response and set the reponse as paragraph text
     try {
         const response = await fetch(API_URL, requestOptions);
@@ -101,6 +102,10 @@ const handleChat = () => {
         chatbox.scrollTo(0, chatbox.scrollHeight);
         generateResponse(incomingChatLi);
     }, 100);
+}
+
+const getCsrfToken = () => {
+    return document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 }
 
 chatInput.addEventListener("input", () => {

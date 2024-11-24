@@ -1,4 +1,4 @@
-package hipravin.jarvis;
+package hipravin.jarvis.config;
 
 import hipravin.jarvis.github.GithubProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
