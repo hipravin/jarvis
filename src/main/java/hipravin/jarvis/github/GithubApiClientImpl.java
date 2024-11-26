@@ -23,7 +23,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static hipravin.jarvis.github.GithubUtils.safeGetLogin;
-import static java.util.Optional.ofNullable;
 
 /**
  * <a href="https://docs.github.com/en/search-github/searching-on-github/searching-code">Github docs</a>

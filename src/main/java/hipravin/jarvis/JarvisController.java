@@ -1,10 +1,7 @@
 package hipravin.jarvis;
 
-import hipravin.jarvis.engine.model.CodeFragment;
-import hipravin.jarvis.engine.model.Link;
+import hipravin.jarvis.engine.model.*;
 import hipravin.jarvis.github.GithubApiClient;
-import hipravin.jarvis.engine.model.JarvisRequest;
-import hipravin.jarvis.engine.model.JarvisResponse;
 import hipravin.jarvis.github.GithubProperties;
 import hipravin.jarvis.github.jackson.model.CodeSearchItem;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
@@ -21,6 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static hipravin.jarvis.github.GithubUtils.safeGetLogin;
 
@@ -56,25 +54,31 @@ public class JarvisController {
                         csi.repository().owner().login()))
                 .toList();
 
-        return ResponseEntity.ok(new JarvisResponse(resultSummary(csr), codeFragments));
+        List<AuthorResult> authorResults = authorResultSummary(csr);
+
+        String summary = authorResults.stream()
+                .map(a -> "%s: %d".formatted(a.author(), a.count()))
+                .collect(Collectors.joining(",\n"));
+
+        return ResponseEntity.ok(new JarvisResponse(summary,null , codeFragments));
     }
 
-    private String resultSummary(CodeSearchResult csr) {
-        Map<String, Long> authorToResultCount = new LinkedHashMap<>();
-        String other = "others";
+    private List<AuthorResult> authorResultSummary(CodeSearchResult csr) {
+        Map<String, Integer> authorToResultCount = new LinkedHashMap<>();
 
         for (CodeSearchItem csi : csr.codeSearchItems()) { //TODO: just for fun - try to refactor it with streams
             String author = safeGetLogin(csi);
             if (!githubProperties.approvedAuthors().contains(author)) {
-                author = other;
+                author = AuthorResult.OTHERS;
             }
-            authorToResultCount.merge(author, 1L, Long::sum);
+            authorToResultCount.merge(author, 1, Integer::sum);
         }
-        String summary = authorToResultCount.entrySet().stream()
-                .map(e -> e.getKey() + ": " + e.getValue())
-                .collect(Collectors.joining(",\n"));
 
-        return "Total: " + csr.count() + "\n" + summary;
+        Stream<AuthorResult> results = authorToResultCount.entrySet().stream()
+                .map(e -> new AuthorResult(e.getKey(), e.getValue()));
+
+        return Stream.concat(results, Stream.of(new AuthorResult(AuthorResult.TOTAL, csr.count())))
+                .toList();
     }
 
     private static String joinTextMatches(List<TextMatches> textMatches) {

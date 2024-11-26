@@ -22,39 +22,37 @@ import org.springframework.util.StringUtils;
 
 import java.util.function.Supplier;
 
+import static org.springframework.boot.autoconfigure.security.SecurityProperties.BASIC_AUTH_ORDER;
+
 @Configuration
 public class SecurityConfig {
     private static final String SC_REQUEST_ATTR_KEY_ACTUATOR = RequestAttributeSecurityContextRepository.class.getName()
             .concat(".SPRING_SECURITY_CONTEXT").concat("ACTUATOR");
 
     private static final String ACTUATOR_AUTHORITY_NAME = "ACTUATOR";
-//The AuthorizationFilter runs not just on every request, but on every dispatch. This means that the REQUEST dispatch needs authorization, but also FORWARDs, ERRORs, and INCLUDEs.
-
-//    It’s more secure because even with static resources it’s important to write secure headers,
-//    which Spring Security cannot do if the request is ignored.
-//
-//    In this past, this came with a performance tradeoff since the session was consulted by Spring Security on every request.
-//    As of Spring Security 6, however, the session is no longer pinged unless required by the authorization rule.
-//    Because the performance impact is now addressed, Spring Security recommends using at least permitAll for all requests.
 
     @Bean
-    @Order(1)
+    @Order(BASIC_AUTH_ORDER - 10)
     public SecurityFilterChain actuatorFilterChain(HttpSecurity http) throws Exception {
         var requestAttrRepository = new RequestAttributeSecurityContextRepository(SC_REQUEST_ATTR_KEY_ACTUATOR);
+        var publicEndpoints = EndpointRequest.to("info", "health");//TODO: 'info' - is it safe?
+        var actuatorUserDetailService = actuatorUserDetailsService();
 
-        http.securityMatcher("/actuator/**")
+        http.securityMatcher(EndpointRequest.toAnyEndpoint())
                 .securityContext(config -> config.securityContextRepository(requestAttrRepository))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
-                .userDetailsService(actuatorUserDetailsService())
-                .authorizeHttpRequests(requests -> requests.requestMatchers(EndpointRequest.to("info", "health")).permitAll()
-                        .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAuthority(ACTUATOR_AUTHORITY_NAME));
+                .userDetailsService(actuatorUserDetailService)
+                .authorizeHttpRequests(requests -> requests
+                        .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
+                        .requestMatchers(publicEndpoints).permitAll()
+                        .anyRequest().hasAuthority(ACTUATOR_AUTHORITY_NAME));
         return http.build();
     }
 
     @Bean
-    @Order(2)
+    @Order(BASIC_AUTH_ORDER - 9)
     public SecurityFilterChain fallbackFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher("/**")
                 .csrf(csrf -> csrf
