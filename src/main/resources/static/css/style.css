@@ -196,6 +196,10 @@ header h2 {
   visibility: visible;
 }
 
+.authors-ul {
+  list-style: none;
+}
+
 .left-pane {
   position: fixed;
   left: 20px;

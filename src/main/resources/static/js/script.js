@@ -5,6 +5,8 @@ const sendChatBtn = document.querySelector(".chat-input span");
 const leftPane = document.querySelector(".left-pane");
 
 let userMessage = null; // Variable to store user's message
+let lastSearchResponseBody = null;
+
 const inputInitHeight = chatInput.scrollHeight;
 
 const API_URL = `/api/v1/jarvis/query`;
@@ -13,10 +15,25 @@ const createChatLi = (message, className) => {
     // Create a chat <li> element with passed message and className
     const chatLi = document.createElement("li");
     chatLi.classList.add("chat", `${className}`);
-    let chatContent = className === "outgoing" ? `<p></p>` : `<span class="material-symbols-outlined">smart_toy</span><p></p>`;
+    let chatContent = className === "outgoing" ? `<p></p>` : `<span class="material-symbols-outlined">smart_toy</span><p><ul></ul></p>`;
     chatLi.innerHTML = chatContent;
     chatLi.querySelector("p").textContent = message;
     return chatLi; // return chat <li> element
+}
+
+const fillAuthors = (authors, chatLi) => {
+    let chatAuthorsUl = chatLi.querySelector("ul");
+    if(!chatAuthorsUl) {
+        chatAuthorsUl = document.createElement("ul");
+        chatLi.appendChild(chatAuthorsUl);
+    }
+    chatAuthorsUl.className = "authors-ul";
+
+    authors.forEach((author) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="#">${author.author + ": " + author.count}</a>`;
+        chatAuthorsUl.appendChild(li);
+    });
 }
 
 const createLink = (title, href) => {
@@ -62,7 +79,7 @@ const generateResponse = async (chatElement) => {
     }
 
     const messageElement = chatElement.querySelector("p");
-    // Send POST request to API, get response and set the reponse as paragraph text
+
     try {
         const response = await fetch(API_URL, requestOptions);
         const data = await response.json();
@@ -70,8 +87,12 @@ const generateResponse = async (chatElement) => {
             throw new Error(data.title + ": " + data.detail);
         }
 
-        // Get the API response text and update the message element
-        messageElement.textContent = data.response;
+        if (data.authors) {
+            messageElement.textContent = "";
+            fillAuthors(data.authors, messageElement);
+        } else {
+            messageElement.textContent = data.response;
+        }
         fillLeftPaneWithCode(data);
     } catch (error) {
         // Handle error

@@ -38,14 +38,6 @@ public class JarvisController {
     @PostMapping(value = "/query")
     public ResponseEntity<JarvisResponse> query(@Valid @RequestBody JarvisRequest request) {
         CodeSearchResult csr = githubApiClient.searchApprovedAuthors(request.query());
-        String authorsFound = csr.codeSearchItems().stream()
-                .map(r -> r.repository().owner().login())
-                .distinct()
-                .collect(Collectors.joining(", "));
-
-        String briefResult = csr.codeSearchItems().stream()
-                .map(csi -> csi.htmlUrl() + "\n" + joinTextMatches(csi.textMatches()))
-                .collect(Collectors.joining("\n=========================\n"));
 
 //        String response = "%d results, %s".formatted(csr.count(), authorsFound);
 
@@ -60,7 +52,7 @@ public class JarvisController {
                 .map(a -> "%s: %d".formatted(a.author(), a.count()))
                 .collect(Collectors.joining(",\n"));
 
-        return ResponseEntity.ok(new JarvisResponse(summary,null , codeFragments));
+        return ResponseEntity.ok(new JarvisResponse(summary, authorResults, codeFragments));
     }
 
     private List<AuthorResult> authorResultSummary(CodeSearchResult csr) {
@@ -77,7 +69,7 @@ public class JarvisController {
         Stream<AuthorResult> results = authorToResultCount.entrySet().stream()
                 .map(e -> new AuthorResult(e.getKey(), e.getValue()));
 
-        return Stream.concat(results, Stream.of(new AuthorResult(AuthorResult.TOTAL, csr.count())))
+        return Stream.concat(Stream.of(new AuthorResult(AuthorResult.TOTAL, csr.count())), results)
                 .toList();
     }
 
