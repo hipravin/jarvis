@@ -84,6 +84,7 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
 //            var metadata = GithubResponseMetadata.fromHttpResponse(response);
 
             if (response.statusCode() != 200) {
+                //TODO: partial result and exception handling...
                 throw new RuntimeException("Request failed: %s: status %d, body: %s".formatted(
                         request.uri(), response.statusCode(), response.body()));
             }
