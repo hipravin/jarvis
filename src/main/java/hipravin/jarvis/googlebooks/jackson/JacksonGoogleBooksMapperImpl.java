@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hipravin.jarvis.github.jackson.JacksonUtils;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolumes;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JacksonGoogleBooksMapperImpl implements JacksonGoogleBooksMapper {
     private final ObjectMapper objectMapper = JacksonUtils.createGithubObjectMapper();
 

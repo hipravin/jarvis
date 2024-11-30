@@ -18,7 +18,13 @@ management:
       probes:
         enabled: true
     loggers:
-      enabled: true
+      enabled: true #TODO: figure out what's deprecated
+
+googlebooks:
+  books-search-url: "https://www.googleapis.com/books/v1/volumes"
+  api-key: ${GOOGLE_API_KEY}
+  connection:
+    timeout: 10_000
 
 github:
   code-search-url: "https://api.github.com/search/code"

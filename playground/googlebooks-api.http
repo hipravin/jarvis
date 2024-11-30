@@ -2,4 +2,11 @@
 GET https://www.googleapis.com/books/v1/volumes?q=CpmletableFuture+allOf
 
 ###
-GET https://www.googleapis.com/books/v1/volumes?q=CpmletableFuture+allOf&langRestrict=en&maxResults=40
+GET https://www.googleapis.com/books/v1/volumes?q=CompletableFuture+allOf&langRestrict=en&maxResults=40
+
+###
+GET https://www.googleapis.com/books/v1/volumes?q=CpmletableFuture+allOf&langRestrict=en&maxResults=40&key={{google_api_key}}
+
+
+###
+GET https://www.googleapis.com/books/v1/volumes?q="ofVirual"f&langRestrict=en&maxResults=40&key={{google_api_key}}

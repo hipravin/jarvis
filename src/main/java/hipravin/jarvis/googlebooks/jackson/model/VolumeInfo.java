@@ -12,8 +12,9 @@ public record VolumeInfo(
         String title,
         List<String> authors,
         String publisher,
-        @JsonProperty("publishedDate")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd") LocalDate publishedDate,
+//        @JsonProperty("publishedDate")
+//        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd") LocalDate publishedDate, //Cannot deserialize value of type `java.time.LocalDate` from String "2014"
+        String publishedDate,
         String description,
         String language,
         String previewLink,

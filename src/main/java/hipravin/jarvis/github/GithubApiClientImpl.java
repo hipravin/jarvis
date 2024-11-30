@@ -81,16 +81,13 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
                 .build();
         try {
             var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-//            var metadata = GithubResponseMetadata.fromHttpResponse(response);
 
             if (response.statusCode() != 200) {
-                //TODO: partial result and exception handling...
                 throw new RuntimeException("Request failed: %s: status %d, body: %s".formatted(
                         request.uri(), response.statusCode(), response.body()));
             }
 
             return mapper.readCodeSearchResult(response.body());
-
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
