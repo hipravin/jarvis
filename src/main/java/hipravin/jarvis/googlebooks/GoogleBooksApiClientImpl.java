@@ -11,7 +11,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -24,6 +24,8 @@ public class GoogleBooksApiClientImpl implements GoogleBooksApiClient {
     private final JacksonGoogleBooksMapper mapper;
     private final HttpClient httpClient;
     private final HttpRequest.Builder googlebooksHttpRequestBuilder;
+
+    private static final Pattern UNICODE_SPACES = Pattern.compile("(?U)\\s+");
 
     public GoogleBooksApiClientImpl(GoogleBooksProperties googleBooksProperties,
                                     JacksonGoogleBooksMapper mapper,
@@ -60,7 +62,7 @@ public class GoogleBooksApiClientImpl implements GoogleBooksApiClient {
     }
 
     static String enquoteEveryTerm(String searchString) {
-        return Arrays.stream(searchString.split("(?U)\\s+"))
+        return UNICODE_SPACES.splitAsStream(searchString)
                 .filter(term -> !term.isEmpty())
                 .map(term -> "\"" + term + "\"")
                 .collect(Collectors.joining(" "));
