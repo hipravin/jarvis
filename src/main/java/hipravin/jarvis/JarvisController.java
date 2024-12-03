@@ -1,12 +1,15 @@
 package hipravin.jarvis;
 
+import hipravin.jarvis.engine.SearchEngine;
 import hipravin.jarvis.engine.model.*;
 import hipravin.jarvis.github.GithubApiClient;
 import hipravin.jarvis.github.GithubProperties;
+import hipravin.jarvis.github.GithubUtils;
 import hipravin.jarvis.github.jackson.model.CodeSearchItem;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
 import hipravin.jarvis.github.jackson.model.TextMatches;
 import jakarta.validation.Valid;
+import org.kohsuke.github.function.FunctionThrows;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.List;
 import java.util.stream.Stream;
@@ -29,14 +34,23 @@ public class JarvisController {
 
     private final GithubApiClient githubApiClient;
     private final GithubProperties githubProperties;
+    private final SearchEngine searchEngine;
 
-    public JarvisController(GithubApiClient githubApiClient, GithubProperties githubProperties) {
+    public JarvisController(GithubApiClient githubApiClient, GithubProperties githubProperties, SearchEngine searchEngine) {
         this.githubApiClient = githubApiClient;
         this.githubProperties = githubProperties;
+        this.searchEngine = searchEngine;
+    }
+
+    @PostMapping(value = "/query-googlebooks")
+    public ResponseEntity<JarvisResponse> query(@Valid @RequestBody JarvisRequest request) {
+        JarvisResponse response = searchEngine.search(request);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping(value = "/query")
-    public ResponseEntity<JarvisResponse> query(@Valid @RequestBody JarvisRequest request) {
+    public ResponseEntity<JarvisResponse> queryGithub(@Valid @RequestBody JarvisRequest request) {
         CodeSearchResult csr = githubApiClient.searchApprovedAuthors(request.query());
 
 //        String response = "%d results, %s".formatted(csr.count(), authorsFound);
@@ -56,17 +70,15 @@ public class JarvisController {
     }
 
     private List<AuthorResult> authorResultSummary(CodeSearchResult csr) {
-        Map<String, Integer> authorToResultCount = new LinkedHashMap<>();
+        Function<String, String> approvedAuthorOrOthers =
+                (author) -> githubProperties.approvedAuthors().contains(author) ? author : AuthorResult.OTHERS;
 
-        for (CodeSearchItem csi : csr.codeSearchItems()) { //TODO: just for fun - try to refactor it with streams
-            String author = safeGetLogin(csi);
-            if (!githubProperties.approvedAuthors().contains(author)) {
-                author = AuthorResult.OTHERS;
-            }
-            authorToResultCount.merge(author, 1, Integer::sum);
-        }
+        Map<String, Long> authorCounts = csr.codeSearchItems().stream()
+                .map(GithubUtils::safeGetLogin)
+                .map(approvedAuthorOrOthers)
+                .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()));
 
-        Stream<AuthorResult> results = authorToResultCount.entrySet().stream()
+        Stream<AuthorResult> results = authorCounts.entrySet().stream()
                 .map(e -> new AuthorResult(e.getKey(), e.getValue()));
 
         return Stream.concat(Stream.of(new AuthorResult(AuthorResult.TOTAL, csr.count())), results)
