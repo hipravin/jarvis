@@ -15,6 +15,7 @@ const createChatLi = (message, className) => {
     // Create a chat <li> element with passed message and className
     const chatLi = document.createElement("li");
     chatLi.classList.add("chat", `${className}`);
+    //TODO: ul cannot be inside p, rework it
     let chatContent = className === "outgoing" ? `<p></p>` : `<span class="material-symbols-outlined">smart_toy</span><p><ul></ul></p>`;
     chatLi.innerHTML = chatContent;
     chatLi.querySelector("p").textContent = message;
@@ -88,7 +89,7 @@ const generateResponse = async (chatElement) => {
         }
 
         if (data.authors) {
-            messageElement.textContent = "";
+            // messageElement.textContent = "";
             fillAuthors(data.authors, messageElement);
         } else {
             messageElement.textContent = data.response;
@@ -122,7 +123,7 @@ const handleChat = () => {
         chatbox.appendChild(incomingChatLi);
         chatbox.scrollTo(0, chatbox.scrollHeight);
         generateResponse(incomingChatLi);
-    }, 100);
+    }, 1000);
 }
 
 const getCsrfToken = () => {

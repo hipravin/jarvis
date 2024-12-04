@@ -41,15 +41,15 @@ public class JarvisController {
         this.githubProperties = githubProperties;
         this.searchEngine = searchEngine;
     }
-
-    @PostMapping(value = "/query-googlebooks")
+    @PostMapping("/query")
     public ResponseEntity<JarvisResponse> query(@Valid @RequestBody JarvisRequest request) {
         JarvisResponse response = searchEngine.search(request);
 
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(value = "/query")
+
+    @PostMapping( "/query-github")
     public ResponseEntity<JarvisResponse> queryGithub(@Valid @RequestBody JarvisRequest request) {
         CodeSearchResult csr = githubApiClient.searchApprovedAuthors(request.query());
 
