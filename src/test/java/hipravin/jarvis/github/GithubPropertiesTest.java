@@ -20,6 +20,7 @@ class GithubPropertiesTest {
         assertNotNull(githubProperties);
         assertTrue(githubProperties.approvedAuthors().contains("hipravin"));
         assertTrue(githubProperties.approvedAuthors() instanceof LinkedHashSet<String>);
-        assertEquals("https://api.github.com/search/code", githubProperties.codeSearchUrl());
+        assertEquals("https://stub-github/search/code", githubProperties.codeSearchUrl());
+        assertEquals("https://github.com/search?q=%s&type=code", githubProperties.codeSearchBrowserUrlTemplate());
     }
 }

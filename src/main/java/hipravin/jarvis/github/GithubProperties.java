@@ -14,6 +14,7 @@ import java.util.Set;
 @Validated
 public record GithubProperties(
         @NotBlank String codeSearchUrl,
+        @NotBlank String codeSearchBrowserUrlTemplate,
         @NotEmpty Set<String> approvedAuthors,
         int singleRequestMaxOr,
         int codeSearchPerPage

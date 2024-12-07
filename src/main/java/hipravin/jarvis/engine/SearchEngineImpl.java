@@ -4,26 +4,28 @@ import hipravin.jarvis.engine.model.*;
 import hipravin.jarvis.github.GithubApiClient;
 import hipravin.jarvis.github.GithubProperties;
 import hipravin.jarvis.github.GithubUtils;
+import hipravin.jarvis.github.jackson.model.CodeSearchItem;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
+import hipravin.jarvis.github.jackson.model.TextMatch;
 import hipravin.jarvis.github.jackson.model.TextMatches;
 import hipravin.jarvis.googlebooks.GoogleBooksApiClient;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolume;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolumes;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 public class SearchEngineImpl implements SearchEngine {
     private final ExecutorService executor = Executors.newCachedThreadPool();
+    private static final Pattern UNICODE_SPACES = Pattern.compile("(?U)\\s+");
 
     private final GithubApiClient githubApiClient;
     private final GoogleBooksApiClient googleBooksApiClient;
@@ -66,11 +68,30 @@ public class SearchEngineImpl implements SearchEngine {
                 .map(bv -> new AuthorResult(bv.volumeInfo().title(), 1))
                 .toList();
 
-        return new JarvisResponse("", authors, codeFragments);
+        var responseItems = booksVolumes.items().stream()
+                .map(bv -> new ResponseItem(volumeToLink.apply(bv), bv.searchInfo().textSnippet()))
+                .toList();
+
+        return new JarvisResponse("", authors, responseItems, codeFragments);
     }
 
     private JarvisResponse searchGithub(String query) {
+        Set<String> queryTerms = UNICODE_SPACES.splitAsStream(query)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
         CodeSearchResult csr = githubApiClient.searchApprovedAuthors(query);
+
+        Function<String, String> approvedAuthorOrOthers =
+                (author) -> githubProperties.approvedAuthors().contains(author) ? author : AuthorResult.OTHERS;
+
+        Map<String, List<CodeSearchItem>> byAuthor = csr.codeSearchItems().stream()
+                .collect(Collectors.groupingBy(csi -> approvedAuthorOrOthers.apply(GithubUtils.safeGetLogin(csi)),
+                        LinkedHashMap::new, Collectors.toList()));
+
+        List<ResponseItem> responseItems = byAuthor.entrySet().stream()
+                .map(e -> new ResponseItem(new Link(e.getKey() + ": " + e.getValue().size(),
+                        githubApiClient.githubBrowserSearchUrl(e.getKey(), query)), shortDescription(e.getValue(), query, queryTerms)))
+                .toList();
 
         List<CodeFragment> codeFragments = csr.codeSearchItems().stream()
                 .map(csi -> new CodeFragment(joinTextMatches(csi.textMatches()), Link.fromGithubHtmlUrl(csi.htmlUrl()),
@@ -83,7 +104,54 @@ public class SearchEngineImpl implements SearchEngine {
                 .map(a -> "%s: %d".formatted(a.author(), a.count()))
                 .collect(Collectors.joining(",\n"));
 
-        return new JarvisResponse(summary, authorResults, codeFragments);
+        return new JarvisResponse(summary, authorResults, responseItems, codeFragments);
+    }
+
+    private String shortDescription(List<CodeSearchItem> codeSearchItems, String query, Set<String> queryTerms) {
+        List<String> descriptionLines = removeCommonLeadingSpaces(shortDescriptionLines(codeSearchItems, query, queryTerms));
+        return String.join("\n", descriptionLines);
+    }
+
+    private List<String> shortDescriptionLines(List<CodeSearchItem> codeSearchItems, String query, Set<String> queryTerms) {
+        int maxLines = 5;
+
+        List<String> bestMatch = new ArrayList<>();
+
+        for (CodeSearchItem codeSearchItem : codeSearchItems) {
+            for (TextMatches textMatches : codeSearchItem.textMatches()) {
+                Iterable<String> textMatchesLines = () -> textMatches.fragment().lines().iterator();
+                List<String> sequentialLinesWithTerms = new ArrayList<>();
+                for (String textMatchesLine : textMatchesLines) {
+                    boolean containAnyTerm = queryTerms.stream().allMatch(term -> textMatchesLine.toLowerCase().contains(term.toLowerCase()));
+                    if(containAnyTerm) {
+                        sequentialLinesWithTerms.add(textMatchesLine);
+                        if(bestMatch.size() < sequentialLinesWithTerms.size()) {
+                            bestMatch = List.copyOf(sequentialLinesWithTerms);
+                        }
+                    } else {
+                        sequentialLinesWithTerms.clear();
+                    }
+                    if(sequentialLinesWithTerms.size() >= maxLines) {
+                        return sequentialLinesWithTerms;
+                    }
+                }
+            }
+        }
+        return bestMatch;
+    }
+
+    private static List<String> removeCommonLeadingSpaces(List<String> original) {
+        if(original.isEmpty()) {
+            return original;
+        }
+        if(original.size() == 1) {
+            return List.of(original.get(0).stripLeading());
+        }
+
+        //TODO: temporary solution - just remove leading whitestpaces from all lines
+        return original.stream()
+                .map(String::stripLeading)
+                .toList();
     }
 
     private List<AuthorResult> authorResultSummary(CodeSearchResult csr) {

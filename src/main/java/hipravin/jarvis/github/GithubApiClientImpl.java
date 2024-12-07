@@ -9,7 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -106,6 +108,14 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
         var genericSearchResult = search(searchString);
 
         return CodeSearchResult.combine(sortByApprovedAuthor(approvedAuthorsResult), genericSearchResult);
+    }
+
+    @Override
+    public String githubBrowserSearchUrl(String user, String query) {
+        String specificUserSearchQuery = (StringUtils.hasText(user)) ? "user:%s %s".formatted(user, query) : query;
+
+        return githubProperties.codeSearchBrowserUrlTemplate()
+                .formatted(URLEncoder.encode(specificUserSearchQuery, StandardCharsets.UTF_8));
     }
 
     private CodeSearchResult sortByApprovedAuthor(CodeSearchResult codeSearchResult) {

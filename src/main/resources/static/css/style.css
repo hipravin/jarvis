@@ -51,7 +51,8 @@ body.show-chatbot .chatbot-toggler span:last-child {
   position: fixed;
   left: calc(50% - 30px);
   top: 10px;
-  width: 50%;
+  min-width: 50%;
+  /*width: 50%;*/
   height: 90%;
   background: #fff;
   border-radius: 15px;
@@ -198,6 +199,18 @@ header h2 {
 
 .authors-ul {
   list-style: none;
+}
+
+.authors-ul a {
+  text-decoration: none;
+}
+
+.authors-ul a:visited {
+  text-decoration: none;
+}
+
+.authors-ul a:hover {
+  color: red;
 }
 
 .left-pane {

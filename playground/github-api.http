@@ -27,3 +27,13 @@ Authorization: Bearer {{gh_token}}
 GET https://api.github.com/search/code?q=a
 Accept: application/vnd.github.text-match+json
 Authorization: Bearer {{gh_token}}
+
+### 500 from github
+GET  https://api.github.com/search/code?per_page=100&q=user%3Ahipravin+user%3Amraible+user%3Aphilwebb+user%3Avladmihalcea+user%3Ajosepaumard+var+list
+Accept: application/vnd.github.text-match+json
+Authorization: Bearer {{gh_token}}
+
+### 500 from github
+GET  https://api.github.com/search/code?per_page=100&q=user%3Ahipravin+user%3Amraible+user%3Aphilwebb+user%3Avladmihalcea+user%3Ajosepaumard+list
+Accept: application/vnd.github.text-match+json
+Authorization: Bearer {{gh_token}}

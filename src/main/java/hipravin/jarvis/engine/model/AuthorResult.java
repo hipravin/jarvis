@@ -5,5 +5,5 @@ public record AuthorResult(
         long count
 ) {
     public static final String TOTAL = "Total";
-    public static final String OTHERS = "others";
+    public static final String OTHERS = "";
 }

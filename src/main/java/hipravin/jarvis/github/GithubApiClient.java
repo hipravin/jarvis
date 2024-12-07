@@ -7,4 +7,6 @@ public interface GithubApiClient {
     String getContent(String uri);
     CodeSearchResult search(String searchString);
     CodeSearchResult searchApprovedAuthors(String searchString);
+
+    String githubBrowserSearchUrl(String user, String query);
 }

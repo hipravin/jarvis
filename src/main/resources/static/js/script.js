@@ -22,6 +22,25 @@ const createChatLi = (message, className) => {
     return chatLi; // return chat <li> element
 }
 
+const fillItems = (items, chatLi) => {
+    let chatAuthorsUl = chatLi.querySelector("ul");
+    if(!chatAuthorsUl) {
+        chatAuthorsUl = document.createElement("ul");
+        chatLi.appendChild(chatAuthorsUl);
+    }
+    chatAuthorsUl.className = "authors-ul";
+
+    items.forEach((item) => {
+        const li = document.createElement("li");
+        li.innerHTML =
+            `<div class="response-item"><a href="${item.header.href}" target="_blank"></a><p></p></div>`;
+
+        li.querySelector(".response-item >a").textContent = item.header.title;
+        li.querySelector(".response-item >p").textContent = item.shortDescription;
+        chatAuthorsUl.appendChild(li);
+    });
+}
+
 const fillAuthors = (authors, chatLi) => {
     let chatAuthorsUl = chatLi.querySelector("ul");
     if(!chatAuthorsUl) {
@@ -88,7 +107,9 @@ const generateResponse = async (chatElement) => {
             throw new Error(data.title + ": " + data.detail);
         }
 
-        if (data.authors) {
+        if(data.items) {
+            fillItems(data.items, messageElement)
+        }  else if (data.authors) {
             // messageElement.textContent = "";
             fillAuthors(data.authors, messageElement);
         } else {

@@ -28,6 +28,7 @@ googlebooks:
 
 github:
   code-search-url: "https://api.github.com/search/code"
+  code-search-browser-url-template: "https://github.com/search?q=%s&type=code"
   token: ${GH_TOKEN}
   single-request-max-or: 5
   code-search-per-page: 100
