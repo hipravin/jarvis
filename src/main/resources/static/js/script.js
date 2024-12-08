@@ -36,7 +36,8 @@ const fillItems = (items, chatLi) => {
             `<div class="response-item"><a href="${item.header.href}" target="_blank"></a><p></p></div>`;
 
         li.querySelector(".response-item >a").textContent = item.header.title;
-        li.querySelector(".response-item >p").textContent = item.shortDescription;
+        // li.querySelector(".response-item >p").textContent = item.shortDescription;
+        li.querySelector(".response-item >p").innerHTML = item.shortDescription;
         chatAuthorsUl.appendChild(li);
     });
 }

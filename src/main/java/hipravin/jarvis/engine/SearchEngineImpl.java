@@ -6,11 +6,11 @@ import hipravin.jarvis.github.GithubProperties;
 import hipravin.jarvis.github.GithubUtils;
 import hipravin.jarvis.github.jackson.model.CodeSearchItem;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
-import hipravin.jarvis.github.jackson.model.TextMatch;
 import hipravin.jarvis.github.jackson.model.TextMatches;
 import hipravin.jarvis.googlebooks.GoogleBooksApiClient;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolume;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolumes;
+import org.owasp.esapi.ESAPI;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,6 +18,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -109,7 +110,18 @@ public class SearchEngineImpl implements SearchEngine {
 
     private String shortDescription(List<CodeSearchItem> codeSearchItems, String query, Set<String> queryTerms) {
         List<String> descriptionLines = removeCommonLeadingSpaces(shortDescriptionLines(codeSearchItems, query, queryTerms));
-        return String.join("\n", descriptionLines);
+        String description = String.join("\n", descriptionLines);
+        String sanitized = ESAPI.encoder().encodeForHTML(description);
+
+        String highlighted = queryTerms.stream()
+                .reduce(sanitized, (result, elem) -> highlight(result, elem, "<b>%s</b>"::formatted));
+
+        return highlighted;
+    }
+
+    static String highlight(String text, String term, Function<String, String> highlightTermFunction) {
+        Matcher matcher = Pattern.compile("(?i)" + Pattern.quote(term)).matcher(text);
+        return matcher.replaceAll((mr) -> highlightTermFunction.apply(mr.group(0)));
     }
 
     private List<String> shortDescriptionLines(List<CodeSearchItem> codeSearchItems, String query, Set<String> queryTerms) {
