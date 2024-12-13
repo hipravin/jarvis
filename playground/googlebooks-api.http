@@ -10,3 +10,10 @@ GET https://www.googleapis.com/books/v1/volumes?q=CpmletableFuture+allOf&langRes
 
 ###
 GET https://www.googleapis.com/books/v1/volumes?q="ofVirual"f&langRestrict=en&maxResults=40&key={{google_api_key}}
+
+
+###
+GET https://www.googleapis.com/customsearch/v1?key={{google_api_key}}&cx=017576662512468239146:omuauf_lfve&q=lectures
+
+###
+GET https://www.googleapis.com/customsearch/v1?key={{google_api_key}}&cx=9469e4294bf754b0c&q=layertools

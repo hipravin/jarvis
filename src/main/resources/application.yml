@@ -58,5 +58,5 @@ logging:
   level:
     com.hipravin: DEBUG
     org.springframework: INFO
-    org.springframework.security: TRACE
+#    org.springframework.security: TRACE
 

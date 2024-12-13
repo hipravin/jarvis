@@ -41,7 +41,7 @@ public class GoogleBooksApiClientImpl implements GoogleBooksApiClient {
     public BooksVolumes search(String searchString) {
         //https://www.googleapis.com/books/v1/volumes?q=CpmletableFuture+allOf&langRestrict=en&maxResults=40
         var request = googlebooksHttpRequestBuilder.uri(URI.create(
-                        "%s?q=%s&key=%s&langRestrict=en&maxResults=40".formatted(
+                        "%s?q=%s&key=%s&maxResults=40".formatted(//&langRestrict=en //TODO: work with language
                                 googleBooksProperties.booksSearchUrl(),
                                 URLEncoder.encode(enquoteEveryTerm(searchString), StandardCharsets.UTF_8),
                                 googleBooksProperties.apiKey())))

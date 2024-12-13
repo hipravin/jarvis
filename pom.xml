@@ -153,6 +153,16 @@
                     </excludeProperties>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <environmentVariables>
+                        <GH_TOKEN>stub-token</GH_TOKEN>
+                        <GOOGLE_API_KEY>stub-api-key</GOOGLE_API_KEY>
+                    </environmentVariables>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

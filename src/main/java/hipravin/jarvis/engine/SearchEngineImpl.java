@@ -10,6 +10,7 @@ import hipravin.jarvis.github.jackson.model.TextMatches;
 import hipravin.jarvis.googlebooks.GoogleBooksApiClient;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolume;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolumes;
+import hipravin.jarvis.googlebooks.jackson.model.SearchInfo;
 import org.owasp.esapi.ESAPI;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +51,7 @@ public class SearchEngineImpl implements SearchEngine {
     private JarvisResponse searchGoogleBooks(String query) {
         BooksVolumes booksVolumes = googleBooksApiClient.search(query);
 
-        if (booksVolumes.items() == null) {
+        if (booksVolumes.items() == null || booksVolumes.items().isEmpty()) {
             return JarvisResponse.EMPTY_RESPONSE;
         }
 
@@ -70,7 +71,8 @@ public class SearchEngineImpl implements SearchEngine {
                 .toList();
 
         var responseItems = booksVolumes.items().stream()
-                .map(bv -> new ResponseItem(volumeToLink.apply(bv), bv.searchInfo().textSnippet()))
+                .map(bv -> new ResponseItem(volumeToLink.apply(bv),
+                        Optional.ofNullable(bv.searchInfo()).map(SearchInfo::textSnippet).orElse("n/a")))
                 .toList();
 
         return new JarvisResponse("", authors, responseItems, codeFragments);

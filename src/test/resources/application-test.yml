@@ -1,8 +1,7 @@
 googlebooks:
   books-search-url: "https://stub-googleapis/books/v1/volumes"
+  api-key: "stub-key"
 
 github:
   code-search-url: "https://stub-github/search/code"
-
-GH_TOKEN: "stub-value"
-GOOGLE_API_KEY: "stub-key"
+  token: "stub-token"

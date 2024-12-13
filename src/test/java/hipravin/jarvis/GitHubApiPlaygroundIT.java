@@ -8,6 +8,7 @@ import org.kohsuke.github.PagedSearchIterable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
 import java.net.URI;
@@ -15,7 +16,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 @SpringBootTest
+@ActiveProfiles(profiles = "{itlocal}")
 public class GitHubApiPlaygroundIT {
     @Value("${github.token}")
     private String githubToken;
@@ -62,5 +66,11 @@ public class GitHubApiPlaygroundIT {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Test
+    void failIntegrationTest() {
+        //so far integration tests are supposed to be executed manually
+        fail("Integration tests failed intentionally");
     }
 }

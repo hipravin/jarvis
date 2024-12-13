@@ -1,21 +1,23 @@
 package hipravin.jarvis;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hipravin.jarvis.github.GithubApiClient;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
+import hipravin.jarvis.googlebooks.GoogleBooksApiClient;
+import hipravin.jarvis.googlebooks.jackson.model.BooksVolumes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import java.net.URI;
+import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.util.Collections;
 import java.util.Map;
 
@@ -28,52 +30,65 @@ class JarvisControllerTest {
     @LocalServerPort
     int port;
 
-    @MockBean
+    @MockitoBean
     GithubApiClient githubApiClient;
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    @MockitoBean
+    GoogleBooksApiClient googleBooksApiClient;
+
+    private CsrfAwareHttpClient testHttpClient;
 
     private static final String TEST_SEARCH = "test search";
     private static final String ERROR_SEARCH = "error search";
     private static final String BLANK_SEARCH = " ";
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException, InterruptedException {
         given(this.githubApiClient.searchApprovedAuthors(TEST_SEARCH)).willReturn(emptySearchResult());
         given(this.githubApiClient.searchApprovedAuthors(BLANK_SEARCH)).willReturn(emptySearchResult());
-        given(this.githubApiClient.searchApprovedAuthors(ERROR_SEARCH)).willThrow(new RuntimeException("expected error"));
-    }
+        given(this.githubApiClient.searchApprovedAuthors(ERROR_SEARCH)).willThrow(new RuntimeException("expected error gh"));
 
-    <T> ResponseEntity<T> searchCode(String query, Class<T> clazz) {
-        return restTemplate.postForEntity(URI.create("http://localhost:%d/api/v1/jarvis/query".formatted(port)),
-                Map.of("query", query), clazz);
-    }
+        given(this.googleBooksApiClient.search(TEST_SEARCH)).willReturn(emptyVolumes());
+        given(this.googleBooksApiClient.search(BLANK_SEARCH)).willReturn(emptyVolumes());
+        given(this.googleBooksApiClient.search(ERROR_SEARCH)).willThrow(new RuntimeException("expected error gb"));
 
-    @Test
-    void testSimpleSearch() {
-        ResponseEntity<CodeSearchResult> csre = searchCode("test search", CodeSearchResult.class);
-        assertEquals(HttpStatus.OK, csre.getStatusCode());
-
-        System.out.println(csre.getBody());
+        testHttpClient = new CsrfAwareHttpClient("http://localhost:%d".formatted(port));
+        var welcomeResponse = testHttpClient.get("/");
+        assertEquals(HttpStatus.OK.value(), welcomeResponse.statusCode());
     }
 
     @Test
-    void testBlankSearch() {
-        ResponseEntity<ProblemDetail> errorResponse = searchCode(" ", ProblemDetail.class);
-        assertEquals(HttpStatus.BAD_REQUEST, errorResponse.getStatusCode());
-        System.out.println(errorResponse.getBody());
+    void testSimpleSearch() throws IOException, InterruptedException {
+        var response = search(TEST_SEARCH);
+        assertEquals(HttpStatus.OK.value(), response.statusCode());
     }
 
     @Test
-    void testUnexpectedException() {
-        ResponseEntity<ProblemDetail> errorResponse = searchCode("error search", ProblemDetail.class);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, errorResponse.getStatusCode());
+    void testBlankSearch() throws IOException, InterruptedException {
+        var response = search(BLANK_SEARCH);
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.statusCode());
+    }
 
-        System.out.println(errorResponse.getBody());
+    @Test
+    void testUnexpectedException() throws IOException, InterruptedException {
+        var errorResponse = search(ERROR_SEARCH);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorResponse.statusCode());
+    }
+
+    HttpResponse<String> search(String query) throws IOException, InterruptedException {
+        return testHttpClient.post("/api/v1/jarvis/query", searchRequestBody(query));
+    }
+
+    String searchRequestBody(String query) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(Map.of("query", query));
     }
 
     static CodeSearchResult emptySearchResult() {
-        return new CodeSearchResult(0, false, Collections.EMPTY_LIST);
+        return new CodeSearchResult(0, false, Collections.emptyList());
+    }
+
+    static BooksVolumes emptyVolumes() {
+        return new BooksVolumes("books#volumes", 0L, Collections.emptyList());
     }
 }
