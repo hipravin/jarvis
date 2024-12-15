@@ -1,0 +1,14 @@
+services:
+  jarvis:
+    image: hipravin/jarvis:0.0.1
+    container_name: jarvis
+    expose:
+      - "10010"
+      - "10011"
+    ports:
+      - "8080:10010"
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xmx128m  #set low value to figure out limitations early
+      - GOOGLE_API_KEY=$GOOGLE_API_KEY
+      - GH_TOKEN=$GH_TOKEN
+    restart: unless-stopped
