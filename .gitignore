@@ -34,3 +34,4 @@ build/
 
 ### Local passwords ###
 *.private.env.json
+*-itlocal.yml

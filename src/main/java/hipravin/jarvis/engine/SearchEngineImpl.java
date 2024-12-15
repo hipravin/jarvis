@@ -162,7 +162,6 @@ public class SearchEngineImpl implements SearchEngine {
             return List.of(original.get(0).stripLeading());
         }
 
-        //TODO: temporary solution - just remove leading whitestpaces from all lines
         return original.stream()
                 .map(String::stripLeading)
                 .toList();
