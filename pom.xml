@@ -91,8 +91,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <layers>
-<!--                        <enabled>true</enabled>-->
-                        <enabled>false</enabled>
+                        <enabled>true</enabled>
                         <configuration>${project.basedir}/src/layers.xml</configuration>
                     </layers>
                 </configuration>
@@ -163,6 +162,7 @@
                     </environmentVariables>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 

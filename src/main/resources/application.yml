@@ -22,7 +22,7 @@ management:
 
 googlebooks:
   books-search-url: "https://www.googleapis.com/books/v1/volumes"
-  api-key: ${GOOGLE_API_KEY}
+  api-key: ${GOOGLE_API_KEY} #TODO: encrypt with symmetric key?
   connection:
     timeout: 10_000
 
