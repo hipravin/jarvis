@@ -108,6 +108,7 @@ const generateResponse = async (chatElement) => {
             throw new Error(data.title + ": " + data.detail);
         }
 
+        messageElement.textContent = "";
         if(data.items) {
             fillItems(data.items, messageElement)
         }  else if (data.authors) {
