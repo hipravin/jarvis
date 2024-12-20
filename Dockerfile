@@ -24,4 +24,8 @@ COPY --from=builder /builder/extracted/application/ ./
 # This layout is efficient to start up and CDS friendly
 ENTRYPOINT ["java", "-jar", "application.jar"]
 
+ARG REVISION=unknown
+LABEL org.opencontainers.image.revision="${REVISION}"
+
 #docker build -t hipravin/jarvis:0.0.1 .
+#docker build -t hipravin/jarvis:0.0.1 . --build-arg REVISION=test12345

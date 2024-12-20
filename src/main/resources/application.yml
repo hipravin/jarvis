@@ -52,6 +52,7 @@ github:
     - sonarsource
     - snicoll
     - spring-projects
+    - dataverse
     - apereo
 
 logging:
