@@ -29,3 +29,4 @@ LABEL org.opencontainers.image.revision="${REVISION}"
 
 #docker build -t hipravin/jarvis:0.0.1 .
 #docker build -t hipravin/jarvis:0.0.1 . --build-arg REVISION=test12345
+#git rev-parse HEAD
