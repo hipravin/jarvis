@@ -8,6 +8,7 @@ import hipravin.jarvis.github.jackson.model.EncodedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -60,10 +61,7 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
         try {
             var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() != 200) {
-                throw new RuntimeException("Request failed: %s: status %d, body: %s".formatted(
-                        request.uri(), response.statusCode(), response.body()));
-            }
+            ensureStatusOk(request, response);
 
             EncodedContent encodedContent = mapper.readContent(response.body());
             return decode(encodedContent.content(), encodedContent.encoding());
@@ -83,11 +81,7 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
                 .build();
         try {
             var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            if (response.statusCode() != 200) {
-                throw new RuntimeException("Request failed: %s: status %d, body: %s".formatted(
-                        request.uri(), response.statusCode(), response.body()));
-            }
+            ensureStatusOk(request, response);
 
             return mapper.readCodeSearchResult(response.body());
         } catch (IOException | InterruptedException e) {
@@ -130,16 +124,6 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
         Comparator<CodeSearchItem> byApprovedAuthorPositions = Comparator.comparingInt(
                 it -> approvedAuthorsPositions.getOrDefault(safeGetLogin(it), Integer.MAX_VALUE));
         items.sort(byApprovedAuthorPositions);
-//        //*.md, *.log last
-//        List<CodeSearchItem> mdFiles = items.stream()
-//                .filter(item -> item.path().toLowerCase().endsWith(".md"))
-//                .toList();
-//        List<CodeSearchItem> logFiles = items.stream()
-//                .filter(item -> item.path().toLowerCase().endsWith(".log"))
-//                .toList();
-//        items.removeIf(item -> item.path().toLowerCase().endsWith(".md") || item.path().toLowerCase().endsWith(".log"));
-//        items.addAll(mdFiles);
-//        items.addAll(logFiles);
 
         return new CodeSearchResult(codeSearchResult.count(), codeSearchResult.incompleteResults(), List.copyOf(items));
     }
@@ -148,7 +132,6 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
         var orAuthors = approvedAuthors.stream()
                 .map(author -> "user:" + author)
                 .collect(Collectors.joining(" ", "", " "));
-//                .collect(Collectors.joining(" OR ", "", " ")); //OR/AND seems to be not supported, rather 'OR' is included to search terms
 
         return () -> search(orAuthors + searchString);
     }
@@ -187,6 +170,13 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
 
     private static String decodeBase64(String encoded) {
         return new String(Base64.getDecoder().decode(encoded), StandardCharsets.UTF_8);
+    }
+
+    static <T> void ensureStatusOk(HttpRequest request, HttpResponse<T> response) {
+        if(response.statusCode() != HttpStatus.OK.value()) {
+            log.warn("Request failed: {}: status {}, body: {}", request.uri(), response.statusCode(), response.body());
+            throw new RuntimeException("Request Failed");
+        }
     }
 
     @Override

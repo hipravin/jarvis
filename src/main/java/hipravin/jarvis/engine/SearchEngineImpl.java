@@ -42,10 +42,15 @@ public class SearchEngineImpl implements SearchEngine {
 
     @Override
     public JarvisResponse search(JarvisRequest request) {
-        var cf1 = CompletableFuture.supplyAsync(() -> searchGithub(request.query()), executor);
-        var cf2 = CompletableFuture.supplyAsync(() -> searchGoogleBooks(request.query()), executor);
+        var cfGithub = CompletableFuture.supplyAsync(() -> searchGithub(request.query()), executor)
+                .thenApply(r -> r.orElse("No results in Github matching your query"))
+                .exceptionally(e -> JarvisResponse.ofMessage("Github: " + e.getMessage()));
 
-        return JarvisResponse.combine(cf1.join(), cf2.join());
+        var cfGoogleBooks = CompletableFuture.supplyAsync(() -> searchGoogleBooks(request.query()), executor)
+                .thenApply(r -> r.orElse("No results in Google Books matching your query"))
+                .exceptionally(e -> JarvisResponse.ofMessage("Google Books: " + e.getMessage()));
+
+        return JarvisResponse.combine(cfGithub.join(), cfGoogleBooks.join());
     }
 
     private JarvisResponse searchGoogleBooks(String query) {
@@ -66,16 +71,12 @@ public class SearchEngineImpl implements SearchEngine {
                         bv.volumeInfo().publisher()))
                 .toList();
 
-        var authors = booksVolumes.items().stream()
-                .map(bv -> new AuthorResult(bv.volumeInfo().title(), 1))
-                .toList();
-
         var responseItems = booksVolumes.items().stream()
                 .map(bv -> new ResponseItem(volumeToLink.apply(bv),
                         Optional.ofNullable(bv.searchInfo()).map(SearchInfo::textSnippet).orElse("n/a")))
                 .toList();
 
-        return new JarvisResponse("", authors, responseItems, codeFragments);
+        return new JarvisResponse("", responseItems, codeFragments);
     }
 
     private JarvisResponse searchGithub(String query) {
@@ -101,13 +102,7 @@ public class SearchEngineImpl implements SearchEngine {
                         csi.repository().owner().login()))
                 .toList();
 
-        List<AuthorResult> authorResults = authorResultSummary(csr);
-
-        String summary = authorResults.stream()
-                .map(a -> "%s: %d".formatted(a.author(), a.count()))
-                .collect(Collectors.joining(",\n"));
-
-        return new JarvisResponse(summary, authorResults, responseItems, codeFragments);
+        return new JarvisResponse("", responseItems, codeFragments);
     }
 
     private String shortDescription(List<CodeSearchItem> codeSearchItems, String query, Set<String> queryTerms) {

@@ -11,6 +11,18 @@ RUN java -Djarmode=tools -jar application.jar extract --layers --destination ext
 
 # This is the runtime container
 FROM bellsoft/liberica-openjre-debian:17-cds
+
+ARG UID=10001
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/nonexistent" \
+    --shell "/sbin/nologin" \
+    --no-create-home \
+    --uid "${UID}" \
+    appuser
+USER appuser
+
 WORKDIR /application
 # Copy the extracted jar contents from the builder container into the working directory in the runtime container
 # Every copy step creates a new docker layer

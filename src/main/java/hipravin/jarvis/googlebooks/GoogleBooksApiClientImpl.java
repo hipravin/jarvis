@@ -2,6 +2,9 @@ package hipravin.jarvis.googlebooks;
 
 import hipravin.jarvis.googlebooks.jackson.JacksonGoogleBooksMapper;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolumes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
  */
 @Component
 public class GoogleBooksApiClientImpl implements GoogleBooksApiClient {
+    private static final Logger log = LoggerFactory.getLogger(GoogleBooksApiClientImpl.class);
 
     private final GoogleBooksProperties googleBooksProperties;
     private final JacksonGoogleBooksMapper mapper;
@@ -39,9 +43,8 @@ public class GoogleBooksApiClientImpl implements GoogleBooksApiClient {
 
     @Override
     public BooksVolumes search(String searchString) {
-        //https://www.googleapis.com/books/v1/volumes?q=CpmletableFuture+allOf&langRestrict=en&maxResults=40
         var request = googlebooksHttpRequestBuilder.uri(URI.create(
-                        "%s?q=%s&key=%s&maxResults=40".formatted(//&langRestrict=en //TODO: work with language
+                        "%s?q=%s&key=%s&maxResults=40".formatted(
                                 googleBooksProperties.booksSearchUrl(),
                                 URLEncoder.encode(enquoteEveryTerm(searchString), StandardCharsets.UTF_8),
                                 googleBooksProperties.apiKey())))
@@ -49,15 +52,18 @@ public class GoogleBooksApiClientImpl implements GoogleBooksApiClient {
                 .build();
         try {
             var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            if (response.statusCode() != 200) {
-                throw new RuntimeException("Request failed: %s: status %d, body: %s".formatted(
-                        request.uri(), response.statusCode(), response.body()));
-            }
+            ensureStatusOk(request, response);
 
             return mapper.readBooksVolumes(response.body());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    static <T> void ensureStatusOk(HttpRequest request, HttpResponse<T> response) {
+        if(response.statusCode() != HttpStatus.OK.value()) {
+            log.warn("Request failed: {}: status {}, body: {}", request.uri(), response.statusCode(), response.body());
+            throw new RuntimeException("Request Failed");
         }
     }
 

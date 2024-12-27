@@ -17,3 +17,7 @@ GET https://www.googleapis.com/customsearch/v1?key={{google_api_key}}&cx=0175766
 
 ###
 GET https://www.googleapis.com/customsearch/v1?key={{google_api_key}}&cx=9469e4294bf754b0c&q=layertools
+
+
+###
+GET https://www.googleapis.com/books/v1/volumes?q=Изнурение+укропная+вода&maxResults=40&key={{google_api_key}}

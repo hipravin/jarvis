@@ -109,14 +109,11 @@ const generateResponse = async (chatElement) => {
         }
 
         messageElement.textContent = "";
+        messageElement.textContent = data.response;
         if(data.items) {
             fillItems(data.items, messageElement)
-        }  else if (data.authors) {
-            // messageElement.textContent = "";
-            fillAuthors(data.authors, messageElement);
-        } else {
-            messageElement.textContent = data.response;
         }
+
         fillLeftPaneWithCode(data);
     } catch (error) {
         // Handle error

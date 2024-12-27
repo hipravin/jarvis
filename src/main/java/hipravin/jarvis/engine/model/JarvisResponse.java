@@ -10,12 +10,15 @@ import java.util.stream.Collectors;
 
 public record JarvisResponse(
         @JsonProperty("response") String response,
-        @JsonProperty("authors") List<AuthorResult> authorResults,
         @JsonProperty("items") List<ResponseItem> responseItems,
         @JsonProperty("code_fragments") List<CodeFragment> codeFragments
 ) {
     public static JarvisResponse EMPTY_RESPONSE = new JarvisResponse("", Collections.emptyList(),
-            Collections.emptyList(), Collections.emptyList());
+            Collections.emptyList());
+
+    public static JarvisResponse ofMessage(String message) {
+        return EMPTY_RESPONSE.orElse(message);
+    }
 
     public static JarvisResponse combine(JarvisResponse... partialResponses) {
 
@@ -23,16 +26,25 @@ public record JarvisResponse(
                 .map(JarvisResponse::response)
                 .collect(Collectors.joining("\n"));
 
-        List<AuthorResult> authorsCombined = combineSubCollection(JarvisResponse::authorResults, partialResponses);
         List<ResponseItem> itemsCombined = combineSubCollection(JarvisResponse::responseItems, partialResponses);
         List<CodeFragment> codeFragmentsCombined = combineSubCollection(JarvisResponse::codeFragments, partialResponses);
 
-        return new JarvisResponse(responseCombined, authorsCombined, itemsCombined, codeFragmentsCombined);
+        return new JarvisResponse(responseCombined, itemsCombined, codeFragmentsCombined);
     }
 
     private static <T> List<T> combineSubCollection(Function<JarvisResponse, List<T>> getFunction,
                                                     JarvisResponse... responses) {
         return Arrays.stream(responses).flatMap(r -> getFunction.apply(r).stream())
                 .toList();
+    }
+
+    public JarvisResponse orElse(String emptyResponseMessage) {
+        if(response().isBlank()
+                && responseItems().isEmpty()
+                && codeFragments().isEmpty()) {
+            return new JarvisResponse(emptyResponseMessage, Collections.emptyList(), Collections.emptyList());
+        } else {
+            return this;
+        }
     }
 }
