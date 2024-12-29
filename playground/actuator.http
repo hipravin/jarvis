@@ -1,0 +1,30 @@
+###
+GET http://localhost:8081/actuator/info
+Accept: application/json
+Authorization: Basic admin aadmin
+
+###
+GET http://localhost:10011/actuator/info
+Accept: application/json
+Authorization: Basic admin aadmin
+
+
+### set log level
+POST http://localhost:8081/actuator/loggers/org.springframework
+Content-Type: application/json
+Accept: application/json
+Authorization: Basic admin aadmin
+
+{
+	"configuredLevel": "DEBUG"
+}
+
+### reset log level
+POST http://localhost:8081/actuator/loggers/org.springframework
+Content-Type: application/json
+Accept: application/json
+Authorization: Basic admin aadmin
+
+{
+	"configuredLevel": null
+}

@@ -17,8 +17,20 @@ management:
       show-details: when_authorized
       probes:
         enabled: true
-    loggers:
-      enabled: true #TODO: figure out what's deprecated
+  info:
+    git:
+      enabled: true
+      mode: full
+    build:
+      enabled: true
+    env:
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true
+    process:
+      enabled: true
 
 googlebooks:
   books-search-url: "https://www.googleapis.com/books/v1/volumes"
@@ -59,5 +71,4 @@ logging:
   level:
     com.hipravin: DEBUG
     org.springframework: INFO
-#    org.springframework.security: TRACE
 

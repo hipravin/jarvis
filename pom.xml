@@ -110,12 +110,12 @@
                             </additionalProperties>
                         </configuration>
                     </execution>
-<!--                    <execution>-->
-<!--                        <id>layers</id>-->
-<!--                        <goals>-->
-<!--                            <goal>repackage</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
+                    <execution>
+                        <id>layers</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
 
