@@ -42,13 +42,25 @@ public class SearchEngineImpl implements SearchEngine {
 
     @Override
     public JarvisResponse search(JarvisRequest request) {
-        var cfGithub = CompletableFuture.supplyAsync(() -> searchGithub(request.query()), executor)
-                .thenApply(r -> r.orElse("No results in Github matching your query"))
-                .exceptionally(e -> JarvisResponse.ofMessage("Github: " + e.getMessage()));
+        Set<SearchProviderType> searchProviders = request.searchProviders();
+        CompletableFuture<JarvisResponse> cfGithub;
+        CompletableFuture<JarvisResponse> cfGoogleBooks;
 
-        var cfGoogleBooks = CompletableFuture.supplyAsync(() -> searchGoogleBooks(request.query()), executor)
-                .thenApply(r -> r.orElse("No results in Google Books matching your query"))
-                .exceptionally(e -> JarvisResponse.ofMessage("Google Books: " + e.getMessage()));
+        if ((searchProviders != null) && searchProviders.contains(SearchProviderType.GITHUB)) {
+            cfGithub = CompletableFuture.supplyAsync(() -> searchGithub(request.query()), executor)
+                    .thenApply(r -> r.orElse("No results in Github matching your query"))
+                    .exceptionally(e -> JarvisResponse.ofMessage("Github: " + e.getMessage()));
+        } else {
+            cfGithub = CompletableFuture.completedFuture(JarvisResponse.ofMessage("Github search disabled"));
+        }
+
+        if ((searchProviders != null) && searchProviders.contains(SearchProviderType.GOOGLE_BOOKS)) {
+            cfGoogleBooks = CompletableFuture.supplyAsync(() -> searchGoogleBooks(request.query()), executor)
+                    .thenApply(r -> r.orElse("No results in Google Books matching your query"))
+                    .exceptionally(e -> JarvisResponse.ofMessage("Google Books: " + e.getMessage()));
+        } else {
+            cfGoogleBooks = CompletableFuture.completedFuture(JarvisResponse.ofMessage("Google Books search disabled"));
+        }
 
         return JarvisResponse.combine(cfGithub.join(), cfGoogleBooks.join());
     }
@@ -73,6 +85,7 @@ public class SearchEngineImpl implements SearchEngine {
 
         var responseItems = booksVolumes.items().stream()
                 .map(bv -> new ResponseItem(volumeToLink.apply(bv),
+                        SearchProviderType.GOOGLE_BOOKS,
                         Optional.ofNullable(bv.searchInfo()).map(SearchInfo::textSnippet).orElse("n/a")))
                 .toList();
 
@@ -94,7 +107,9 @@ public class SearchEngineImpl implements SearchEngine {
 
         List<ResponseItem> responseItems = byAuthor.entrySet().stream()
                 .map(e -> new ResponseItem(new Link(e.getKey() + ": " + e.getValue().size(),
-                        githubApiClient.githubBrowserSearchUrl(e.getKey(), query)), shortDescription(e.getValue(), query, queryTerms)))
+                        githubApiClient.githubBrowserSearchUrl(e.getKey(), query)),
+                        SearchProviderType.GITHUB,
+                        shortDescription(e.getValue(), query, queryTerms)))
                 .toList();
 
         List<CodeFragment> codeFragments = csr.codeSearchItems().stream()
@@ -132,15 +147,15 @@ public class SearchEngineImpl implements SearchEngine {
                 List<String> sequentialLinesWithTerms = new ArrayList<>();
                 for (String textMatchesLine : textMatchesLines) {
                     boolean containAnyTerm = queryTerms.stream().allMatch(term -> textMatchesLine.toLowerCase().contains(term.toLowerCase()));
-                    if(containAnyTerm) {
+                    if (containAnyTerm) {
                         sequentialLinesWithTerms.add(textMatchesLine);
-                        if(bestMatch.size() < sequentialLinesWithTerms.size()) {
+                        if (bestMatch.size() < sequentialLinesWithTerms.size()) {
                             bestMatch = List.copyOf(sequentialLinesWithTerms);
                         }
                     } else {
                         sequentialLinesWithTerms.clear();
                     }
-                    if(sequentialLinesWithTerms.size() >= maxLines) {
+                    if (sequentialLinesWithTerms.size() >= maxLines) {
                         return sequentialLinesWithTerms;
                     }
                 }
@@ -150,10 +165,10 @@ public class SearchEngineImpl implements SearchEngine {
     }
 
     private static List<String> removeCommonLeadingSpaces(List<String> original) {
-        if(original.isEmpty()) {
+        if (original.isEmpty()) {
             return original;
         }
-        if(original.size() == 1) {
+        if (original.size() == 1) {
             return List.of(original.get(0).stripLeading());
         }
 

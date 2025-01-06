@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonDeserialize()
+@JsonDeserialize(using = TextMatchDeserializer.class)
 public record TextMatch(
         int start,
         int end,

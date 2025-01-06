@@ -2,6 +2,8 @@ package hipravin.jarvis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hipravin.jarvis.engine.model.JarvisRequest;
+import hipravin.jarvis.engine.model.SearchProviderType;
 import hipravin.jarvis.github.GithubApiClient;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
 import hipravin.jarvis.googlebooks.GoogleBooksApiClient;
@@ -18,7 +20,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.Collections;
-import java.util.Map;
+import java.util.EnumSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -81,7 +83,7 @@ class JarvisControllerTest {
 
     String searchRequestBody(String query) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(Map.of("query", query));
+        return mapper.writeValueAsString(new JarvisRequest(query, EnumSet.allOf(SearchProviderType.class)));
     }
 
     static CodeSearchResult emptySearchResult() {

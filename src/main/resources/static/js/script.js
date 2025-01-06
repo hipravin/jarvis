@@ -3,6 +3,8 @@ const chatInput = document.querySelector(".chat-input textarea");
 const sendChatBtn = document.querySelector(".chat-input span");
 // const codeBlock = document.querySelector(".code-window");
 const leftPane = document.querySelector(".left-pane");
+const ghToggle = document.getElementById("gh-toggle");
+const gbToggle = document.getElementById("gb-toggle");
 
 let userMessage = null; // Variable to store user's message
 let lastSearchResponseBody = null;
@@ -23,22 +25,32 @@ const createChatLi = (message, className) => {
 }
 
 const fillItems = (items, chatLi) => {
-    let chatAuthorsUl = chatLi.querySelector("ul");
-    if(!chatAuthorsUl) {
-        chatAuthorsUl = document.createElement("ul");
-        chatLi.appendChild(chatAuthorsUl);
+    let responseItemsUl = chatLi.querySelector("ul");
+    if(!responseItemsUl) {
+        responseItemsUl = document.createElement("ul");
+        chatLi.appendChild(responseItemsUl);
     }
-    chatAuthorsUl.className = "authors-ul";
+    responseItemsUl.className = "authors-ul";
 
     items.forEach((item) => {
         const li = document.createElement("li");
         li.innerHTML =
             `<div class="response-item"><a href="${item.header.href}" target="_blank"></a><p></p></div>`;
 
+        const searchSourceIcon = document.createElement("span");
+        if(item.searchProvider === "GITHUB") {
+            searchSourceIcon.classList.add("material-symbols-outlined");
+            searchSourceIcon.textContent = "code_blocks";
+        } else if(item.searchProvider === "GOOGLE_BOOKS") {
+            searchSourceIcon.classList.add("material-symbols-outlined");
+            searchSourceIcon.textContent = "book_2";
+        }
+        li.querySelector(".response-item").prepend(searchSourceIcon);
+
         li.querySelector(".response-item >a").textContent = item.header.title;
         // li.querySelector(".response-item >p").textContent = item.shortDescription;
         li.querySelector(".response-item >p").innerHTML = item.shortDescription;
-        chatAuthorsUl.appendChild(li);
+        responseItemsUl.appendChild(li);
     });
 }
 
@@ -87,6 +99,17 @@ const fillLeftPaneWithCode = (codeSearchResponse) => {
         leftPane.appendChild(createCodeBlock(fragment));
     });
 }
+const enabledSearchProviders = () => {
+    const providers = [];
+    if(ghToggle.classList.contains("provider-on")) {
+        providers.push("GITHUB");
+    }
+    if(gbToggle.classList.contains("provider-on")) {
+        providers.push("GOOGLE_BOOKS");
+    }
+    return providers;
+}
+
 const generateResponse = async (chatElement) => {
     const requestOptions = {
         method: "POST",
@@ -95,7 +118,8 @@ const generateResponse = async (chatElement) => {
             "X-XSRF-TOKEN": getCsrfToken()
         },
         body: JSON.stringify({
-            query: userMessage
+            "query": userMessage,
+            "providers": enabledSearchProviders()
         }),
     }
 
@@ -150,6 +174,16 @@ const getCsrfToken = () => {
     return document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 }
 
+const toggleClass = (elem, classValueOn, classValueOff) => {
+    if(elem.classList.contains(classValueOn)) {
+        elem.classList.remove(classValueOn);
+        elem.classList.add(classValueOff);
+    } else if(elem.classList.contains(classValueOff)) {
+        elem.classList.remove(classValueOff);
+        elem.classList.add(classValueOn);
+    }
+}
+
 chatInput.addEventListener("input", () => {
     // Adjust the height of the input textarea based on its content
     chatInput.style.height = `${inputInitHeight}px`;
@@ -166,3 +200,9 @@ chatInput.addEventListener("keydown", (e) => {
 });
 
 sendChatBtn.addEventListener("click", handleChat);
+ghToggle.addEventListener("click", (e)=> {
+    toggleClass(ghToggle, "provider-on", "provider-off");
+});
+gbToggle.addEventListener("click", (e)=> {
+    toggleClass(gbToggle, "provider-on", "provider-off");
+});
