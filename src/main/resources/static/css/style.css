@@ -82,7 +82,7 @@ header h2 {
   justify-content: flex-end;
 }
 
-.chatbox .incoming span {
+.chatbox .incoming >span {
   width: 32px;
   height: 32px;
   color: #fff;
@@ -213,6 +213,15 @@ header h2 {
 .provider-off {
   outline: 5px ridge rgba(194, 194, 194, 0.6);
   background-color: gray;
+}
+
+.search-source-icon {
+  position: relative;
+  top: 4px;
+  margin-right: 5px;
+
+  border-radius: 10px;
+  border: 1px solid black;
 }
 
 @media (max-width: 490px) {

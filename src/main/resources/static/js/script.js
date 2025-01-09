@@ -26,7 +26,7 @@ const createChatLi = (message, className) => {
 
 const fillItems = (items, chatLi) => {
     let responseItemsUl = chatLi.querySelector("ul");
-    if(!responseItemsUl) {
+    if (!responseItemsUl) {
         responseItemsUl = document.createElement("ul");
         chatLi.appendChild(responseItemsUl);
     }
@@ -38,10 +38,11 @@ const fillItems = (items, chatLi) => {
             `<div class="response-item"><a href="${item.header.href}" target="_blank"></a><p></p></div>`;
 
         const searchSourceIcon = document.createElement("span");
-        if(item.searchProvider === "GITHUB") {
+        searchSourceIcon.classList.add("search-source-icon");
+        if (item.searchProvider === "GITHUB") {
             searchSourceIcon.classList.add("material-symbols-outlined");
             searchSourceIcon.textContent = "code_blocks";
-        } else if(item.searchProvider === "GOOGLE_BOOKS") {
+        } else if (item.searchProvider === "GOOGLE_BOOKS") {
             searchSourceIcon.classList.add("material-symbols-outlined");
             searchSourceIcon.textContent = "book_2";
         }
@@ -56,7 +57,7 @@ const fillItems = (items, chatLi) => {
 
 const fillAuthors = (authors, chatLi) => {
     let chatAuthorsUl = chatLi.querySelector("ul");
-    if(!chatAuthorsUl) {
+    if (!chatAuthorsUl) {
         chatAuthorsUl = document.createElement("ul");
         chatLi.appendChild(chatAuthorsUl);
     }
@@ -101,10 +102,10 @@ const fillLeftPaneWithCode = (codeSearchResponse) => {
 }
 const enabledSearchProviders = () => {
     const providers = [];
-    if(ghToggle.classList.contains("provider-on")) {
+    if (ghToggle.classList.contains("provider-on")) {
         providers.push("GITHUB");
     }
-    if(gbToggle.classList.contains("provider-on")) {
+    if (gbToggle.classList.contains("provider-on")) {
         providers.push("GOOGLE_BOOKS");
     }
     return providers;
@@ -134,7 +135,7 @@ const generateResponse = async (chatElement) => {
 
         messageElement.textContent = "";
         messageElement.textContent = data.response;
-        if(data.items) {
+        if (data.items) {
             fillItems(data.items, messageElement)
         }
 
@@ -175,10 +176,10 @@ const getCsrfToken = () => {
 }
 
 const toggleClass = (elem, classValueOn, classValueOff) => {
-    if(elem.classList.contains(classValueOn)) {
+    if (elem.classList.contains(classValueOn)) {
         elem.classList.remove(classValueOn);
         elem.classList.add(classValueOff);
-    } else if(elem.classList.contains(classValueOff)) {
+    } else if (elem.classList.contains(classValueOff)) {
         elem.classList.remove(classValueOff);
         elem.classList.add(classValueOn);
     }
@@ -200,9 +201,9 @@ chatInput.addEventListener("keydown", (e) => {
 });
 
 sendChatBtn.addEventListener("click", handleChat);
-ghToggle.addEventListener("click", (e)=> {
+ghToggle.addEventListener("click", (e) => {
     toggleClass(ghToggle, "provider-on", "provider-off");
 });
-gbToggle.addEventListener("click", (e)=> {
+gbToggle.addEventListener("click", (e) => {
     toggleClass(gbToggle, "provider-on", "provider-off");
 });

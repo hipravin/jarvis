@@ -13,6 +13,7 @@ import hipravin.jarvis.googlebooks.jackson.model.BooksVolumes;
 import hipravin.jarvis.googlebooks.jackson.model.SearchInfo;
 import org.owasp.esapi.ESAPI;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -106,7 +107,7 @@ public class SearchEngineImpl implements SearchEngine {
                         LinkedHashMap::new, Collectors.toList()));
 
         List<ResponseItem> responseItems = byAuthor.entrySet().stream()
-                .map(e -> new ResponseItem(new Link(e.getKey() + ": " + e.getValue().size(),
+                .map(e -> new ResponseItem(new Link(emptyToOthers(e.getKey()) + ": " + e.getValue().size(),
                         githubApiClient.githubBrowserSearchUrl(e.getKey(), query)),
                         SearchProviderType.GITHUB,
                         shortDescription(e.getValue(), query, queryTerms)))
@@ -118,6 +119,10 @@ public class SearchEngineImpl implements SearchEngine {
                 .toList();
 
         return new JarvisResponse("", responseItems, codeFragments);
+    }
+
+    public static String emptyToOthers(String name) {
+        return StringUtils.hasText(name) ? name : "Others";
     }
 
     private String shortDescription(List<CodeSearchItem> codeSearchItems, String query, Set<String> queryTerms) {
