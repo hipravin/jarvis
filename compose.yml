@@ -6,8 +6,8 @@ services:
       - "10010"
       - "10011"
     ports:
-      - "8080:10010"
-      - "8081:10011"
+      - "9080:10010"
+      - "9081:10011"
       - "5005:5005"
     environment:
       - JAVA_TOOL_OPTIONS=-Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 #set low memory value to figure out limitations early

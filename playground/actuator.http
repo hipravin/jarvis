@@ -20,7 +20,7 @@ Authorization: Basic admin aadmin
 }
 
 ### reset log level
-POST http://localhost:8081/actuator/loggers/org.springframework
+POST http://localhost:9081/actuator/loggers/org.springframework
 Content-Type: application/json
 Accept: application/json
 Authorization: Basic admin aadmin
@@ -28,3 +28,15 @@ Authorization: Basic admin aadmin
 {
 	"configuredLevel": null
 }
+
+### heapdump
+GET http://localhost:9081/actuator/heapdump
+Content-Type: application/json
+Accept: application/octet-stream
+Authorization: Basic admin aadmin
+
+### env
+GET http://localhost:9081/actuator/env
+Content-Type: application/json
+Accept: application/json
+Authorization: Basic admin aadmin
