@@ -2,6 +2,23 @@ spring:
   application:
     name: jarvis
 
+  datasource:
+    url: jdbc:postgresql://localhost:5432/playground?currentSchema=jarvis&reWriteBatchedInserts=true
+    username: postgres
+    password: admin
+
+  jpa:
+    properties:
+      hibernate:
+        default_schema: "jarvis"
+        order_inserts: true
+        order_updates: true
+        #        generate_statistics: true
+        jdbc:
+          batch_size: 100
+          time_zone: UTC
+        hbm2ddl:
+          auto: none
 server:
   port: 10010
 
@@ -71,4 +88,4 @@ logging:
   level:
     com.hipravin: DEBUG
     org.springframework: INFO
-
+    org.postgresql: DEBUG
