@@ -4,13 +4,17 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "BOOK_PAGE")
-public class BookPage {
+public class BookPageEntity {
     @EmbeddedId
     private BookPageId bookPageId;
 
     @ManyToOne
     @JoinColumn(name = "BOOK_ID", insertable = false, updatable = false)
     private BookEntity book;
+
+    @Basic
+    @Column(name = "CONTENT")
+    private String content;
 
     public BookPageId getBookPageId() {
         return bookPageId;
@@ -26,5 +30,13 @@ public class BookPage {
 
     public void setBook(BookEntity book) {
         this.book = book;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

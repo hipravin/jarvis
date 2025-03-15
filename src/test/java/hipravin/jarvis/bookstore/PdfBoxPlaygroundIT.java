@@ -22,14 +22,9 @@ public class PdfBoxPlaygroundIT {
         try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(samplePdfFile))) {
 
             PDFTextStripper stripper = new PDFTextStripper();
-
-            stripper.setStartPage(21);
-            stripper.setEndPage(21);
+            stripper.setStartPage(0);
+            stripper.setEndPage(0);
             String text = stripper.getText(document);
-
-            document.removePage(20);
-            document.removePage(19);
-            document.removePage(18);
 
 
             System.out.println(text);

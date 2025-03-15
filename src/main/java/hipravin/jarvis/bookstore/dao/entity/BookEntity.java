@@ -1,6 +1,10 @@
 package hipravin.jarvis.bookstore.dao.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "BOOK")
@@ -14,7 +18,7 @@ public class BookEntity {
     @Column(name = "TITLE")
     private String title;
 
-//    @OneToMany(
+//    @OneToMany( // @OneToMany is practical only when many means few (c) vladmihalcea
 //            mappedBy = "book",
 //            cascade = CascadeType.ALL,
 //            orphanRemoval = true

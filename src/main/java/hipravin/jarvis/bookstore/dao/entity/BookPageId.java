@@ -14,6 +14,14 @@ public class BookPageId implements Serializable {
     @Column(name = "PAGE_NUM")
     private Long pageNum;
 
+    public BookPageId() {
+    }
+
+    public BookPageId(Long bookId, Long pageNum) {
+        this.bookId = bookId;
+        this.pageNum = pageNum;
+    }
+
     public Long getBookId() {
         return bookId;
     }

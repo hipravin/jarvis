@@ -13,6 +13,7 @@ spring:
         default_schema: "jarvis"
         order_inserts: true
         order_updates: true
+
         #        generate_statistics: true
         jdbc:
           batch_size: 100
@@ -88,4 +89,3 @@ logging:
   level:
     com.hipravin: DEBUG
     org.springframework: INFO
-    org.postgresql: DEBUG
