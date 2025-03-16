@@ -27,6 +27,7 @@
         <postgresql.version>42.7.5</postgresql.version>
         <testcontainers.postgresql.version>1.20.6</testcontainers.postgresql.version>
         <flyway-maven-plugin.version>11.4.0</flyway-maven-plugin.version>
+        <flyway-core.version>11.4.0</flyway-core.version>
     </properties>
 
     <dependencies>
@@ -60,6 +61,32 @@
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flyway-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>${flyway-core.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${testcontainers.postgresql.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -240,6 +267,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -254,7 +282,28 @@
         </plugins>
     </build>
 
-<!-- override inappropriate values inherited from spring boot parent with empty values   -->
+    <profiles>
+        <profile>
+            <id>integration</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <!-- override inappropriate values inherited from spring boot parent with empty values   -->
     <url/>
     <licenses>
         <license/>

@@ -22,8 +22,8 @@ public class PdfBoxPlaygroundIT {
         try (PDDocument document = Loader.loadPDF(new RandomAccessReadBufferedFile(samplePdfFile))) {
 
             PDFTextStripper stripper = new PDFTextStripper();
-            stripper.setStartPage(0);
-            stripper.setEndPage(0);
+            stripper.setStartPage(1);
+            stripper.setEndPage(1);
             String text = stripper.getText(document);
 
 

@@ -7,11 +7,8 @@ import hipravin.jarvis.bookstore.dao.entity.BookPageId;
 import hipravin.jarvis.bookstore.load.model.Book;
 import hipravin.jarvis.bookstore.load.model.BookPage;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.FlushModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import org.hibernate.FlushMode;
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

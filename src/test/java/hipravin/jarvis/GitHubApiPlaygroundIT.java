@@ -16,10 +16,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 @SpringBootTest
-@ActiveProfiles(profiles = "{itlocal}")
+@ActiveProfiles(profiles = {"itlocal"})
 public class GitHubApiPlaygroundIT {
     @Value("${github.token}")
     private String githubToken;
@@ -66,11 +64,5 @@ public class GitHubApiPlaygroundIT {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Test
-    void failIntegrationTest() {
-        //so far integration tests are supposed to be executed manually
-        fail("Integration tests failed intentionally");
     }
 }
