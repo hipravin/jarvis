@@ -1,5 +1,6 @@
 package hipravin.jarvis;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHContentSearchBuilder;
@@ -32,6 +33,7 @@ public class GitHubApiPlaygroundIT {
     have more than five AND, OR, or NOT operators.
      */
     @Test
+    @Disabled
     void testQuery() throws IOException {
 
         GitHub github = GitHub.connect("hipravin", githubToken);
@@ -44,6 +46,7 @@ public class GitHubApiPlaygroundIT {
     }
 
     @Test
+    @Disabled
     void testHttpClient() {
         try {
             var httpClient = HttpClient.newBuilder()

@@ -4,7 +4,8 @@ import java.util.List;
 
 public record Book(
         String source,
-        String title,
-        List<BookPage> pages
+        BookMetadata metadata,
+        List<BookPage> pages,
+        byte[] pdfContent
 ) {
 }

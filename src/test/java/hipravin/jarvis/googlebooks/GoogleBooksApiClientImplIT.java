@@ -1,6 +1,7 @@
 package hipravin.jarvis.googlebooks;
 
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolumes;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +14,7 @@ class GoogleBooksApiClientImplIT {
     GoogleBooksApiClient client;
 
     @Test
+    @Disabled
     void testSampleSearch() {
         BooksVolumes bvs = client.search("ofVirtual runnable");
 

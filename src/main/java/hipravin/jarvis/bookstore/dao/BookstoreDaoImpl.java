@@ -25,7 +25,7 @@ public class BookstoreDaoImpl implements BookstoreDao {
     @Override
     public void save(Book book) {
         BookEntity be = new BookEntity();
-        be.setTitle(book.title());
+        be.setTitle(book.metadata().title());
         entityManager.persist(be);
 
         List<BookPageEntity> pageEntities = book.pages().stream()

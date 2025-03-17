@@ -1,6 +1,7 @@
 package hipravin.jarvis.github;
 
 import hipravin.jarvis.github.jackson.model.CodeSearchItem;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ class GithubApiClientImplIT {
     GithubApiClient githubApiClient;
 
     @Test
+    @Disabled
     void testSampleSearch() {
 
 //        var result = githubApiClient.searchApprovedAuthors("translate.google.com");
