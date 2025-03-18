@@ -33,7 +33,7 @@ class BookstoreDaoImplTest {
     @Test
     void testSave() {
         BookEntity be = new BookEntity();
-        be.setTitle("Sample book 1");
+        be.setSource("Sample book 1");
         bookRepository.save(be);
     }
 
@@ -61,7 +61,7 @@ class BookstoreDaoImplTest {
 
     static BookEntity newBookEntity(String title) {
         BookEntity be = new BookEntity();
-        be.setTitle(title);
+        be.setSource(title);
 
         return be;
     }

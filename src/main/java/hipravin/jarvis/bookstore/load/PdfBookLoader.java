@@ -22,7 +22,6 @@ import java.util.function.BiConsumer;
 public class PdfBookLoader implements BookLoader {
     @Override
     public Book load(Path pdfFilePath) {
-        //TODO: limit max file size
         byte[] docBytes;
         try (PDDocument document = Loader.loadPDF((docBytes = Files.readAllBytes(pdfFilePath)))) {
             AccessPermission ap = document.getCurrentAccessPermission();
@@ -68,10 +67,18 @@ public class PdfBookLoader implements BookLoader {
         }
     }
 
+    private byte[] extractPdfPage(byte[] documentBytes, int pageNum) {
+        //naive implementation extractPdfPageNotOptimized produces result where
+        //size of single page pdf is almost as big as whole document.
+        //turned off until optimized. As of now single page pdf will be constructed from whole document on the fly.
+        //possible solution: https://stackoverflow.com/questions/51642943/cleaning-up-unused-images-in-pdf-page-resources
+        return null;
+    }
+
     /**
      * @param pageNum 0-based
      */
-    private byte[] extractPdfPage(byte[] documentBytes, int pageNum) {
+    private byte[] extractPdfPageNotOptimized(byte[] documentBytes, int pageNum) {
         byte[] documentToModify = Arrays.copyOf(documentBytes, documentBytes.length);
         try (PDDocument document = Loader.loadPDF(documentToModify)) {
             for (int i = 0; i < pageNum; i++) {

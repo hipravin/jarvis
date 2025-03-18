@@ -1,10 +1,10 @@
 package hipravin.jarvis.bookstore.dao.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "BOOK")
@@ -15,8 +15,15 @@ public class BookEntity {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "TITLE")
-    private String title;
+    @Column(name = "SOURCE")
+    private String source;
+
+    @Column(name = "METADATA", columnDefinition = "JSONB")
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Map<String, String> metadata;
+
+    @Column(name = "PDF_CONTENT")
+    private byte[] pdfContent;
 
 //    @OneToMany( // @OneToMany is practical only when many means few (c) vladmihalcea
 //            mappedBy = "book",
@@ -33,11 +40,27 @@ public class BookEntity {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getSource() {
+        return source;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+    }
+
+    public byte[] getPdfContent() {
+        return pdfContent;
+    }
+
+    public void setPdfContent(byte[] pdfContent) {
+        this.pdfContent = pdfContent;
     }
 }

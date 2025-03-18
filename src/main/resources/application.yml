@@ -4,6 +4,7 @@ spring:
 
   flyway:
     enabled: false #run migrations manually
+    default-schema: jarvis
 
   datasource:
     url: jdbc:postgresql://localhost:5432/playground?currentSchema=jarvis&reWriteBatchedInserts=true

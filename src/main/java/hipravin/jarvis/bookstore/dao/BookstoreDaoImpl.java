@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Transactional
@@ -23,9 +24,14 @@ public class BookstoreDaoImpl implements BookstoreDao {
     }
 
     @Override
-    public void save(Book book) {
+    public BookEntity save(Book book) {
         BookEntity be = new BookEntity();
-        be.setTitle(book.metadata().title());
+        be.setSource(book.source());
+        be.setPdfContent(book.pdfContent());
+        if(book.metadata().metadata() != null) {
+            be.setMetadata(Map.copyOf(book.metadata().metadata()));
+        }
+
         entityManager.persist(be);
 
         List<BookPageEntity> pageEntities = book.pages().stream()
@@ -33,18 +39,17 @@ public class BookstoreDaoImpl implements BookstoreDao {
                 .toList();
 
         pageEntities.forEach(entityManager::persist);
+
+        return be;
     }
 
     static BookPageEntity mapToEntity(long bookId, BookPage page) {
         BookPageEntity bpe = new BookPageEntity();
         bpe.setBookPageId(new BookPageId(bookId, page.pageNum()));
         bpe.setContent(page.content());
+        bpe.setPdfContent(page.pdfContent());
 
         return bpe;
-    }
-
-    public EntityManager getEntityManager() {
-        return entityManager;
     }
 
     public void setEntityManager(EntityManager entityManager) {

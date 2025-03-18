@@ -12,9 +12,11 @@ public class BookPageEntity {
     @JoinColumn(name = "BOOK_ID", insertable = false, updatable = false)
     private BookEntity book;
 
-    @Basic
     @Column(name = "CONTENT")
     private String content;
+
+    @Column(name = "PDF_CONTENT")
+    private byte[] pdfContent;
 
     public BookPageId getBookPageId() {
         return bookPageId;
@@ -38,5 +40,13 @@ public class BookPageEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public byte[] getPdfContent() {
+        return pdfContent;
+    }
+
+    public void setPdfContent(byte[] pdfContent) {
+        this.pdfContent = pdfContent;
     }
 }
