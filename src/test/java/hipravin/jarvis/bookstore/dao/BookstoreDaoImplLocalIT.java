@@ -3,8 +3,10 @@ package hipravin.jarvis.bookstore.dao;
 import hipravin.jarvis.bookstore.dao.entity.BookEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageId;
+import hipravin.jarvis.bookstore.load.BookLoader;
 import hipravin.jarvis.bookstore.load.PdfBookLoader;
 import hipravin.jarvis.bookstore.load.model.Book;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,11 +17,18 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
 @SpringBootTest
-@ActiveProfiles({"test"})
-class BookstoreDaoImplTest {
+@Disabled
+@ActiveProfiles({"localit"})
+class BookstoreDaoImplLocalIT {
     static Path sampleGarlicPdf = Path.of("src/test/resources/data/bookstore/garlic-onion-15.JChromat.A2006.pdf");
     static Path sampleSaltPdf = Path.of("src/test/resources/data/bookstore/estimating salt intake not so easy.pdf");
+
+    @Autowired
+    private BookLoader bookLoader;
 
     @Autowired
     private BookRepository bookRepository;
@@ -52,11 +61,38 @@ class BookstoreDaoImplTest {
     }
 
     @Test
+    void testSearch() {
+        List<BookPageEntity> pages = bookstoreDao.search("transaction serializable");
+
+        pages.forEach(p -> {
+            assertTrue(p.getContent().toLowerCase().contains("transact"));
+            assertTrue(p.getContent().toLowerCase().contains("serial"));
+        });
+
+    }
+
+    @Test
     void testSaveSampleParsed() {
         PdfBookLoader loader = new PdfBookLoader();
 
         Book garlicOnion = loader.load(sampleGarlicPdf);
         bookstoreDao.save(garlicOnion);
+    }
+
+    @Test
+    void testSaveExt() {
+        var paths = List.of(Path.of("C:/Users/Alex/YandexDisk/books/developer/designing-data-intensive-applications.pdf"),
+                Path.of("C:/Users/Alex/YandexDisk/books/developer/Docker.Deep.Dive.2024.pdf"),
+                Path.of("C:/Users/Alex/YandexDisk/books/developer/Learning PostgreSQL.pdf"),
+                Path.of("C:/Users/Alex/YandexDisk/books/developer/high-performance-java-persistence-vlad-mihalcea.pdf")
+        );
+
+        paths.forEach(p -> {
+            Book book = bookLoader.load(p);
+            System.out.printf("Parsed: %s %s, pages: %d%n", book.source(), book.metadata().title(), book.pages().size());
+
+            bookstoreDao.save(book);
+        });
     }
 
     static BookEntity newBookEntity(String title) {

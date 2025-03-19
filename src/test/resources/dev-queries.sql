@@ -2,7 +2,9 @@ set search_path to jarvis,public;
 
 select * from BOOK;
 
-select * from BOOK_PAGE;
+select * from BOOK_PAGE where book_id = 103 order by page_num;
+
+
 select count(*) from BOOK_PAGE;
 delete from BOOK where 1=1;
 
@@ -34,5 +36,8 @@ select * from book_page where to_tsvector('english', content) @@ to_tsquery('Com
 select * from book_page where to_tsvector('english', content) @@ to_tsquery('''@Transactional''');
 
 
-select * from book_page where to_tsvector('english', content) @@ to_tsquery('transaction');
+select * from book_page where to_tsvector('english', content) @@ to_tsquery('transaction & repeatable & read');
+
+select * from book_page where to_tsvector('english', content) @@ plainto_tsquery('transactional serializable');
+
 select * from book_page where to_tsvector('english', content) @@ to_tsquery('isorhamnetin');

@@ -20,7 +20,7 @@
 
         <github-api.version>1.326</github-api.version>
         <jackson.version>2.18.1</jackson.version>
-        <guava.version>33.3.1-jre</guava.version>
+        <guava.version>33.4.0-jre</guava.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
         <esapi.version>2.6.0.0</esapi.version>
         <pdfbox.version>3.0.4</pdfbox.version>
@@ -28,6 +28,7 @@
         <testcontainers.postgresql.version>1.20.6</testcontainers.postgresql.version>
         <flyway-maven-plugin.version>11.4.0</flyway-maven-plugin.version>
         <flyway-core.version>11.4.0</flyway-core.version>
+        <hsqldb.version>2.7.4</hsqldb.version>
     </properties>
 
     <dependencies>
@@ -73,12 +74,14 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
             <version>${flyway-core.version}</version>
+            <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-database-postgresql</artifactId>
             <version>${flyway-core.version}</version>
-            <scope>runtime</scope>
+            <scope>test</scope>
         </dependency>
 
 
@@ -138,6 +141,12 @@
             <version>${guava.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>${hsqldb.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.kohsuke</groupId>

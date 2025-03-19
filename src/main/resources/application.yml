@@ -7,9 +7,12 @@ spring:
     default-schema: jarvis
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/playground?currentSchema=jarvis&reWriteBatchedInserts=true
-    username: postgres
-    password: admin
+    url: ${JARVIS_DB_URL}
+    username: ${JARVIS_DB_USER}
+    password: ${JARVIS_DB_PASSWORD}
+#    url: jdbc:postgresql://localhost:5432/playground?currentSchema=jarvis&reWriteBatchedInserts=true
+#    username: postgres
+#    password: admin
 
   jpa:
     properties:

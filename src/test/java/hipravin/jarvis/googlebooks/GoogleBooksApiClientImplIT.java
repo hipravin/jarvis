@@ -8,13 +8,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
+@Disabled //itlocal tests are intended for manual execution only
 @ActiveProfiles(profiles = {"itlocal"})
 class GoogleBooksApiClientImplIT {
     @Autowired
     GoogleBooksApiClient client;
 
     @Test
-    @Disabled
     void testSampleSearch() {
         BooksVolumes bvs = client.search("ofVirtual runnable");
 

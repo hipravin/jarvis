@@ -20,7 +20,10 @@ public class BookstoreDaoImpl implements BookstoreDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public BookstoreDaoImpl() {
+    private final BookRepository bookRepository;
+
+    public BookstoreDaoImpl(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     @Override
@@ -28,7 +31,7 @@ public class BookstoreDaoImpl implements BookstoreDao {
         BookEntity be = new BookEntity();
         be.setSource(book.source());
         be.setPdfContent(book.pdfContent());
-        if(book.metadata().metadata() != null) {
+        if (book.metadata().metadata() != null) {
             be.setMetadata(Map.copyOf(book.metadata().metadata()));
         }
 
@@ -41,6 +44,24 @@ public class BookstoreDaoImpl implements BookstoreDao {
         pageEntities.forEach(entityManager::persist);
 
         return be;
+    }
+
+    @Override
+    public BookEntity findById(long id) {
+        return bookRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Book with '%d' not found".formatted(id)));
+    }
+
+    @Override
+    public List<BookPageEntity> search(String keywords) {
+        String searchNativeQuery = "select * from {h-schema}book_page where to_tsvector('english', content) @@ plainto_tsquery(:query)";
+        var query = entityManager.createNativeQuery(searchNativeQuery, BookPageEntity.class)
+                .setParameter("query", keywords);
+
+        @SuppressWarnings("unchecked")
+        List<BookPageEntity> pages = (List<BookPageEntity>) query.getResultList();
+
+        return pages;
     }
 
     static BookPageEntity mapToEntity(long bookId, BookPage page) {

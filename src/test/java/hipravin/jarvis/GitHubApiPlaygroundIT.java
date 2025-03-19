@@ -18,6 +18,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @SpringBootTest
+@Disabled //itlocal tests are intended for manual execution only
 @ActiveProfiles(profiles = {"itlocal"})
 public class GitHubApiPlaygroundIT {
     @Value("${github.token}")
@@ -33,7 +34,6 @@ public class GitHubApiPlaygroundIT {
     have more than five AND, OR, or NOT operators.
      */
     @Test
-    @Disabled
     void testQuery() throws IOException {
 
         GitHub github = GitHub.connect("hipravin", githubToken);
@@ -46,7 +46,6 @@ public class GitHubApiPlaygroundIT {
     }
 
     @Test
-    @Disabled
     void testHttpClient() {
         try {
             var httpClient = HttpClient.newBuilder()

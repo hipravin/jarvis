@@ -1,0 +1,15 @@
+googlebooks:
+  books-search-url: "https://stub-googleapis/books/v1/volumes"
+  api-key: "stub-key"
+
+github:
+  code-search-url: "https://stub-github/search/code"
+  token: "stub-token"
+
+logging:
+  level:
+    ru.hipravin: DEBUG
+    hipravin: DEBUG
+    org.springframework: INFO
+#    org.hibernate.SQL: DEBUG
+#    org.postgresql: TRACE #log exact queries, even bytea content. Not suitable for prod because of verbosity
