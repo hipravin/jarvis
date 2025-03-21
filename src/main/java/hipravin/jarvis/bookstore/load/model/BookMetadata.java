@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public record BookMetadata(
-        String title,
+        String title, //title from file metadata, can be empty or meaningless
         String author,
         String creator,
         String producer,

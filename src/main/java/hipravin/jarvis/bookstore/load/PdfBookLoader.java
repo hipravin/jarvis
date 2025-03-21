@@ -20,25 +20,37 @@ import java.util.function.BiConsumer;
 
 @Component
 public class PdfBookLoader implements BookLoader {
+
     @Override
     public Book load(Path pdfFilePath) {
-        byte[] docBytes;
-        try (PDDocument document = Loader.loadPDF((docBytes = Files.readAllBytes(pdfFilePath)))) {
+        try {
+            byte[] docBytes = Files.readAllBytes(pdfFilePath);
+            return load(docBytes, pdfFilePath.getFileName().toString());
+        } catch (IOException e) {
+            throw new PdfProcessException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Book load(byte[] documentBinaryContent, String title) {
+        try (PDDocument document = Loader.loadPDF(documentBinaryContent)) {
             AccessPermission ap = document.getCurrentAccessPermission();
             if (!ap.canExtractContent()) {
-                throw new PdfProcessException("Extract content is forbidden for file '%s', access permission: %d"
-                        .formatted(pdfFilePath, ap.getPermissionBytes()));
+                throw new PdfProcessException("Extract content is forbidden for document '%s', access permission: %d"
+                        .formatted(title, ap.getPermissionBytes()));
             }
 
             List<BookPage> pages = new ArrayList<>();
             processPdfPages(document, (num, content) -> {
-                pages.add(new BookPage(num, content, extractPdfPage(docBytes, num)));
+                pages.add(new BookPage(num, content, extractPdfPage(documentBinaryContent, num)));
             });
 
             return new Book(
-                    getPdfFileName(pdfFilePath),
+                    removePdfExtension(title),
+                    null,
+                    null,
                     BookMetadata.from(document.getDocumentInformation()),
-                    pages, docBytes);
+                    pages, documentBinaryContent);
         } catch (IOException e) {
             throw new PdfProcessException(e.getMessage(), e);
         }
@@ -58,8 +70,11 @@ public class PdfBookLoader implements BookLoader {
         }
     }
 
-    private static String getPdfFileName(Path path) {
-        String filename = path.getFileName().toString();
+    private static String fileNameWithoutPdfExtension(Path path) {
+        return removePdfExtension(path.getFileName().toString());
+    }
+
+    private static String removePdfExtension(String filename) {
         if (filename.toLowerCase().endsWith(".pdf")) {
             return filename.substring(0, filename.length() - ".pdf".length());
         } else {

@@ -14,6 +14,12 @@ spring:
 #    username: postgres
 #    password: admin
 
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+      enabled: true
+
   jpa:
     properties:
       hibernate:
@@ -95,4 +101,4 @@ github:
 logging:
   level:
     com.hipravin: DEBUG
-    org.springframework: INFO
+    org.springframework: DEBUG

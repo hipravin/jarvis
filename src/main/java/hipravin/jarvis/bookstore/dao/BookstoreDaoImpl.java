@@ -29,7 +29,7 @@ public class BookstoreDaoImpl implements BookstoreDao {
     @Override
     public BookEntity save(Book book) {
         BookEntity be = new BookEntity();
-        be.setSource(book.source());
+        be.setTitle(book.title());
         be.setPdfContent(book.pdfContent());
         if (book.metadata().metadata() != null) {
             be.setMetadata(Map.copyOf(book.metadata().metadata()));

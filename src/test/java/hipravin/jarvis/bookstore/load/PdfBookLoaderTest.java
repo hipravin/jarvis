@@ -25,7 +25,7 @@ class PdfBookLoaderTest {
     void testLoadSalt() {
         Book sb = loader.load(sampleSaltPdf);
 
-        assertEquals("estimating salt intake not so easy", sb.source());
+        assertEquals("estimating salt intake not so easy", sb.title());
         assertEquals("Estimating salt intake in humans: not so easy!1", sb.metadata().title());
         assertEquals("Titze Jens", sb.metadata().author());
         assertEquals(OffsetDateTime.parse("2023-02-10T10:18:28+05:30"), sb.metadata().creationDate());

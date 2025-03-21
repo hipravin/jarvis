@@ -6,4 +6,5 @@ import java.nio.file.Path;
 
 public interface BookLoader {
     Book load(Path file);
+    Book load(byte[] documentBinaryContent, String title);
 }

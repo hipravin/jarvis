@@ -42,7 +42,7 @@ class BookstoreDaoImplLocalIT {
     @Test
     void testSave() {
         BookEntity be = new BookEntity();
-        be.setSource("Sample book 1");
+        be.setTitle("Sample book 1");
         bookRepository.save(be);
     }
 
@@ -89,7 +89,7 @@ class BookstoreDaoImplLocalIT {
 
         paths.forEach(p -> {
             Book book = bookLoader.load(p);
-            System.out.printf("Parsed: %s %s, pages: %d%n", book.source(), book.metadata().title(), book.pages().size());
+            System.out.printf("Parsed: %s %s, pages: %d%n", book.title(), book.metadata().title(), book.pages().size());
 
             bookstoreDao.save(book);
         });
@@ -97,7 +97,7 @@ class BookstoreDaoImplLocalIT {
 
     static BookEntity newBookEntity(String title) {
         BookEntity be = new BookEntity();
-        be.setSource(title);
+        be.setTitle(title);
 
         return be;
     }
