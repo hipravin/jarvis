@@ -41,3 +41,50 @@ select * from book_page where to_tsvector('english', content) @@ to_tsquery('tra
 select * from book_page where to_tsvector('english', content) @@ plainto_tsquery('transactional serializable');
 
 select * from book_page where to_tsvector('english', content) @@ to_tsquery('isorhamnetin');
+
+---
+create table book_page_test as
+select generate_series / 100 as id, mod(generate_series, 100) as page_num, 'sample test content ' || generate_series || ' ' || gen_random_uuid() as content from generate_series(1, 1000);
+
+select * from book_page_test;
+drop table book_page_test;
+
+select id, count(id) from book_page_test where content ilike '%0b%'
+    group by id having count(id) > 10 order by 1;
+
+select * from book_page_test where content ilike '%0b%';
+
+
+with pages as (
+    select * from book_page_test where content ilike '%0b%')
+SELECT *
+FROM (
+         SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY page_num) AS n
+         FROM pages
+     ) AS x
+WHERE n <= 4
+
+---
+with pages as (
+    select * from book_page_test where content ilike '%0b%')
+SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY page_num) AS n
+FROM pages order by id;
+
+with pages as (
+    select * from book_page where to_tsvector('english', content) @@ plainto_tsquery('transaction'))
+select *
+    from (
+         select *, row_number() over (partition by book_id order by page_num) as n
+         from pages
+     ) as x
+where n <= 10;
+
+with pages as (
+    select * from book_page where to_tsvector('english', content) @@ plainto_tsquery('potato'))
+select *
+    from (
+        select *, row_number() over (partition by book_id order by page_num) as n
+        from pages
+        ) as x
+    where n <= 10;
+

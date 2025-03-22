@@ -18,11 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class JarvisController {
 
     private final SearchEngine searchEngine;
-    private final BookstoreDao bookstoreDao;
 
     public JarvisController(SearchEngine searchEngine, BookstoreDao bookstoreDao) {
         this.searchEngine = searchEngine;
-        this.bookstoreDao = bookstoreDao;
     }
 
     @PostMapping("/query")
@@ -30,11 +28,5 @@ public class JarvisController {
         JarvisResponse response = searchEngine.search(request);
 
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping(path ="/book/{id}/rawpdf", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<byte[]> rawPdf(@NotNull @PathVariable("id") Long id) {
-        BookEntity bookEntity = bookstoreDao.findById(id);
-        return ResponseEntity.ok(bookEntity.getPdfContent());
     }
 }

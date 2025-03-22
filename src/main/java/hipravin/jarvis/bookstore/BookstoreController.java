@@ -5,6 +5,8 @@ import hipravin.jarvis.bookstore.dao.BookstoreDao;
 import hipravin.jarvis.bookstore.dao.entity.BookEntity;
 import hipravin.jarvis.bookstore.load.BookLoader;
 import hipravin.jarvis.bookstore.load.model.Book;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +39,11 @@ public class BookstoreController {
         BookEntity bookEntity = bookstoreDao.save(book);
 
         return ResponseEntity.ok(Map.of("title", book.title(), "id", bookEntity.getId()));
+    }
+
+    @GetMapping(path ="/book/{id}/rawpdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> rawPdf(@NotNull @PathVariable("id") Long id) {
+        BookEntity bookEntity = bookstoreDao.findById(id);
+        return ResponseEntity.ok(bookEntity.getPdfContent());
     }
 }

@@ -54,9 +54,18 @@ public class BookstoreDaoImpl implements BookstoreDao {
 
     @Override
     public List<BookPageEntity> search(String keywords) {
-        String searchNativeQuery = "select * from {h-schema}book_page where to_tsvector('english', content) @@ plainto_tsquery(:query)";
+        String searchNativeQuery = """
+                with pages as (
+                    select * from {h-schema}book_page where to_tsvector('english', content) @@ plainto_tsquery(:query))
+                select *
+                    from (
+                         select *, row_number() over (partition by book_id order by page_num) as n
+                         from pages
+                     ) as x
+                where n <= :max_per_book""";
         var query = entityManager.createNativeQuery(searchNativeQuery, BookPageEntity.class)
-                .setParameter("query", keywords);
+                .setParameter("query", keywords)
+                .setParameter("max_per_book", 10);
 
         @SuppressWarnings("unchecked")
         List<BookPageEntity> pages = (List<BookPageEntity>) query.getResultList();
