@@ -1,6 +1,7 @@
 package hipravin.jarvis.bookstore.dao;
 
 import hipravin.jarvis.bookstore.dao.entity.BookEntity;
+import hipravin.jarvis.bookstore.dao.entity.BookFtsPageEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageId;
 import hipravin.jarvis.bookstore.load.BookLoader;
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Disabled
-@ActiveProfiles({"localit"})
+@ActiveProfiles({"itlocal"})
 class BookstoreDaoImplLocalIT {
     static Path sampleGarlicPdf = Path.of("src/test/resources/data/bookstore/garlic-onion-15.JChromat.A2006.pdf");
     static Path sampleSaltPdf = Path.of("src/test/resources/data/bookstore/estimating salt intake not so easy.pdf");
@@ -62,7 +63,7 @@ class BookstoreDaoImplLocalIT {
 
     @Test
     void testSearch() {
-        List<BookPageEntity> pages = bookstoreDao.search("transaction serializable");
+        List<BookFtsPageEntity> pages = bookstoreDao.search("transaction serializable");
 
         pages.forEach(p -> {
             assertTrue(p.getContent().toLowerCase().contains("transact"));

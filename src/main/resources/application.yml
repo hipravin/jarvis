@@ -23,6 +23,8 @@ spring:
   jpa:
     properties:
       hibernate:
+        query:
+          fail_on_pagination_over_collection_fetch: true
         default_schema: "jarvis"
         order_inserts: true
         order_updates: true

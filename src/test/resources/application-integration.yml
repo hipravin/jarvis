@@ -11,5 +11,6 @@ logging:
     ru.hipravin: DEBUG
     hipravin: DEBUG
     org.springframework: INFO
+    org.hibernate.engine.jdbc.spi.SqlExceptionHelper: OFF
 #    org.hibernate.SQL: DEBUG
 #    org.postgresql: TRACE #log exact queries, even bytea content. Not suitable for prod because of verbosity

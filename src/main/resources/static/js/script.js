@@ -5,6 +5,7 @@ const sendChatBtn = document.querySelector(".chat-input span");
 const leftPane = document.querySelector(".left-pane");
 const ghToggle = document.getElementById("gh-toggle");
 const gbToggle = document.getElementById("gb-toggle");
+const bsToggle = document.getElementById("bs-toggle");
 
 let userMessage = null; // Variable to store user's message
 let lastSearchResponseBody = null;
@@ -43,6 +44,9 @@ const fillItems = (items, chatLi) => {
             searchSourceIcon.classList.add("material-symbols-outlined");
             searchSourceIcon.textContent = "code_blocks";
         } else if (item.searchProvider === "GOOGLE_BOOKS") {
+            searchSourceIcon.classList.add("material-symbols-outlined");
+            searchSourceIcon.textContent = "book_2";
+        } else if (item.searchProvider === "BOOKSTORE") {
             searchSourceIcon.classList.add("material-symbols-outlined");
             searchSourceIcon.textContent = "book_2";
         }
@@ -107,6 +111,9 @@ const enabledSearchProviders = () => {
     }
     if (gbToggle.classList.contains("provider-on")) {
         providers.push("GOOGLE_BOOKS");
+    }
+    if (bsToggle.classList.contains("provider-on")) {
+        providers.push("BOOKSTORE");
     }
     return providers;
 }
@@ -206,4 +213,7 @@ ghToggle.addEventListener("click", (e) => {
 });
 gbToggle.addEventListener("click", (e) => {
     toggleClass(gbToggle, "provider-on", "provider-off");
+});
+bsToggle.addEventListener("click", (e) => {
+    toggleClass(bsToggle, "provider-on", "provider-off");
 });

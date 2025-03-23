@@ -30,7 +30,7 @@ public class BookEntity {
     private Integer editionPublished;
 
     @Column(name = "PDF_CONTENT")
-    private byte[] pdfContent;
+    private byte[] pdfContent;//TODO: avoid unnecessary pdf loading from DB (Projection, EntityGraph?)
 
     @Column(name = "LAST_UPDATED")
     @Temporal(TemporalType.TIMESTAMP)
