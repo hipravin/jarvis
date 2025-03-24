@@ -1,7 +1,7 @@
 package hipravin.jarvis.engine;
 
 import hipravin.jarvis.bookstore.dao.BookstoreDao;
-import hipravin.jarvis.bookstore.dao.entity.BookFtsPageEntity;
+import hipravin.jarvis.bookstore.dao.entity.BookPageFtsEntity;
 import hipravin.jarvis.engine.model.*;
 import hipravin.jarvis.github.GithubApiClient;
 import hipravin.jarvis.github.GithubProperties;
@@ -17,6 +17,8 @@ import org.owasp.esapi.ESAPI;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -126,16 +128,26 @@ public class SearchEngineImpl implements SearchEngine {
     }
 
     private JarvisResponse searchBookstore(String query) {
-        List<BookFtsPageEntity> matchedbooks = bookstoreDao.search(query);
+        List<BookPageFtsEntity> matchedBookPages = bookstoreDao.search(query);
 
-        List<ResponseItem> responseItems = matchedbooks.stream()
-                .map(bp -> new ResponseItem(new Link(bp.getBook().getTitle(), "#"),
-                        BOOKSTORE, bp.getContentHighlighted()))
+        List<ResponseItem> responseItems = matchedBookPages.stream()
+                .map(this::fromBookPage)
                 .toList();
 
-        List<CodeFragment> codeFragments = Collections.emptyList();
+        return new JarvisResponse("", responseItems, Collections.emptyList());
+    }
 
-        return new JarvisResponse("", responseItems, codeFragments);
+    private ResponseItem fromBookPage(BookPageFtsEntity bp) {
+        String title = bp.getBook().getTitle();
+        Long bookId = Objects.requireNonNull(bp.getBookPageId().getBookId());
+        Long pageNum = Objects.requireNonNull(bp.getBookPageId().getPageNum());
+
+        String linkText = "%s, p.%d".formatted(title, pageNum);
+        String linkHref = "/api/v1/bookstore/book/%d/rawpdf#page=%d".formatted(
+                bookId, pageNum);
+        Link bookPageLink = new Link(linkText, linkHref);
+
+        return new ResponseItem(bookPageLink, BOOKSTORE, bp.getContentHighlighted());
     }
 
     public static String emptyToOthers(String name) {

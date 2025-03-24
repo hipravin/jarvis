@@ -43,10 +43,10 @@ const fillItems = (items, chatLi) => {
         if (item.searchProvider === "GITHUB") {
             searchSourceIcon.classList.add("material-symbols-outlined");
             searchSourceIcon.textContent = "code_blocks";
-        } else if (item.searchProvider === "GOOGLE_BOOKS") {
+        }  else if (item.searchProvider === "BOOKSTORE") {
             searchSourceIcon.classList.add("material-symbols-outlined");
-            searchSourceIcon.textContent = "book_2";
-        } else if (item.searchProvider === "BOOKSTORE") {
+            searchSourceIcon.textContent = "import_contacts";
+        } else if (item.searchProvider === "GOOGLE_BOOKS") {
             searchSourceIcon.classList.add("material-symbols-outlined");
             searchSourceIcon.textContent = "book_2";
         }
@@ -109,12 +109,13 @@ const enabledSearchProviders = () => {
     if (ghToggle.classList.contains("provider-on")) {
         providers.push("GITHUB");
     }
-    if (gbToggle.classList.contains("provider-on")) {
-        providers.push("GOOGLE_BOOKS");
-    }
     if (bsToggle.classList.contains("provider-on")) {
         providers.push("BOOKSTORE");
     }
+    if (gbToggle.classList.contains("provider-on")) {
+        providers.push("GOOGLE_BOOKS");
+    }
+
     return providers;
 }
 
@@ -211,9 +212,9 @@ sendChatBtn.addEventListener("click", handleChat);
 ghToggle.addEventListener("click", (e) => {
     toggleClass(ghToggle, "provider-on", "provider-off");
 });
-gbToggle.addEventListener("click", (e) => {
-    toggleClass(gbToggle, "provider-on", "provider-off");
-});
 bsToggle.addEventListener("click", (e) => {
     toggleClass(bsToggle, "provider-on", "provider-off");
+});
+gbToggle.addEventListener("click", (e) => {
+    toggleClass(gbToggle, "provider-on", "provider-off");
 });

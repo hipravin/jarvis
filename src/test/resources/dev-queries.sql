@@ -110,3 +110,20 @@ SELECT ts_headline('english',
                  and return them in order of their similarity to the
                  query.',
                    to_tsquery('english', 'query & similarity'));
+
+
+with pages_ranked as
+         (select bp.*, b.title, ts_rank_cd(fts, query) as rank
+          from book_page bp join book b on b.id = bp.book_id,
+                           to_tsvector('english', content) fts,
+                           websearch_to_tsquery('transaction') query
+          where fts @@ query)
+select *,
+       ts_headline('english', content, websearch_to_tsquery('english', 'transaction'),
+                   'MaxFragments=5, MaxWords=15, MinWords=3, StartSel=<b>, StopSel=</b>') as content_highlighted
+from (select *,
+             row_number() over (partition by book_id order by rank desc) as rownum_per_book,
+             max(rank) over (partition by book_id)                       as max_rank_per_book
+      from pages_ranked) as x
+where rownum_per_book <= :max_per_book
+order by max_rank_per_book desc, book_id limit :max_total;

@@ -2,15 +2,14 @@ package hipravin.jarvis.bookstore.dao;
 
 
 import hipravin.jarvis.bookstore.dao.entity.BookEntity;
-import hipravin.jarvis.bookstore.dao.entity.BookFtsPageEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageEntity;
+import hipravin.jarvis.bookstore.dao.entity.BookPageFtsEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageId;
 import hipravin.jarvis.bookstore.load.model.Book;
 import hipravin.jarvis.bookstore.load.model.BookPage;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,14 +23,14 @@ public class BookstoreDaoImpl implements BookstoreDao {
 
     private static final String BOOK_FTS_NATIVE_QUERY = """
             with pages_ranked as
-                     (select book_page.*, ts_rank_cd(fts, query) as rank
-                      from {h-schema}book_page,
-                           to_tsvector('english', content) fts,
-                           websearch_to_tsquery(:query) query
+                     (select bp.*, b.title as book_title, ts_rank_cd(fts, query) as rank
+                      from {h-schema}book_page bp join {h-schema}book b on b.id = bp.book_id,
+                                       to_tsvector('english', content) fts,
+                                       websearch_to_tsquery(:query) query
                       where fts @@ query)
             select *,
                    ts_headline('english', content, websearch_to_tsquery('english', :query),
-                                  'MaxFragments=5, MaxWords=15, MinWords=3, StartSel=<b>, StopSel=</b>') as content_highlighted
+                               'MaxFragments=5, MaxWords=15, MinWords=3, StartSel=<b>, StopSel=</b>') as content_highlighted
             from (select *,
                          row_number() over (partition by book_id order by rank desc) as rownum_per_book,
                          max(rank) over (partition by book_id)                       as max_rank_per_book
@@ -72,18 +71,14 @@ public class BookstoreDaoImpl implements BookstoreDao {
     }
 
     @Override
-    public List<BookFtsPageEntity> search(String fullTextSearchQuery) {
-        var query = entityManager.createNativeQuery(BOOK_FTS_NATIVE_QUERY, BookFtsPageEntity.class)
+    public List<BookPageFtsEntity> search(String fullTextSearchQuery) {
+        var query = entityManager.createNativeQuery(BOOK_FTS_NATIVE_QUERY, BookPageFtsEntity.class)
                 .setParameter("query", fullTextSearchQuery)
                 .setParameter("max_per_book", 3)
                 .setParameter("max_total", 20);
 
         @SuppressWarnings("unchecked")
-        List<BookFtsPageEntity> pages = (List<BookFtsPageEntity>) query.getResultList();
-
-        for (BookFtsPageEntity page : pages) {
-            Hibernate.initialize(page.getBook());
-        }
+        List<BookPageFtsEntity> pages = (List<BookPageFtsEntity>) query.getResultList();
 
         return pages;
     }

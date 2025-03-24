@@ -11,8 +11,7 @@ public class BookPageBaseEntity {
     @EmbeddedId
     private BookPageId bookPageId;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)//TODO: check native join fetch options
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOOK_ID", insertable = false, updatable = false)
     @Fetch(FetchMode.JOIN)
     private BookEntity book;

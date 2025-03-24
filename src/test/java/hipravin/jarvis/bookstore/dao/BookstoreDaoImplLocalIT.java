@@ -1,7 +1,7 @@
 package hipravin.jarvis.bookstore.dao;
 
 import hipravin.jarvis.bookstore.dao.entity.BookEntity;
-import hipravin.jarvis.bookstore.dao.entity.BookFtsPageEntity;
+import hipravin.jarvis.bookstore.dao.entity.BookPageFtsEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageId;
 import hipravin.jarvis.bookstore.load.BookLoader;
@@ -63,7 +63,7 @@ class BookstoreDaoImplLocalIT {
 
     @Test
     void testSearch() {
-        List<BookFtsPageEntity> pages = bookstoreDao.search("transaction serializable");
+        List<BookPageFtsEntity> pages = bookstoreDao.search("transaction serializable");
 
         pages.forEach(p -> {
             assertTrue(p.getContent().toLowerCase().contains("transact"));

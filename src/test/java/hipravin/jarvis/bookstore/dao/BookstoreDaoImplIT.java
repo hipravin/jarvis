@@ -1,7 +1,7 @@
 package hipravin.jarvis.bookstore.dao;
 
 import hipravin.jarvis.bookstore.dao.entity.BookEntity;
-import hipravin.jarvis.bookstore.dao.entity.BookFtsPageEntity;
+import hipravin.jarvis.bookstore.dao.entity.BookPageFtsEntity;
 import hipravin.jarvis.bookstore.load.BookLoader;
 import hipravin.jarvis.bookstore.load.model.Book;
 import org.junit.jupiter.api.Test;
@@ -68,7 +68,6 @@ class BookstoreDaoImplIT {
         assertEquals(1, search1.pageCount());
         assertEquals(Set.of(carb.getId()), search1.documentIds());
         assertTrue(search1.bestMatchHightlighted().contains("<b>potato</b>"));
-        System.out.println("Best match: " + search1.bestMatchHightlighted());
 
         assertThrows(DataAccessException.class, () -> {
             bookstoreDao.save(bookLoader.load(carbBook.pdfContent(), "Other title")); //duplicated binary content
@@ -78,15 +77,16 @@ class BookstoreDaoImplIT {
     record SearchSummary(int pageCount, Set<Long> documentIds, String bestMatchHightlighted) {}
 
     SearchSummary testSearch(String... queryTerms) {
-        List<BookFtsPageEntity> pages = bookstoreDao.search(String.join(" ", queryTerms));
-        for (BookFtsPageEntity page : pages) {
+        List<BookPageFtsEntity> pages = bookstoreDao.search(String.join(" ", queryTerms));
+        for (BookPageFtsEntity page : pages) {
             for (String term : queryTerms) {
                 assertTrue(page.getContent().contains(term), page.getContent() + ", terms:" + Arrays.toString(queryTerms));
             }
+            assertNotNull(page.getBookTitle());
         }
         return new SearchSummary(pages.size(),
                 pages.stream().map(p -> p.getBookPageId().getBookId()).collect(Collectors.toSet()),
-                pages.stream().map(BookFtsPageEntity::getContentHighlighted).findFirst().orElse("no pages matched"));
+                pages.stream().map(BookPageFtsEntity::getContentHighlighted).findFirst().orElse("no pages matched"));
     }
 
     static void assertNow(Instant actual, TemporalAmount delta) {
