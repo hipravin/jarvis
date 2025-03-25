@@ -1,10 +1,6 @@
 package hipravin.jarvis.bookstore.load;
 
 import hipravin.jarvis.bookstore.load.model.Book;
-import hipravin.jarvis.bookstore.load.model.BookPage;
-import org.apache.pdfbox.Loader;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

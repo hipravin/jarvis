@@ -6,6 +6,9 @@ github:
   code-search-url: "https://stub-github/search/code"
   token: "stub-token"
 
+bookstore:
+  loader-root-path: "src/test/resources/data/bookstore"
+
 spring:
   datasource:
     driver-class-name: org.hsqldb.jdbc.JDBCDriver

@@ -65,9 +65,12 @@ management:
     process:
       enabled: true
 
+bookstore:
+  loader-root-path: "C:/Users/Alex/YandexDisk/jarvis/bookstore"
+
 googlebooks:
   books-search-url: "https://www.googleapis.com/books/v1/volumes"
-  api-key: ${GOOGLE_API_KEY} #TODO: encrypt with symmetric key?
+  api-key: ${GOOGLE_API_KEY}
   connection:
     timeout: 10_000
 

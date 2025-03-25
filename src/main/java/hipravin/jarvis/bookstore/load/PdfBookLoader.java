@@ -24,6 +24,8 @@ public class PdfBookLoader implements BookLoader {
     @Override
     public Book load(Path pdfFilePath) {
         try {
+            requirePdf(pdfFilePath);
+
             byte[] docBytes = Files.readAllBytes(pdfFilePath);
             return load(docBytes, pdfFilePath.getFileName().toString());
         } catch (IOException e) {
@@ -56,6 +58,17 @@ public class PdfBookLoader implements BookLoader {
         }
     }
 
+    private static Path requirePdf(Path path) throws IOException {
+        if (path == null || !Files.isReadable(path)) {
+            throw new PdfProcessException(path + " is not a readable file");
+        }
+        String contentType = Files.probeContentType(path);
+        if (!"application/pdf".equals(contentType)) {
+            throw new PdfProcessException("File is not in pdf format: " + path + ", actual content type: " + contentType);
+        }
+        return path;
+    }
+
     private void processPdfPages(PDDocument document, BiConsumer<Integer, String> pageConsumer) throws IOException {
         PDFTextStripper stripper = new PDFTextStripper();
         stripper.setSortByPosition(false);
@@ -68,10 +81,6 @@ public class PdfBookLoader implements BookLoader {
 
             pageConsumer.accept(i - 1, text);//adjust to 0-based
         }
-    }
-
-    private static String fileNameWithoutPdfExtension(Path path) {
-        return removePdfExtension(path.getFileName().toString());
     }
 
     private static String removePdfExtension(String filename) {
@@ -99,7 +108,7 @@ public class PdfBookLoader implements BookLoader {
             for (int i = 0; i < pageNum; i++) {
                 document.removePage(0);
             }
-            while(document.getNumberOfPages() > 1) {
+            while (document.getNumberOfPages() > 1) {
                 document.removePage(document.getNumberOfPages() - 1);
             }
 
