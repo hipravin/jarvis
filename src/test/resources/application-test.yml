@@ -9,13 +9,13 @@ github:
 spring:
   datasource:
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
-    url: jdbc:hsqldb:mem:testdb;sql.syntax_pgs=true
+    url: jdbc:hsqldb:mem:testdb-${random.int};sql.syntax_pgs=true
     username: sa
     password:
 
   sql:
     init:
-      mode: always
+      mode: embedded
 
   jpa:
     properties:

@@ -43,7 +43,7 @@ public class BookstoreController {
 
     @GetMapping(path ="/book/{id}/rawpdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> rawPdf(@NotNull @PathVariable("id") Long id) {
-        BookEntity bookEntity = bookstoreDao.findById(id);
+        BookEntity bookEntity = bookstoreDao.findByIdFetchPdf(id);
         return ResponseEntity.ok(bookEntity.getPdfContent());
     }
 }

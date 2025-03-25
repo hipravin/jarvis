@@ -4,6 +4,7 @@ import hipravin.jarvis.bookstore.dao.entity.BookEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageFtsEntity;
 import hipravin.jarvis.bookstore.load.BookLoader;
 import hipravin.jarvis.bookstore.load.model.Book;
+import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,7 +56,7 @@ class BookstoreDaoImplIT {
 
         assertEquals("Estimating salt intake in humans: not so easy!1", bookEntity.getMetadata().get("Title"));
 
-        BookEntity byIdEntity = bookstoreDao.findById(bookEntity.getId());
+        BookEntity byIdEntity = bookstoreDao.findByIdFetchPdf(bookEntity.getId());
         assertArrayEquals(bookEntity.getPdfContent(), byIdEntity.getPdfContent(),
                 "pdf contents are not equal for book " + byIdEntity.getTitle());
         assertNow(bookEntity.getLastUpdated(), Duration.ofSeconds(5));
@@ -72,6 +73,10 @@ class BookstoreDaoImplIT {
         assertThrows(DataAccessException.class, () -> {
             bookstoreDao.save(bookLoader.load(carbBook.pdfContent(), "Other title")); //duplicated binary content
         });
+
+        assertThrows(LazyInitializationException.class, () -> {
+            bookstoreDao.findById(carb.getId()).getPdfContent();
+        });
     }
 
     record SearchSummary(int pageCount, Set<Long> documentIds, String bestMatchHightlighted) {}
@@ -82,7 +87,7 @@ class BookstoreDaoImplIT {
             for (String term : queryTerms) {
                 assertTrue(page.getContent().contains(term), page.getContent() + ", terms:" + Arrays.toString(queryTerms));
             }
-            assertNotNull(page.getBookTitle());
+            assertNotNull(page.getBook());
         }
         return new SearchSummary(pages.size(),
                 pages.stream().map(p -> p.getBookPageId().getBookId()).collect(Collectors.toSet()),

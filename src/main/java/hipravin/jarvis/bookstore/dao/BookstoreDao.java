@@ -12,5 +12,7 @@ public interface BookstoreDao {
 
     BookEntity findById(long id);
 
+    BookEntity findByIdFetchPdf(long id);
+
     List<BookPageFtsEntity> search(String fullTextSearchQuery);
 }

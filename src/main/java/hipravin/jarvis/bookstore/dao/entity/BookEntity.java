@@ -29,6 +29,7 @@ public class BookEntity {
     @Column(name = "EDITION_PUBLISHED")
     private Integer editionPublished;
 
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "PDF_CONTENT")
     private byte[] pdfContent;
 

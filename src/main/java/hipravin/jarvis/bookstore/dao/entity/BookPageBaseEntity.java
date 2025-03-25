@@ -19,6 +19,7 @@ public class BookPageBaseEntity {
     @Column(name = "CONTENT")
     private String content;
 
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "PDF_CONTENT")
     private byte[] pdfContent;
 

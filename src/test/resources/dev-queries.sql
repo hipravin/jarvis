@@ -4,6 +4,7 @@ select * from BOOK;
 
 select * from BOOK_PAGE where book_id = 103 order by page_num;
 
+select * from book_page where content ilike '%pg_stat_statements';
 
 select count(*) from BOOK_PAGE;
 delete from BOOK where 1=1;

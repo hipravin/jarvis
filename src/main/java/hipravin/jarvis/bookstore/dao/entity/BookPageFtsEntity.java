@@ -16,9 +16,6 @@ public class BookPageFtsEntity extends BookPageBaseEntity {
     @Column(name = "CONTENT_HIGHLIGHTED")
     private String contentHighlighted;
 
-    @Column(name = "BOOK_TITLE")
-    private String bookTitle;
-
     public Double getRank() {
         return rank;
     }
@@ -41,13 +38,5 @@ public class BookPageFtsEntity extends BookPageBaseEntity {
 
     public void setContentHighlighted(String contentHighlighted) {
         this.contentHighlighted = contentHighlighted;
-    }
-
-    public String getBookTitle() {
-        return bookTitle;
-    }
-
-    public void setBookTitle(String bookTitle) {
-        this.bookTitle = bookTitle;
     }
 }

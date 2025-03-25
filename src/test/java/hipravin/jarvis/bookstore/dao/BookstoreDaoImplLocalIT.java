@@ -62,6 +62,13 @@ class BookstoreDaoImplLocalIT {
     }
 
     @Test
+    void testFindById() {
+        BookEntity be = bookstoreDao.findById(101);
+
+        System.out.println("Pdf content length: " + be.getPdfContent().length);//lazy init exception which is expected
+    }
+
+    @Test
     void testSearch() {
         List<BookPageFtsEntity> pages = bookstoreDao.search("transaction serializable");
 
