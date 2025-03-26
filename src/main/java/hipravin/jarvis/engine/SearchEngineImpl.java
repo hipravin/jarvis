@@ -1,5 +1,7 @@
 package hipravin.jarvis.engine;
 
+import hipravin.jarvis.bookstore.dao.BookstoreDao;
+import hipravin.jarvis.bookstore.dao.entity.BookPageFtsEntity;
 import hipravin.jarvis.engine.model.*;
 import hipravin.jarvis.github.GithubApiClient;
 import hipravin.jarvis.github.GithubProperties;
@@ -15,15 +17,20 @@ import org.owasp.esapi.ESAPI;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static hipravin.jarvis.engine.model.SearchProviderType.*;
 
 @Service
 public class SearchEngineImpl implements SearchEngine {
@@ -33,37 +40,36 @@ public class SearchEngineImpl implements SearchEngine {
     private final GithubApiClient githubApiClient;
     private final GoogleBooksApiClient googleBooksApiClient;
     private final GithubProperties githubProperties;
+    private final BookstoreDao bookstoreDao;
 
     public SearchEngineImpl(GithubApiClient githubApiClient, GoogleBooksApiClient googleBooksApiClient,
-                            GithubProperties githubProperties) {
+                            GithubProperties githubProperties, BookstoreDao bookstoreDao) {
         this.githubApiClient = githubApiClient;
         this.googleBooksApiClient = googleBooksApiClient;
         this.githubProperties = githubProperties;
+        this.bookstoreDao = bookstoreDao;
     }
 
     @Override
     public JarvisResponse search(JarvisRequest request) {
-        Set<SearchProviderType> searchProviders = request.searchProviders();
-        CompletableFuture<JarvisResponse> cfGithub;
-        CompletableFuture<JarvisResponse> cfGoogleBooks;
+        Set<SearchProviderType> providers = request.searchProviders();
+        var cfGithub = searchAsync(providers, GITHUB, () -> searchGithub(request.query()));
+        var cfBookstore = searchAsync(providers, BOOKSTORE, () -> searchBookstore(request.query()));
+        var cfGoogleBooks = searchAsync(providers, GOOGLE_BOOKS, () -> searchGoogleBooks(request.query()));
 
-        if ((searchProviders != null) && searchProviders.contains(SearchProviderType.GITHUB)) {
-            cfGithub = CompletableFuture.supplyAsync(() -> searchGithub(request.query()), executor)
-                    .thenApply(r -> r.orElse("No results in Github matching your query"))
-                    .exceptionally(e -> JarvisResponse.ofMessage("Github: " + e.getMessage()));
+        return JarvisResponse.combine(cfGithub.join(), cfBookstore.join(), cfGoogleBooks.join());
+    }
+
+    private CompletableFuture<JarvisResponse> searchAsync(Set<SearchProviderType> searchProviders,
+                                                          SearchProviderType provider,
+                                                          Supplier<JarvisResponse> searchSupplier) {
+        if ((searchProviders != null) && searchProviders.contains(provider)) {
+            return CompletableFuture.supplyAsync(searchSupplier, executor)
+                    .thenApply(r -> r.orElse("No results in %s matching your query".formatted(provider.alias())))
+                    .exceptionally(e -> JarvisResponse.ofMessage("%s: %s".formatted(provider.alias(), e.getMessage())));
         } else {
-            cfGithub = CompletableFuture.completedFuture(JarvisResponse.ofMessage("Github search disabled"));
+            return CompletableFuture.completedFuture(JarvisResponse.ofMessage("%s search disabled".formatted(provider.alias())));
         }
-
-        if ((searchProviders != null) && searchProviders.contains(SearchProviderType.GOOGLE_BOOKS)) {
-            cfGoogleBooks = CompletableFuture.supplyAsync(() -> searchGoogleBooks(request.query()), executor)
-                    .thenApply(r -> r.orElse("No results in Google Books matching your query"))
-                    .exceptionally(e -> JarvisResponse.ofMessage("Google Books: " + e.getMessage()));
-        } else {
-            cfGoogleBooks = CompletableFuture.completedFuture(JarvisResponse.ofMessage("Google Books search disabled"));
-        }
-
-        return JarvisResponse.combine(cfGithub.join(), cfGoogleBooks.join());
     }
 
     private JarvisResponse searchGoogleBooks(String query) {
@@ -86,7 +92,7 @@ public class SearchEngineImpl implements SearchEngine {
 
         var responseItems = booksVolumes.items().stream()
                 .map(bv -> new ResponseItem(volumeToLink.apply(bv),
-                        SearchProviderType.GOOGLE_BOOKS,
+                        GOOGLE_BOOKS,
                         Optional.ofNullable(bv.searchInfo()).map(SearchInfo::textSnippet).orElse("n/a")))
                 .toList();
 
@@ -109,7 +115,7 @@ public class SearchEngineImpl implements SearchEngine {
         List<ResponseItem> responseItems = byAuthor.entrySet().stream()
                 .map(e -> new ResponseItem(new Link(emptyToOthers(e.getKey()) + ": " + e.getValue().size(),
                         githubApiClient.githubBrowserSearchUrl(e.getKey(), query)),
-                        SearchProviderType.GITHUB,
+                        GITHUB,
                         shortDescription(e.getValue(), query, queryTerms)))
                 .toList();
 
@@ -119,6 +125,29 @@ public class SearchEngineImpl implements SearchEngine {
                 .toList();
 
         return new JarvisResponse("", responseItems, codeFragments);
+    }
+
+    private JarvisResponse searchBookstore(String query) {
+        List<BookPageFtsEntity> matchedBookPages = bookstoreDao.search(query);
+
+        List<ResponseItem> responseItems = matchedBookPages.stream()
+                .map(this::fromBookPage)
+                .toList();
+
+        return new JarvisResponse("", responseItems, Collections.emptyList());
+    }
+
+    private ResponseItem fromBookPage(BookPageFtsEntity bp) {
+        String title = bp.getBook().getTitle();
+        Long bookId = Objects.requireNonNull(bp.getBookPageId().getBookId());
+        Long pageNum = Objects.requireNonNull(bp.getBookPageId().getPageNum());
+
+        String linkText = "%s, p.%d".formatted(title, pageNum);
+        String linkHref = "/api/v1/bookstore/book/%d/rawpdf#page=%d".formatted(
+                bookId, pageNum);
+        Link bookPageLink = new Link(linkText, linkHref);
+
+        return new ResponseItem(bookPageLink, BOOKSTORE, bp.getContentHighlighted());
     }
 
     public static String emptyToOthers(String name) {

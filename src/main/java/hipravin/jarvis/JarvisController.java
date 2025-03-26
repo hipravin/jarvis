@@ -1,15 +1,16 @@
 package hipravin.jarvis;
 
+import hipravin.jarvis.bookstore.dao.BookstoreDao;
+import hipravin.jarvis.bookstore.dao.entity.BookEntity;
 import hipravin.jarvis.engine.SearchEngine;
 import hipravin.jarvis.engine.model.JarvisRequest;
 import hipravin.jarvis.engine.model.JarvisResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Validated
@@ -18,7 +19,7 @@ public class JarvisController {
 
     private final SearchEngine searchEngine;
 
-    public JarvisController(SearchEngine searchEngine) {
+    public JarvisController(SearchEngine searchEngine, BookstoreDao bookstoreDao) {
         this.searchEngine = searchEngine;
     }
 

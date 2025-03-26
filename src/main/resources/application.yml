@@ -2,6 +2,39 @@ spring:
   application:
     name: jarvis
 
+  flyway:
+    enabled: false #run migrations manually
+    default-schema: jarvis
+
+  datasource:
+    url: ${JARVIS_DB_URL}
+    username: ${JARVIS_DB_USER}
+    password: ${JARVIS_DB_PASSWORD}
+#    url: jdbc:postgresql://localhost:5432/playground?currentSchema=jarvis&reWriteBatchedInserts=true
+#    username: postgres
+#    password: admin
+
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+      enabled: true
+
+  jpa:
+    properties:
+      hibernate:
+        query:
+          fail_on_pagination_over_collection_fetch: true
+        default_schema: "jarvis"
+        order_inserts: true
+        order_updates: true
+
+        #        generate_statistics: true
+        jdbc:
+          batch_size: 100
+          time_zone: UTC
+        hbm2ddl:
+          auto: none
 server:
   port: 10010
 
@@ -32,9 +65,12 @@ management:
     process:
       enabled: true
 
+bookstore:
+  loader-root-path: "C:/Users/Alex/YandexDisk/jarvis/bookstore"
+
 googlebooks:
   books-search-url: "https://www.googleapis.com/books/v1/volumes"
-  api-key: ${GOOGLE_API_KEY} #TODO: encrypt with symmetric key?
+  api-key: ${GOOGLE_API_KEY}
   connection:
     timeout: 10_000
 
@@ -70,5 +106,4 @@ github:
 logging:
   level:
     com.hipravin: DEBUG
-    org.springframework: INFO
-
+    org.springframework: DEBUG

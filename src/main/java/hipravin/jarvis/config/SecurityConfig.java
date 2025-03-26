@@ -30,6 +30,7 @@ public class SecurityConfig {
             .concat(".SPRING_SECURITY_CONTEXT").concat("ACTUATOR");
 
     private static final String ACTUATOR_AUTHORITY_NAME = "ACTUATOR";
+    private static final String BOOKSTORE_MANAGE_AUTHORITY = "BOOKSTORE_MANAGE";
 
     @Bean
     @Order(BASIC_AUTH_ORDER - 10)
@@ -54,14 +55,18 @@ public class SecurityConfig {
     @Bean
     @Order(BASIC_AUTH_ORDER - 9)
     public SecurityFilterChain fallbackFilterChain(HttpSecurity http) throws Exception {
+        var userDetailsService = userDetailsService();
+
         http.securityMatcher("/**")
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()))
+                .userDetailsService(userDetailsService)
                 .authorizeHttpRequests((requests) ->
                         requests
                                 .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                                .requestMatchers("/api/v*/bookstore/manage/**").hasAuthority(BOOKSTORE_MANAGE_AUTHORITY)
                                 .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/", "/login", "/error").permitAll()
                                 .anyRequest().authenticated())
@@ -86,6 +91,15 @@ public class SecurityConfig {
 
             return (StringUtils.hasText(headerValue) ? this.plain : this.xor).resolveCsrfTokenValue(request, csrfToken);
         }
+    }
+
+    UserDetailsService userDetailsService() {
+        return new InMemoryUserDetailsManager(
+                User.withUsername("support").password("{bcrypt}$2a$10$VfLRcQHsrAI1QahR18SUqOxE/v1r/MViWjQzkbSAXdGLVclSTDR6K") //ssupport
+                        .authorities(BOOKSTORE_MANAGE_AUTHORITY).build(),
+                User.withUsername("jarvis").password("{bcrypt}$2a$10$hr0o22U7HxOoc7CSWsrYHOIs0wg63aeT2BSrFK.Ujaq4U53Tc7EYS") //jjarvis
+                        .build()
+                );
     }
 
     UserDetailsService actuatorUserDetailsService() {

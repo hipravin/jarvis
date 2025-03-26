@@ -5,3 +5,28 @@ googlebooks:
 github:
   code-search-url: "https://stub-github/search/code"
   token: "stub-token"
+
+bookstore:
+  loader-root-path: "src/test/resources/data/bookstore"
+
+spring:
+  datasource:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:testdb-${random.int};sql.syntax_pgs=true
+    username: sa
+    password:
+
+  sql:
+    init:
+      mode: embedded
+
+  jpa:
+    properties:
+      hibernate:
+        default_schema: #override with empty value for embedded
+
+logging:
+  level:
+    ru.hipravin: DEBUG
+    hipravin: DEBUG
+    org.springframework: INFO
