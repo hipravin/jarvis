@@ -15,11 +15,11 @@ class PdfBookLoaderTest {
     static Path sampleSaltPdf = Path.of("src/test/resources/data/bookstore/estimating salt intake not so easy.pdf");
     static Path sampleStarchPdf = Path.of("src/test/resources/data/bookstore/Hardy_QRB15_starch.pdf");
 
-    static PdfBookLoader loader = new PdfBookLoader();
+    static PdfBookReader loader = new PdfBookReader();
 
     @Test
     void testLoadSalt() {
-        Book sb = loader.load(sampleSaltPdf);
+        Book sb = loader.read(sampleSaltPdf);
 
         assertEquals("estimating salt intake not so easy", sb.title());
         assertEquals("Estimating salt intake in humans: not so easy!1", sb.metadata().title());
@@ -32,9 +32,9 @@ class PdfBookLoaderTest {
 
     @Test
     void testFewPdfload() throws IOException {
-        Book b1 = loader.load(sampleSaltPdf);
-        Book b2 = loader.load(sampleStarchPdf);
-        Book b3 = loader.load(sampleGarlicPdf);
+        Book b1 = loader.read(sampleSaltPdf);
+        Book b2 = loader.read(sampleStarchPdf);
+        Book b3 = loader.read(sampleGarlicPdf);
 
         assertEquals("Estimating salt intake in humans: not so easy!1", b1.metadata().title());
         assertEquals("untitled", b2.metadata().title());

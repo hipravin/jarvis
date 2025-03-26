@@ -25,7 +25,7 @@ public class BookstoreDaoImpl implements BookstoreDao {
     private static final String BOOK_FTS_NATIVE_QUERY = """
             with pages_ranked as
                      (select book_page.*, ts_rank_cd(fts, query) as rank
-                      from {h-schema}book_page,
+                      from book_page,
                            to_tsvector('english', content) fts,
                            websearch_to_tsquery(:query) query
                       where fts @@ query)

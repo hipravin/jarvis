@@ -10,7 +10,7 @@ spring:
     url: ${JARVIS_DB_URL}
     username: ${JARVIS_DB_USER}
     password: ${JARVIS_DB_PASSWORD}
-#    url: jdbc:postgresql://localhost:5432/playground?currentSchema=jarvis&reWriteBatchedInserts=true
+#    url: jdbc:postgresql://localhost:5432/playground?currentSchema=jarvis&reWriteBatchedInserts=true&logServerErrorDetail=false
 #    username: postgres
 #    password: admin
 
@@ -66,7 +66,9 @@ management:
       enabled: true
 
 bookstore:
-  loader-root-path: "C:/Users/Alex/YandexDisk/jarvis/bookstore"
+  loader-root-path: ${BOOKSTORE_LOADER_DIR}
+  initialload:
+    enabled: true
 
 googlebooks:
   books-search-url: "https://www.googleapis.com/books/v1/volumes"
@@ -105,5 +107,6 @@ github:
 
 logging:
   level:
+    hipravin: DEBUG
     com.hipravin: DEBUG
     org.springframework: DEBUG

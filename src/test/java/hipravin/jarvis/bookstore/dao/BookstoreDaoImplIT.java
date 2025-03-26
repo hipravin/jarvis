@@ -2,7 +2,7 @@ package hipravin.jarvis.bookstore.dao;
 
 import hipravin.jarvis.bookstore.dao.entity.BookEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageFtsEntity;
-import hipravin.jarvis.bookstore.load.BookLoader;
+import hipravin.jarvis.bookstore.load.BookReader;
 import hipravin.jarvis.bookstore.load.model.Book;
 import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(properties = { "spring.flyway.enabled=true" })
+@SpringBootTest(properties = {"spring.flyway.enabled=true"})
 @Testcontainers
 @ActiveProfiles({"integration"})
 class BookstoreDaoImplIT {
@@ -35,20 +35,21 @@ class BookstoreDaoImplIT {
     static Path sampleStarchPdf = Path.of("src/test/resources/data/bookstore/Hardy_QRB15_starch.pdf");
 
     @Autowired
-    BookLoader bookLoader;
+    BookReader bookLoader;
 
     @Autowired
     BookstoreDao bookstoreDao;
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
-            "postgres:16-alpine"
-    );
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
+            .withUrlParam("currentSchema", "jarvis")
+            .withUrlParam("reWriteBatchedInserts", "true")
+            .withUrlParam("logServerErrorDetail", "false");
 
     @Test
     void testSaveThenSearch() {
-        Book book = bookLoader.load(sampleSaltPdf);
+        Book book = bookLoader.read(sampleSaltPdf);
         BookEntity bookEntity = bookstoreDao.save(book);
 
         assertNotNull(bookEntity);
@@ -61,8 +62,8 @@ class BookstoreDaoImplIT {
                 "pdf contents are not equal for book " + byIdEntity.getTitle());
         assertNow(bookEntity.getLastUpdated(), Duration.ofSeconds(5));
 
-        Book carbBook = bookLoader.load(sampleStarchPdf);
-        var garlic = bookstoreDao.save(bookLoader.load(sampleGarlicPdf));
+        Book carbBook = bookLoader.read(sampleStarchPdf);
+        var garlic = bookstoreDao.save(bookLoader.read(sampleGarlicPdf));
         var carb = bookstoreDao.save(carbBook);
 
         SearchSummary search1 = testSearch("potato");
@@ -71,7 +72,7 @@ class BookstoreDaoImplIT {
         assertTrue(search1.bestMatchHightlighted().contains("<b>potato</b>"));
 
         assertThrows(DataAccessException.class, () -> {
-            bookstoreDao.save(bookLoader.load(carbBook.pdfContent(), "Other title")); //duplicated binary content
+            bookstoreDao.save(bookLoader.read(carbBook.pdfContent(), "Other title")); //duplicated binary content
         });
 
         assertThrows(LazyInitializationException.class, () -> {
@@ -79,7 +80,8 @@ class BookstoreDaoImplIT {
         });
     }
 
-    record SearchSummary(int pageCount, Set<Long> documentIds, String bestMatchHightlighted) {}
+    record SearchSummary(int pageCount, Set<Long> documentIds, String bestMatchHightlighted) {
+    }
 
     SearchSummary testSearch(String... queryTerms) {
         List<BookPageFtsEntity> pages = bookstoreDao.search(String.join(" ", queryTerms));

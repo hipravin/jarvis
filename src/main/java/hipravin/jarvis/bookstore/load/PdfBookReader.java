@@ -19,26 +19,26 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 @Component
-public class PdfBookLoader implements BookLoader {
+public class PdfBookReader implements BookReader {
 
     @Override
-    public Book load(Path pdfFilePath) {
+    public Book read(Path pdfFilePath) {
         try {
             requirePdf(pdfFilePath);
 
             byte[] docBytes = Files.readAllBytes(pdfFilePath);
-            return load(docBytes, pdfFilePath.getFileName().toString());
+            return read(docBytes, pdfFilePath.getFileName().toString());
         } catch (IOException e) {
-            throw new PdfProcessException(e.getMessage(), e);
+            throw new PdfReadException(e.getMessage(), e);
         }
     }
 
     @Override
-    public Book load(byte[] documentBinaryContent, String title) {
+    public Book read(byte[] documentBinaryContent, String title) {
         try (PDDocument document = Loader.loadPDF(documentBinaryContent)) {
             AccessPermission ap = document.getCurrentAccessPermission();
             if (!ap.canExtractContent()) {
-                throw new PdfProcessException("Extract content is forbidden for document '%s', access permission: %d"
+                throw new PdfReadException("Extract content is forbidden for document '%s', access permission: %d"
                         .formatted(title, ap.getPermissionBytes()));
             }
 
@@ -54,17 +54,17 @@ public class PdfBookLoader implements BookLoader {
                     BookMetadata.from(document.getDocumentInformation()),
                     pages, documentBinaryContent);
         } catch (IOException e) {
-            throw new PdfProcessException(e.getMessage(), e);
+            throw new PdfReadException(e.getMessage(), e);
         }
     }
 
     private static Path requirePdf(Path path) throws IOException {
         if (path == null || !Files.isReadable(path)) {
-            throw new PdfProcessException(path + " is not a readable file");
+            throw new PdfReadException(path + " is not a readable file");
         }
         String contentType = Files.probeContentType(path);
         if (!"application/pdf".equals(contentType)) {
-            throw new PdfProcessException("File is not in pdf format: " + path + ", actual content type: " + contentType);
+            throw new PdfReadException("File is not in pdf format: " + path + ", actual content type: " + contentType);
         }
         return path;
     }
@@ -117,7 +117,7 @@ public class PdfBookLoader implements BookLoader {
 
             return bos.toByteArray();
         } catch (IOException e) {
-            throw new PdfProcessException(e.getMessage(), e);
+            throw new PdfReadException(e.getMessage(), e);
         }
     }
 }

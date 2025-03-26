@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
-@SpringBootTest(classes = {BookstoreConfig.class})
+@SpringBootTest
 @ActiveProfiles(profiles = {"test"})
 class BookstorePropertiesTest {
 
