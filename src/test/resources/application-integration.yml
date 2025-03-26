@@ -6,6 +6,11 @@ github:
   code-search-url: "https://stub-github/search/code"
   token: "stub-token"
 
+bookstore:
+  initialload:
+    enabled: false
+
+
 logging:
   level:
     ru.hipravin: DEBUG

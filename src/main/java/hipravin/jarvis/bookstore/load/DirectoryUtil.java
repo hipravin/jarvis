@@ -8,16 +8,40 @@ import java.io.UncheckedIOException;
 import java.nio.file.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public abstract class DirectoryUtil {
     private static final Logger log = LoggerFactory.getLogger(DirectoryUtil.class);
 
     private DirectoryUtil() {
+    }
+
+    public record ChangeEvent(Path path, Kind kind) {
+        public static Optional<ChangeEvent> from(Path dir, WatchEvent<Path> event) {
+            return Kind.from(event.kind())
+                    .map(kind -> new ChangeEvent(dir.resolve(event.context()), kind));
+        }
+
+        public enum Kind {
+            MODIFY, CREATE, DELETE;
+
+            public static Optional<Kind> from(WatchEvent.Kind<Path> kind) {
+                if (StandardWatchEventKinds.ENTRY_CREATE.equals(kind)) {
+                    return Optional.of(Kind.CREATE);
+                } else if (StandardWatchEventKinds.ENTRY_MODIFY.equals(kind)) {
+                    return Optional.of(Kind.MODIFY);
+                } else if (StandardWatchEventKinds.ENTRY_DELETE.equals(kind)) {
+                    return Optional.of(Kind.DELETE);
+                } else {
+                    log.debug("Unresolvable WatchEvent.Kind: {} / {}", kind.name(), kind.type());
+                    return Optional.empty();
+                }
+            }
+        }
     }
 
     public static List<Path> findFilesRecursively(Path root, String extension) {
@@ -43,13 +67,13 @@ public abstract class DirectoryUtil {
      *
      * @return Returns a runnable that needs to be submitted for execution.
      */
-    public static Runnable watchForUpdatesRunnable(Path dir, Consumer<Set<Path>> onChangeConsumer) {
+    public static Runnable watchForUpdatesRunnable(Path dir, Consumer<List<ChangeEvent>> onChangeConsumer) {
         final WatchService watchService = startWatchService(dir);
 
         return () -> watch(watchService, dir, onChangeConsumer);
     }
 
-    private static void watch(WatchService watchService, Path dir, Consumer<Set<Path>> onChangeConsumer) {
+    private static void watch(WatchService watchService, Path dir, Consumer<List<ChangeEvent>> onChangeConsumer) {
         boolean valid = true;
         while (valid && !Thread.currentThread().isInterrupted()) {
             try {
@@ -57,14 +81,9 @@ public abstract class DirectoryUtil {
 
                 WatchKey key = watchService.take();
 
-                Set<Path> relativePaths = extractModifiedRelativePaths(key);
-                log.debug("Updated paths (relative): {}", relativePaths);
-
-                var absolutePaths = relativePaths.stream()
-                        .map(dir::resolve)
-                        .collect(Collectors.toSet());
-
-                onChangeConsumer.accept(absolutePaths);
+                List<ChangeEvent> changeEvents = toChangeEvents(dir, key);
+                log.debug("Directory change events {}: {}", dir, changeEvents);
+                onChangeConsumer.accept(changeEvents);
 
                 valid = key.reset();
                 if (!valid) {
@@ -102,11 +121,12 @@ public abstract class DirectoryUtil {
         }
     }
 
-    private static Set<Path> extractModifiedRelativePaths(WatchKey key) {
-        return key.pollEvents()
-                .stream().filter(e -> e.kind() != StandardWatchEventKinds.OVERFLOW)
-                .map(e -> ((WatchEvent<Path>) e).context())
-                .collect(Collectors.toSet());
+    private static List<ChangeEvent> toChangeEvents(Path dir, WatchKey key) {
+        return key.pollEvents().stream()
+                .filter(e -> e.kind() != StandardWatchEventKinds.OVERFLOW)
+                .map(e -> ChangeEvent.from(dir, (WatchEvent<Path>) e))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
     }
-
 }

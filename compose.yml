@@ -10,10 +10,17 @@ services:
       - "9081:10011"
       - "5005:5005"
     environment:
-      - JAVA_TOOL_OPTIONS=-Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 #set low memory value to figure out limitations early
+      - JAVA_TOOL_OPTIONS=-Xmx512m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
       - GOOGLE_API_KEY=$GOOGLE_API_KEY
       - GH_TOKEN=$GH_TOKEN
       - JARVIS_DB_URL=$JARVIS_DB_URL
       - JARVIS_DB_USER=$JARVIS_DB_USER
       - JARVIS_DB_PASSWORD=$JARVIS_DB_PASSWORD
+      - BOOKSTORE_LOADER_DIR=/data/bookstore
+    volumes:
+      - type: bind
+        source: "C:/Users/Alex/YandexDisk/jarvis/bookstore"
+        target: "/data/bookstore"
+        read_only: true
     restart: unless-stopped
+

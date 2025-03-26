@@ -4,8 +4,8 @@ import hipravin.jarvis.bookstore.dao.entity.BookEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageFtsEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageId;
-import hipravin.jarvis.bookstore.load.BookLoader;
-import hipravin.jarvis.bookstore.load.PdfBookLoader;
+import hipravin.jarvis.bookstore.load.BookReader;
+import hipravin.jarvis.bookstore.load.PdfBookReader;
 import hipravin.jarvis.bookstore.load.model.Book;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class BookstoreDaoImplLocalIT {
     static Path sampleSaltPdf = Path.of("src/test/resources/data/bookstore/estimating salt intake not so easy.pdf");
 
     @Autowired
-    private BookLoader bookLoader;
+    private BookReader bookLoader;
 
     @Autowired
     private BookRepository bookRepository;
@@ -81,9 +81,9 @@ class BookstoreDaoImplLocalIT {
 
     @Test
     void testSaveSampleParsed() {
-        PdfBookLoader loader = new PdfBookLoader();
+        PdfBookReader loader = new PdfBookReader();
 
-        Book garlicOnion = loader.load(sampleGarlicPdf);
+        Book garlicOnion = loader.read(sampleGarlicPdf);
         bookstoreDao.save(garlicOnion);
     }
 
@@ -96,7 +96,7 @@ class BookstoreDaoImplLocalIT {
         );
 
         paths.forEach(p -> {
-            Book book = bookLoader.load(p);
+            Book book = bookLoader.read(p);
             System.out.printf("Parsed: %s %s, pages: %d%n", book.title(), book.metadata().title(), book.pages().size());
 
             bookstoreDao.save(book);

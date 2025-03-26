@@ -8,6 +8,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,7 +34,7 @@ public class BookstoreUpdateWatcher implements DisposableBean {
         watchExecutorService.submit(watchRunnable);
     }
 
-    void handleBookstoreUpdate(Set<Path> paths) {
+    void handleBookstoreUpdate(List<DirectoryUtil.ChangeEvent> paths) {
         try {
             log.info("Bookstore paths updated: {}", paths);
 //            articleInMemoryRepository.fillFromStorage(articleStorage);

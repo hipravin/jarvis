@@ -4,6 +4,9 @@ select * from BOOK;
 
 select * from BOOK_PAGE where book_id = 103 order by page_num;
 
+select b.title, count(bp.page_num) from book_page bp join book b on b.id = bp.book_id
+    group by b.title;
+
 select * from book_page where content ilike '%pg_stat_statements';
 
 select count(*) from BOOK_PAGE;
