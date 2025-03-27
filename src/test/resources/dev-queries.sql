@@ -19,7 +19,7 @@ select pg_stat_statements_reset();
 select * from pg_stat_statements order by total_exec_time desc;
 
 select * from pg_stat_statements
-    where query ilike '%book%' and query ilike '%insert%';
+    where query ilike '%book_page%' and query ilike '%select%';
 
 
 
@@ -115,13 +115,11 @@ SELECT ts_headline('english',
                  query.',
                    to_tsquery('english', 'query & similarity'));
 
-
+explain analyze
 with pages_ranked as
-         (select bp.*, b.title, ts_rank_cd(fts, query) as rank
-          from book_page bp join book b on b.id = bp.book_id,
-                           to_tsvector('english', content) fts,
-                           websearch_to_tsquery('transaction') query
-          where fts @@ query)
+         (select *, ts_rank_cd(content_fts_en, query) as rank
+          from book_page, websearch_to_tsquery('transaction') query
+          where content_fts_en @@ query)
 select *,
        ts_headline('english', content, websearch_to_tsquery('english', 'transaction'),
                    'MaxFragments=5, MaxWords=15, MinWords=3, StartSel=<b>, StopSel=</b>') as content_highlighted
@@ -131,3 +129,28 @@ from (select *,
       from pages_ranked) as x
 where rownum_per_book <= :max_per_book
 order by max_rank_per_book desc, book_id limit :max_total;
+
+
+explain analyze
+select *, ts_rank_cd(fts, query) as rank
+from book_page,
+     to_tsvector('english', content) fts,
+     websearch_to_tsquery('transaction') query
+where fts @@ query;
+
+explain analyze
+select *, ts_rank_cd(content_fts_en, to_tsquery('transaction')) as rank
+from book_page where content_fts_en @@ to_tsquery('transaction');
+
+explain analyze
+select *, to_tsvector('english', content), to_tsquery('transaction')
+from book_page where to_tsvector('english', content) @@ to_tsquery('transaction');
+
+explain analyze
+select *
+from book_page where content_fts_en @@ to_tsquery('transaction');
+
+explain analyze
+select *, ts_rank_cd(content_fts_en, query) as rank
+from book_page, websearch_to_tsquery('transaction') query
+where content_fts_en @@ query

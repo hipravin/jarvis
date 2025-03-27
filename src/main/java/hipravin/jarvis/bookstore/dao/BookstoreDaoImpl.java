@@ -24,14 +24,12 @@ public class BookstoreDaoImpl implements BookstoreDao {
 
     private static final String BOOK_FTS_NATIVE_QUERY = """
             with pages_ranked as
-                     (select book_page.*, ts_rank_cd(fts, query) as rank
-                      from book_page,
-                           to_tsvector('english', content) fts,
-                           websearch_to_tsquery(:query) query
-                      where fts @@ query)
+                     (select *, ts_rank_cd(content_fts_en, query) as rank
+                      from book_page, websearch_to_tsquery(:query) query
+                      where content_fts_en @@ query)
             select *,
                    ts_headline('english', content, websearch_to_tsquery('english', :query),
-                                  'MaxFragments=5, MaxWords=15, MinWords=3, StartSel=<b>, StopSel=</b>') as content_highlighted
+                               'MaxFragments=5, MaxWords=15, MinWords=3, StartSel=<b>, StopSel=</b>') as content_highlighted
             from (select *,
                          row_number() over (partition by book_id order by rank desc) as rownum_per_book,
                          max(rank) over (partition by book_id)                       as max_rank_per_book

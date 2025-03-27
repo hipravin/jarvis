@@ -7,6 +7,7 @@ github:
   token: "stub-token"
 
 bookstore:
+  loader-root-path: "src/test/resources/data/bookstore"
   initialload:
     enabled: false
 

@@ -17,6 +17,7 @@ CREATE TABLE BOOK_PAGE (
     page_num INT NOT NULL CHECK (page_num >= 0),
     book_id BIGINT REFERENCES BOOK(id) ON DELETE CASCADE NOT NULL,
     content TEXT,
+    content_fts_en TSVECTOR GENERATED ALWAYS AS (to_tsvector('english', content)) STORED,
     pdf_content BYTEA,
     PRIMARY KEY (book_id, page_num)
 );
@@ -25,3 +26,4 @@ CREATE INDEX page_book_idx on BOOK_PAGE(book_id);
 CREATE UNIQUE INDEX book_title_idx on BOOK(title);
 CREATE UNIQUE INDEX book_hash_idx ON BOOK (digest(pdf_content, 'sha1'));
 CREATE INDEX pgweb_idx ON BOOK_PAGE USING GIN (to_tsvector('english', content));
+CREATE INDEX bp_fts_en_idx ON BOOK_PAGE USING GIN (content_fts_en);
