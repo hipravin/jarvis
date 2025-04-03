@@ -153,4 +153,14 @@ from book_page where content_fts_en @@ to_tsquery('transaction');
 explain analyze
 select *, ts_rank_cd(content_fts_en, query) as rank
 from book_page, websearch_to_tsquery('transaction') query
-where content_fts_en @@ query
+where content_fts_en @@ query;
+
+select content_fts_en from book_page;
+
+--statistic
+SELECT * FROM ts_stat('select content_fts_en from book_page')
+ORDER BY  ndoc DESC, nentry DESC, word
+
+LIMIT 100;
+
+select * from book_page where book_id = (select max(id) from book);

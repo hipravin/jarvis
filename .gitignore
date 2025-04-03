@@ -36,3 +36,4 @@ build/
 *.private.env.json
 *-itlocal.yml
 .env
+secrets.properties

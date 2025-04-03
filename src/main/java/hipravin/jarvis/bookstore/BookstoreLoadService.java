@@ -1,9 +1,9 @@
 package hipravin.jarvis.bookstore;
 
-import java.nio.file.Path;
+import hipravin.jarvis.bookstore.load.DirectoryUtil;
 
 public interface BookstoreLoadService {
     void loadAll();
 
-    void handleUpdate(Path updated);
+    void handleUpdate(DirectoryUtil.ChangeEvent directoryChangeEvent);
 }

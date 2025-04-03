@@ -38,7 +38,7 @@ public record BookMetadata(
     }
 
     static OffsetDateTime fromCalendar(Calendar calendar) {
-        return calendar.toInstant().atZone(calendar.getTimeZone().toZoneId())
-                .toOffsetDateTime();
+        return (calendar == null) ? null
+                : calendar.toInstant().atZone(calendar.getTimeZone().toZoneId()).toOffsetDateTime();
     }
 }

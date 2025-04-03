@@ -17,12 +17,12 @@ import org.owasp.esapi.ESAPI;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -34,7 +34,7 @@ import static hipravin.jarvis.engine.model.SearchProviderType.*;
 
 @Service
 public class SearchEngineImpl implements SearchEngine {
-    private final ExecutorService executor = Executors.newCachedThreadPool();
+    private final ExecutorService executor = Executors.newCachedThreadPool(new SearchThreadFactory());
     private static final Pattern UNICODE_SPACES = Pattern.compile("(?U)\\s+");
 
     private final GithubApiClient githubApiClient;
@@ -233,4 +233,15 @@ public class SearchEngineImpl implements SearchEngine {
                 .collect(Collectors.joining("\n ... \n"));
     }
 
+    private static class SearchThreadFactory implements ThreadFactory {
+        private final AtomicInteger threadNumber = new AtomicInteger(0);
+
+        @Override
+        public Thread newThread(Runnable r) {
+            Thread thread = new Thread(r);
+            thread.setDaemon(true);
+            thread.setName("Search engine worker #%d".formatted(this.threadNumber.getAndIncrement()));
+            return thread;
+        }
+    }
 }

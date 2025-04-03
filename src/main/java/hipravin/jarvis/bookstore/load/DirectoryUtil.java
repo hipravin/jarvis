@@ -74,11 +74,11 @@ public abstract class DirectoryUtil {
     }
 
     private static void watch(WatchService watchService, Path dir, Consumer<List<ChangeEvent>> onChangeConsumer) {
+        log.debug("Start watching updates on dir: {}", dir);
+
         boolean valid = true;
         while (valid && !Thread.currentThread().isInterrupted()) {
             try {
-                log.debug("Start watching updates on dir: {}", dir);
-
                 WatchKey key = watchService.take();
 
                 List<ChangeEvent> changeEvents = toChangeEvents(dir, key);

@@ -27,24 +27,35 @@ public class BookstoreLoadServiceImpl implements BookstoreLoadService {
         this.bookstoreDao = bookstoreDao;
     }
 
-
     @Override
     public void loadAll() {
         List<Path> pdfFiles = DirectoryUtil.findFilesRecursively(bookstoreProperties.loaderRootPath(), "pdf");
 
         for (Path pdfFile : pdfFiles) {
-            try {
-                Book book = bookReader.read(pdfFile);
-                BookEntity bookEntity = bookstoreDao.save(book);
-                log.debug("New book saved: id: {}, pages: {}, title: {}", bookEntity.getId(), book.pages().size(), bookEntity.getTitle());
-            } catch (RuntimeException e) {
-                log.error("Failed to load pdf file: {}", e.getMessage(), e);
-            }
+            readAndSaveNewBook(pdfFile);
         }
     }
 
     @Override
-    public void handleUpdate(Path updated) {
+    public void handleUpdate(DirectoryUtil.ChangeEvent directoryChangeEvent) {
+        log.info("Processing storage update {}", directoryChangeEvent);
+        switch (directoryChangeEvent.kind()) {
+            case CREATE -> {
+                readAndSaveNewBook(directoryChangeEvent.path());
+            }
+            case DELETE, MODIFY -> {
+                log.info("ignored");
+            }
+        }
+    }
 
+    private void readAndSaveNewBook(Path bookPdf) {
+        try {
+            Book book = bookReader.read(bookPdf);
+            BookEntity bookEntity = bookstoreDao.save(book);
+            log.debug("New book saved: id: {}, pages: {}, title: {}", bookEntity.getId(), book.pages().size(), bookEntity.getTitle());
+        } catch (RuntimeException e) {
+            log.error("Failed to load pdf file: {}", e.getMessage(), e);
+        }
     }
 }

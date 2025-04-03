@@ -25,5 +25,4 @@ CREATE TABLE BOOK_PAGE (
 CREATE INDEX page_book_idx on BOOK_PAGE(book_id);
 CREATE UNIQUE INDEX book_title_idx on BOOK(title);
 CREATE UNIQUE INDEX book_hash_idx ON BOOK (digest(pdf_content, 'sha1'));
-CREATE INDEX pgweb_idx ON BOOK_PAGE USING GIN (to_tsvector('english', content));
 CREATE INDEX bp_fts_en_idx ON BOOK_PAGE USING GIN (content_fts_en);

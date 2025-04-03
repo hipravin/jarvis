@@ -10,17 +10,21 @@ services:
       - "9081:10011"
       - "5005:5005"
     environment:
-      - JAVA_TOOL_OPTIONS=-Xmx512m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
-      - GOOGLE_API_KEY=$GOOGLE_API_KEY
-      - GH_TOKEN=$GH_TOKEN
-      - JARVIS_DB_URL=$JARVIS_DB_URL
-      - JARVIS_DB_USER=$JARVIS_DB_USER
-      - JARVIS_DB_PASSWORD=$JARVIS_DB_PASSWORD
+      - JAVA_TOOL_OPTIONS=-Xmx512m -XX:StartFlightRecording=delay=40s,dumponexit=true,maxage=1h,filename=/application/diagnostic/jarvis.jfr -XX:StartFlightRecording=duration=60s,filename=/application/diagnostic/jarvis-startup.jfr
       - BOOKSTORE_LOADER_DIR=/data/bookstore
+      - SECRETS_PROPERTIES_PATH=/application/secrets.properties
     volumes:
       - type: bind
         source: "C:/Users/Alex/YandexDisk/jarvis/bookstore"
         target: "/data/bookstore"
         read_only: true
+      - type: bind
+        source: "./secrets.properties"
+        target: "/application/secrets.properties"
+        read_only: true
+      - type: bind
+        source: "C:/dev/tmp/jarvis"
+        target: "/application/diagnostic"
+        read_only: false
     restart: unless-stopped
 
