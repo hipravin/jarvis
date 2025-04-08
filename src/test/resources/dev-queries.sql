@@ -10,7 +10,7 @@ select b.title, count(bp.page_num) from book_page bp join book b on b.id = bp.bo
 select * from book_page where content ilike '%pg_stat_statements';
 
 select count(*) from BOOK_PAGE;
-delete from BOOK where 1=1;
+delete from BOOK where id != (select max(id) from book);
 
 CREATE EXTENSION IF NOT EXISTS PG_STAT_STATEMENTS;
 
