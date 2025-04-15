@@ -124,7 +124,7 @@ public class SearchEngineImpl implements SearchEngine {
                         csi.repository().owner().login()))
                 .toList();
 
-        return new JarvisResponse("", responseItems, codeFragments);
+        return new JarvisResponse("Github result count: " + csr.count(), responseItems, codeFragments);
     }
 
     private JarvisResponse searchBookstore(String query) {

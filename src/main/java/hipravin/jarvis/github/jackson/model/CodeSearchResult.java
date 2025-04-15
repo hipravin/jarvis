@@ -24,11 +24,13 @@ public record CodeSearchResult(
         }
 
         boolean incomplete = false;
+        int totalCount = 0;
         List<CodeSearchItem> combinedItems = new ArrayList<>();
 
         Set<String> urls = new HashSet<>();//to avoid duplicates
         for (CodeSearchResult csr : codeSearchResults) {
             incomplete = incomplete || csr.incompleteResults();
+            totalCount += csr.count();
             csr.codeSearchItems.stream()
                     .filter(item -> !urls.contains(item.url()))
                     .forEach(combinedItems::add);
@@ -36,6 +38,6 @@ public record CodeSearchResult(
             csr.codeSearchItems.forEach(item -> urls.add(item.url()));
         }
 
-        return new CodeSearchResult(combinedItems.size(), incomplete, combinedItems);
+        return new CodeSearchResult(totalCount, incomplete, combinedItems);
     }
 }
