@@ -8,6 +8,7 @@ CREATE TABLE BOOK (
                    OR (edition_published >= coalesce(first_published, 0) AND edition_published > 1700 AND edition_published < 3000)), --year
     metadata JSONB,
     pdf_content BYTEA,
+--     content_hash TEXT, --TODO: think about it
     last_updated TIMESTAMP NOT NULL DEFAULT now()
 );
 
@@ -24,5 +25,5 @@ CREATE TABLE BOOK_PAGE (
 
 CREATE INDEX page_book_idx on BOOK_PAGE(book_id);
 CREATE UNIQUE INDEX book_title_idx on BOOK(title);
-CREATE UNIQUE INDEX book_hash_idx ON BOOK (digest(pdf_content, 'sha1'));
+CREATE UNIQUE INDEX book_hash_idx ON BOOK (digest(pdf_content, 'sha256'));
 CREATE INDEX bp_fts_en_idx ON BOOK_PAGE USING GIN (content_fts_en);

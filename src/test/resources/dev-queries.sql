@@ -1,6 +1,6 @@
 set search_path to jarvis,public;
 
-select * from BOOK;
+select digest(pdf_content, 'sha256')::bytea from BOOK;
 
 select * from BOOK_PAGE where book_id = 103 order by page_num;
 

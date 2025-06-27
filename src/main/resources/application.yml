@@ -86,7 +86,8 @@ github:
   code-search-per-page: 100
   connection:
     timeout: 10_000
-  approved-authors:
+
+  approved-authors: #TODO: implement search result statistics
     - hipravin
     - mraible
     - philwebb

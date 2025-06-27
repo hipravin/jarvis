@@ -59,6 +59,7 @@ public class SecurityConfig {
 
         http.securityMatcher("/**")
                 .csrf(csrf -> csrf
+//                        .ignoringRequestMatchers("/api/v*/bookstore/manage/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()))
                 .userDetailsService(userDetailsService)
