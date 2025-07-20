@@ -85,25 +85,6 @@ const createLink = (title, href) => {
     return a;
 }
 
-const createCodeBlock = (block) => {
-    let div = document.createElement('div');
-    let p = document.createElement('p');
-    let link = createLink(block.link.title, block.link.href);
-    div.classList.add("code-window", "multiline");
-    p.textContent = block.code;
-    div.appendChild(link);
-    div.appendChild(p);
-
-    return div;
-}
-
-const fillLeftPaneWithCode = (codeSearchResponse) => {
-    leftPane.innerHTML = "";
-
-    codeSearchResponse.code_fragments.forEach(fragment => {
-        leftPane.appendChild(createCodeBlock(fragment));
-    });
-}
 const enabledSearchProviders = () => {
     const providers = [];
     if (ghToggle.classList.contains("provider-on")) {
@@ -132,6 +113,8 @@ const generateResponse = async (chatElement) => {
         }),
     }
 
+    const scrollHeightBefore = chatbox.scrollHeight;
+    console.log(`scroll height before: ${scrollHeightBefore}`);
     const messageElement = chatElement.querySelector("p");
 
     try {
@@ -146,14 +129,13 @@ const generateResponse = async (chatElement) => {
         if (data.items) {
             fillItems(data.items, messageElement)
         }
-
-        fillLeftPaneWithCode(data);
     } catch (error) {
         // Handle error
         messageElement.classList.add("error");
         messageElement.textContent = error.message;
     } finally {
-        chatbox.scrollTo(0, chatbox.scrollHeight);
+        // chatbox.scrollTo(0, chatbox.scrollHeight);
+        chatbox.scrollTo(0, scrollHeightBefore - chatbox.offsetHeight + 100);//small constant scroll advance from previous for interactiveness
     }
 }
 
