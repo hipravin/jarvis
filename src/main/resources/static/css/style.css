@@ -17,7 +17,7 @@ body {
     position: fixed;
     left: calc(10%);
     top: 10px;
-    min-width: 80%;
+    width: 80%;
     /*width: 50%;*/
     height: 90%;
     background: #fff;
@@ -97,10 +97,10 @@ header h2 {
 
 .chatbox .chat p {
     white-space: pre-wrap;
-    word-wrap: break-word;
+    word-wrap: anywhere;
     padding: 12px 16px;
     border-radius: 10px 10px 0 10px;
-    max-width: 75%;
+    max-width: 100%;
     color: #fff;
     font-size: 0.95rem;
     background: #724ae8;
@@ -108,6 +108,10 @@ header h2 {
 
 .chatbox .incoming p {
     border-radius: 10px 10px 10px 0;
+}
+
+.incoming {
+    width: 80%;
 }
 
 .chatbox .chat p.error {
