@@ -70,7 +70,8 @@ management:
 bookstore:
   loader-root-path: ${BOOKSTORE_LOADER_DIR}
   initialload:
-    enabled: true
+    enabled: false
+#    enabled: true
 
 googlebooks:
   books-search-url: "https://www.googleapis.com/books/v1/volumes"

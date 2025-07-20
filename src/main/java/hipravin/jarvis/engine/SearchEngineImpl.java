@@ -84,19 +84,13 @@ public class SearchEngineImpl implements SearchEngine {
                         bv.yearPublished().orElse("n/a"),
                         bv.volumeInfo().previewLink());
 
-        var codeFragments = booksVolumes.items().stream()
-                .filter(BooksVolume.HAS_TEXT_SNIPPET.and(BooksVolume.HAS_PREVIEW_LINK))
-                .map(bv -> new CodeFragment(bv.searchInfo().textSnippet(), volumeToLink.apply(bv),
-                        bv.volumeInfo().publisher()))
-                .toList();
-
         var responseItems = booksVolumes.items().stream()
                 .map(bv -> new ResponseItem(volumeToLink.apply(bv),
                         GOOGLE_BOOKS,
                         Optional.ofNullable(bv.searchInfo()).map(SearchInfo::textSnippet).orElse("n/a")))
                 .toList();
 
-        return new JarvisResponse("", responseItems, codeFragments);
+        return new JarvisResponse("", responseItems);
     }
 
     private JarvisResponse searchGithub(String query) {
@@ -124,7 +118,7 @@ public class SearchEngineImpl implements SearchEngine {
                         csi.repository().owner().login()))
                 .toList();
 
-        return new JarvisResponse("Github result count: " + csr.count(), responseItems, codeFragments);
+        return new JarvisResponse("Github result count: " + csr.count(), responseItems);
     }
 
     private JarvisResponse searchBookstore(String query) {
@@ -134,7 +128,7 @@ public class SearchEngineImpl implements SearchEngine {
                 .map(this::fromBookPage)
                 .toList();
 
-        return new JarvisResponse("", responseItems, Collections.emptyList());
+        return new JarvisResponse("", responseItems);
     }
 
     private ResponseItem fromBookPage(BookPageFtsEntity bp) {
