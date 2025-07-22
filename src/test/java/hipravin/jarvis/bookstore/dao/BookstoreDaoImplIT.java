@@ -78,6 +78,13 @@ class BookstoreDaoImplIT {
         assertThrows(LazyInitializationException.class, () -> {
             bookstoreDao.findById(carb.getId()).getPdfContent();
         });
+
+        //get all
+        List<BookEntity> bookEntities = bookstoreDao.findAll();
+        assertEquals(3, bookEntities.size());
+        assertThrows(LazyInitializationException.class, () -> {
+            bookEntities.get(0).getPdfContent();
+        });
     }
 
     record SearchSummary(int pageCount, Set<Long> documentIds, String bestMatchHightlighted) {

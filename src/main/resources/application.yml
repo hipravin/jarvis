@@ -112,4 +112,4 @@ logging:
   level:
     hipravin: DEBUG
     com.hipravin: DEBUG
-    org.springframework: DEBUG
+    org.springframework: INFO

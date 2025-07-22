@@ -83,7 +83,7 @@ public class PdfBookReader implements BookReader {
         }
     }
 
-    private static String removePdfExtension(String filename) {
+    public static String removePdfExtension(String filename) {
         if (filename.toLowerCase().endsWith(".pdf")) {
             return filename.substring(0, filename.length() - ".pdf".length());
         } else {

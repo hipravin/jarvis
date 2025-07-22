@@ -62,6 +62,4 @@ class JacksonGithubMapperImplTest {
         assertEquals(31, tmm0.start());
         assertEquals(40, tmm0.end());
     }
-
-
 }

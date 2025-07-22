@@ -4,12 +4,17 @@ select digest(pdf_content, 'sha256')::bytea from BOOK;
 
 select * from BOOK_PAGE where book_id = 103 order by page_num;
 
+select id, last_updated, title from BOOK order by id;
+update BOOK set last_updated = now() - '5 year'::interval where id = 2109;
+
 select b.title, count(bp.page_num) from book_page bp join book b on b.id = bp.book_id
     group by b.title;
 
 select * from book_page where content ilike '%pg_stat_statements';
 
 select count(*) from BOOK_PAGE;
+
+
 delete from BOOK where id != (select max(id) from book);
 
 CREATE EXTENSION IF NOT EXISTS PG_STAT_STATEMENTS;

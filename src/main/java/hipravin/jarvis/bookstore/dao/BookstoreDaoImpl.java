@@ -78,6 +78,11 @@ public class BookstoreDaoImpl implements BookstoreDao {
     }
 
     @Override
+    public List<BookEntity> findAll() {
+        return bookRepository.findAll();
+    }
+
+    @Override
     public List<BookPageFtsEntity> search(String fullTextSearchQuery) {
         var query = entityManager.createNativeQuery(BOOK_FTS_NATIVE_QUERY, BookPageFtsEntity.class)
                 .setParameter("query", fullTextSearchQuery)

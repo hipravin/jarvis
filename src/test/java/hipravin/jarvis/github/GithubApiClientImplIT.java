@@ -48,6 +48,5 @@ class GithubApiClientImplIT {
             var content = githubApiClient.getContent(csi.url());
             System.out.printf("%n====%s======%n%s%n==========%n", csi.url(), content);
         }
-
     }
 }
