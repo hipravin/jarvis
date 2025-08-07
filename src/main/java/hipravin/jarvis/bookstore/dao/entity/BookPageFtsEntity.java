@@ -11,7 +11,7 @@ public class BookPageFtsEntity extends BookPageBaseEntity {
     private Double rank;
 
     @Column(name= "ROWNUM_PER_BOOK")
-    private String rownumPerBook;
+    private Long rownumPerBook;
 
     @Column(name = "CONTENT_HIGHLIGHTED")
     private String contentHighlighted;
@@ -24,11 +24,11 @@ public class BookPageFtsEntity extends BookPageBaseEntity {
         this.rank = rank;
     }
 
-    public String getRownumPerBook() {
+    public Long getRownumPerBook() {
         return rownumPerBook;
     }
 
-    public void setRownumPerBook(String rownumPerBook) {
+    public void setRownumPerBook(Long rownumPerBook) {
         this.rownumPerBook = rownumPerBook;
     }
 

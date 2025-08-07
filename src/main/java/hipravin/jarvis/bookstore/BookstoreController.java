@@ -6,13 +6,17 @@ import hipravin.jarvis.bookstore.dao.entity.BookEntity;
 import hipravin.jarvis.bookstore.load.BookReader;
 import hipravin.jarvis.bookstore.load.model.Book;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Map;
 
 @RestController
@@ -41,9 +45,21 @@ public class BookstoreController {
         return ResponseEntity.ok(Map.of("title", book.title(), "id", bookEntity.getId()));
     }
 
-    @GetMapping(path ="/book/{id}/rawpdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    @GetMapping(path ="/book/{id}/rawpdfjpa", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> rawPdf(@NotNull @PathVariable("id") Long id) {
         BookEntity bookEntity = bookstoreDao.findByIdFetchPdf(id);
         return ResponseEntity.ok(bookEntity.getPdfContent());
+    }
+
+    @GetMapping(path ="/book/{id}/rawpdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<StreamingResponseBody> rawPdfStreaming(@NotNull @PathVariable("id") Long id) {
+        StreamingResponseBody responseBody = out -> {
+            bookstoreDao.writePdfContentTo(id, out);
+        };
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE);
+
+        return new ResponseEntity<>(responseBody, responseHeaders, HttpStatus.OK);
     }
 }

@@ -79,7 +79,7 @@ public class PdfBookReader implements BookReader {
 
             String text = stripper.getText(document);
 
-            pageConsumer.accept(i - 1, text);//adjust to 0-based
+            pageConsumer.accept(i, text);
         }
     }
 

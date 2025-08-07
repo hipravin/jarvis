@@ -4,6 +4,7 @@ import hipravin.jarvis.bookstore.dao.entity.BookEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageFtsEntity;
 import hipravin.jarvis.bookstore.load.BookReader;
 import hipravin.jarvis.bookstore.load.model.Book;
+import hipravin.jarvis.exception.NotFoundException;
 import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
@@ -49,8 +51,8 @@ class BookstoreDaoImplIT {
 
     @Test
     void testSaveThenSearch() {
-        Book book = bookLoader.read(sampleSaltPdf);
-        BookEntity bookEntity = bookstoreDao.save(book);
+        Book saltBook = bookLoader.read(sampleSaltPdf);
+        BookEntity bookEntity = bookstoreDao.save(saltBook);
 
         assertNotNull(bookEntity);
         assertNotNull(bookEntity.getId());
@@ -84,6 +86,14 @@ class BookstoreDaoImplIT {
         assertEquals(3, bookEntities.size());
         assertThrows(LazyInitializationException.class, () -> {
             bookEntities.get(0).getPdfContent();
+        });
+        //rawpdf
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bookstoreDao.writePdfContentTo(bookEntities.get(0).getId(), bos);
+        assertEquals(saltBook.pdfContent().length, bos.size());
+
+        assertThrows(NotFoundException.class, () -> {
+            bookstoreDao.writePdfContentTo(-1L, new ByteArrayOutputStream());
         });
     }
 

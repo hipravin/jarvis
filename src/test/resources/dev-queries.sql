@@ -2,7 +2,11 @@ set search_path to jarvis,public;
 
 select digest(pdf_content, 'sha256')::bytea from BOOK;
 
-select * from BOOK_PAGE where book_id = 103 order by page_num;
+select * from book;
+
+select * from BOOK_PAGE where book_id = 2109 order by page_num;
+
+select id, pdf_content from book where id = 1;
 
 select id, last_updated, title from BOOK order by id;
 update BOOK set last_updated = now() - '5 year'::interval where id = 2109;
@@ -14,6 +18,7 @@ select * from book_page where content ilike '%pg_stat_statements';
 
 select count(*) from BOOK_PAGE;
 
+delete from book where 1=1;
 
 delete from BOOK where id != (select max(id) from book);
 
@@ -165,7 +170,6 @@ select content_fts_en from book_page;
 --statistic
 SELECT * FROM ts_stat('select content_fts_en from book_page')
 ORDER BY  ndoc DESC, nentry DESC, word
-
 LIMIT 100;
 
 select * from book_page where book_id = (select max(id) from book);

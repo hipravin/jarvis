@@ -7,21 +7,23 @@ import hipravin.jarvis.bookstore.dao.entity.BookPageFtsEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageId;
 import hipravin.jarvis.bookstore.load.model.Book;
 import hipravin.jarvis.bookstore.load.model.BookPage;
+import hipravin.jarvis.exception.NotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.Map;
 
 @Repository
 @Transactional
 public class BookstoreDaoImpl implements BookstoreDao {
-    @PersistenceContext
-    private EntityManager entityManager;
-
     private static final String BOOK_FTS_NATIVE_QUERY = """
             with pages_ranked as
                      (select *, ts_rank_cd(content_fts_en, query) as rank
@@ -35,12 +37,15 @@ public class BookstoreDaoImpl implements BookstoreDao {
                          max(rank) over (partition by book_id)                       as max_rank_per_book
                   from pages_ranked) as x
             where rownum_per_book <= :max_per_book
-            order by max_rank_per_book desc, book_id limit :max_total""";
+            order by max_rank_per_book desc, book_id, rownum_per_book limit :max_total""";
 
-
+    @PersistenceContext
+    private EntityManager entityManager;
+    private final JdbcClient jdbcClient;
     private final BookRepository bookRepository;
 
-    public BookstoreDaoImpl(BookRepository bookRepository) {
+    public BookstoreDaoImpl(JdbcClient jdbcClient, BookRepository bookRepository) {
+        this.jdbcClient = jdbcClient;
         this.bookRepository = bookRepository;
     }
 
@@ -67,7 +72,7 @@ public class BookstoreDaoImpl implements BookstoreDao {
     @Override
     public BookEntity findById(long id) {
         return bookRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("Book with '%d' not found".formatted(id)));
+                () -> new NotFoundException("Book '%d'".formatted(id)));
     }
 
     @Override
@@ -75,6 +80,23 @@ public class BookstoreDaoImpl implements BookstoreDao {
         var be = findById(id);
         Hibernate.initialize(be.getPdfContent());
         return be;
+    }
+
+    @Override
+    public void writePdfContentTo(long id, OutputStream outputStream) {
+        jdbcClient.sql("select id, pdf_content from book where id = ?")
+                .param(1, id)
+                .query(rs -> {
+                    if (rs.next()) {
+                        try {
+                            return rs.getBinaryStream("pdf_content").transferTo(outputStream);
+                        } catch (IOException e) {
+                            throw new UncheckedIOException(e);
+                        }
+                    } else {
+                        throw new NotFoundException("Book '%d'".formatted(id));
+                    }
+                });
     }
 
     @Override
@@ -105,9 +127,5 @@ public class BookstoreDaoImpl implements BookstoreDao {
         bpe.setPdfContent(page.pdfContent());
 
         return bpe;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
     }
 }

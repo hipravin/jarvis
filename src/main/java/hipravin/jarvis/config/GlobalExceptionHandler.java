@@ -1,5 +1,6 @@
 package hipravin.jarvis.config;
 
+import hipravin.jarvis.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -28,5 +29,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex,
                 problemDetail,
                 new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
+
+    @ExceptionHandler(value = {NotFoundException.class})
+    protected ProblemDetail handleNotFound(NotFoundException ex, WebRequest request) {
+        log.error(ex.getMessage(), ex);
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        problemDetail.setTitle("Not Found");
+
+        return problemDetail;
     }
 }

@@ -29,6 +29,7 @@
         <flyway-maven-plugin.version>11.4.0</flyway-maven-plugin.version>
         <flyway-core.version>11.4.0</flyway-core.version>
         <hsqldb.version>2.7.4</hsqldb.version>
+        <git-commit-id-maven-plugin.version>9.0.2</git-commit-id-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -242,9 +243,9 @@
             <!--have to repeat this plugin definition in every module because maven doesn't support
              pluginManagement import feature similar to dependencyManagement import. -->
             <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <version>${git-commit-id-plugin.version}</version>
+                <groupId>io.github.git-commit-id</groupId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
+                <version>${git-commit-id-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>get-the-git-infos</id>
