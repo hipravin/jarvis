@@ -9,7 +9,6 @@ import hipravin.jarvis.github.jackson.model.CodeSearchResult;
 import hipravin.jarvis.googlebooks.GoogleBooksApiClient;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolumes;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -23,6 +22,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -30,7 +30,7 @@ import static org.mockito.BDDMockito.given;
 class JarvisControllerTest {
     @LocalServerPort
     int port;
-
+    //TODO: mock SearchEngine, not it's internals. Test SearhEngine separately if required
     @MockitoBean
     GithubApiClient githubApiClient;
 
@@ -71,10 +71,10 @@ class JarvisControllerTest {
     }
 
     @Test
-    @Disabled //TODO": figure out if 500 is still possible
     void testUnexpectedException() throws IOException, InterruptedException {
         var errorResponse = search(ERROR_SEARCH);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorResponse.statusCode());
+        assertTrue(errorResponse.body().contains("expected error gh"));
+        assertTrue(errorResponse.body().contains("expected error gb"));
     }
 
     HttpResponse<String> search(String query) throws IOException, InterruptedException {
@@ -83,7 +83,7 @@ class JarvisControllerTest {
 
     String searchRequestBody(String query) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(new JarvisRequest(query, EnumSet.allOf(SearchProviderType.class)));
+        return mapper.writeValueAsString(new JarvisRequest(query, EnumSet.of(SearchProviderType.GITHUB, SearchProviderType.GOOGLE_BOOKS)));
     }
 
     static CodeSearchResult emptySearchResult() {
