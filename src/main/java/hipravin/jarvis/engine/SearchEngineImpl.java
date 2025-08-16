@@ -113,11 +113,6 @@ public class SearchEngineImpl implements SearchEngine {
                         shortDescription(e.getValue(), query, queryTerms)))
                 .toList();
 
-        List<CodeFragment> codeFragments = csr.codeSearchItems().stream()
-                .map(csi -> new CodeFragment(joinTextMatches(csi.textMatches()), Link.fromGithubHtmlUrl(csi.htmlUrl()),
-                        csi.repository().owner().login()))
-                .toList();
-
         return new JarvisResponse("Github result count: " + csr.count(), responseItems);
     }
 
@@ -219,12 +214,6 @@ public class SearchEngineImpl implements SearchEngine {
 
         return Stream.concat(Stream.of(new AuthorResult(AuthorResult.TOTAL, csr.count())), results)
                 .toList();
-    }
-
-    private static String joinTextMatches(List<TextMatches> textMatches) {
-        return textMatches.stream()
-                .map(TextMatches::fragment)
-                .collect(Collectors.joining("\n ... \n"));
     }
 
     private static class SearchThreadFactory implements ThreadFactory {

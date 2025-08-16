@@ -1,22 +1,48 @@
 package hipravin.jarvis.github;
 
+import hipravin.jarvis.engine.SearchEngine;
+import hipravin.jarvis.engine.model.JarvisRequest;
+import hipravin.jarvis.engine.model.JarvisResponse;
+import hipravin.jarvis.engine.model.SearchProviderType;
 import hipravin.jarvis.github.jackson.model.CodeSearchItem;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 @SpringBootTest
 @ActiveProfiles(profiles = {"itlocal"})
+@Disabled
 class GithubApiClientImplIT {
 
     @Autowired
     GithubApiClient githubApiClient;
+
+    @Autowired
+    SearchEngine searchEngine;
+
+    @Test
+    @Disabled
+    void testSampleSearchRateLimit() {
+        JarvisResponse r1 = searchEngine.search(new JarvisRequest("globalexceptionhandler", EnumSet.of(SearchProviderType.GITHUB)));
+        JarvisResponse r2 = searchEngine.search(new JarvisRequest("globalexceptionhandler", EnumSet.of(SearchProviderType.GITHUB)));
+        JarvisResponse r3 = searchEngine.search(new JarvisRequest("globalexceptionhandler", EnumSet.of(SearchProviderType.GITHUB)));
+
+        assertTrue(r2.response().contains("exceeded"));
+
+        try {
+            Thread.sleep(5_000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Test
     @Disabled

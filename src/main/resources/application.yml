@@ -106,6 +106,7 @@ github:
     - snicoll
     - spring-projects
     - dataverse
+    - danvega
     - apereo
 
 logging:

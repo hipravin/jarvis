@@ -1,6 +1,9 @@
 package hipravin.jarvis.github;
 
 import com.google.common.collect.Lists;
+import hipravin.jarvis.exception.BadHeaderValueException;
+import hipravin.jarvis.exception.RateLimitExceedException;
+import hipravin.jarvis.exception.RemoteApiException;
 import hipravin.jarvis.github.jackson.JacksonGithubMapper;
 import hipravin.jarvis.github.jackson.model.CodeSearchItem;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
@@ -12,11 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
+import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
@@ -96,12 +99,10 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
 
         var requests = approvedAuthorsBatches.stream()
                 .map(batch -> searchCodeApprovedAuthorsBatchSupplier(batch, searchString))
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
+        requests.add(() -> search(searchString));
 
-        var approvedAuthorsResult = CodeSearchResult.combine(requestConcurrently(requests));
-        var genericSearchResult = search(searchString);
-
-        return CodeSearchResult.combine(sortByApprovedAuthor(approvedAuthorsResult), genericSearchResult);
+        return CodeSearchResult.combine(requestConcurrently(requests));
     }
 
     @Override
@@ -148,7 +149,18 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
                 var response = completableFuture.get(20, TimeUnit.SECONDS);
                 responses.add(response);
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                throw new RuntimeException(e);//TODO: can we safely ignore other Futures after getting first exception?
+                completableFutures.forEach(cf -> {
+                    if (!cf.isDone()) {
+                        cf.cancel(true);
+                    }
+                });
+
+                if ((e instanceof ExecutionException exec)
+                        && (exec.getCause() instanceof RateLimitExceedException rle)) {
+                    throw rle;
+                } else {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
@@ -172,10 +184,47 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
         return new String(Base64.getDecoder().decode(encoded), StandardCharsets.UTF_8);
     }
 
+    static <T> void logRateLimits(HttpHeaders headers) {
+        try {
+            long limit = getMandatoryHeaderValueAsLong(headers, "X-RateLimit-Limit");
+            long used = getMandatoryHeaderValueAsLong(headers, "X-RateLimit-Used");
+            long remaining = getMandatoryHeaderValueAsLong(headers, "X-RateLimit-Remaining");
+            long resetEpochSeconds = getMandatoryHeaderValueAsLong(headers, "X-RateLimit-Reset");
+            String resource = headers.firstValue("X-RateLimit-Resource")
+                    .orElseThrow(() -> new BadHeaderValueException("X-RateLimit-Resource", "Empty value for header X-RateLimit-Resource"));
+
+            long resetInSeconds = resetEpochSeconds - System.currentTimeMillis() / 1000;
+            log.debug("Rate limits: {}/{}, remaining: {}, reset {} sec, '{}'",
+                    used, limit, remaining, resetInSeconds, resource);
+        } catch (BadHeaderValueException e) {
+            log.error("Failed to process rate limit headers: {}", e.getMessage());
+        }
+    }
+
+    static long getMandatoryHeaderValueAsLong(HttpHeaders headers, String header) throws BadHeaderValueException {
+        try {
+            return headers.firstValueAsLong(header)
+                    .orElseThrow(() -> new BadHeaderValueException(header, "Empty value for header " + header));
+        } catch (NumberFormatException e) {
+            throw new BadHeaderValueException(header, "Not a number %s: %s: "
+                    .formatted(header, headers.firstValue(header).orElse("")));
+        }
+    }
+
     static <T> void ensureStatusOk(HttpRequest request, HttpResponse<T> response) {
-        if(response.statusCode() != HttpStatus.OK.value()) {
-            log.warn("Request failed: {}: status {}, body: {}", request.uri(), response.statusCode(), response.body());
-            throw new RuntimeException("Request Failed");
+        logRateLimits(response.headers());
+
+        if (response.statusCode() != HttpStatus.OK.value()) {
+
+            if (response.statusCode() == 403
+                    && (response.body() instanceof String body)
+                    && body.contains("API rate limit exceeded")) {
+                log.warn("Request failed: {}: status {}, body: {}", request.uri(), response.statusCode(), response.body());
+                throw new RateLimitExceedException("Github API rate limit exceeded");
+            }
+
+            log.error("Request failed: {}: status {}, body: {}", request.uri(), response.statusCode(), response.body());
+            throw new RemoteApiException("Github API call failed");
         }
     }
 
