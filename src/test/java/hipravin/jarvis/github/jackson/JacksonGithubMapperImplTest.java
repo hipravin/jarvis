@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JacksonGithubMapperImplTest {
 
-    String sampleContent = TestUtls.loadFromClasspath("data/file-content-sample.json");
-    String sampleSearchImmutableContent = TestUtls.loadFromClasspath("data/code-search-sample-immutable.json");
+    String sampleContent = TestUtls.loadFromClasspath("data/github/file-content-sample.json");
+    String sampleSearchImmutableContent = TestUtls.loadFromClasspath("data/github/code-search-sample-immutable.json");
 
     @Test
     void testContentMapping() {

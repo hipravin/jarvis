@@ -1,6 +1,6 @@
 spring:
   config:
-    import: optional:${SECRETS_PROPERTIES_PATH:secrets.properties}
+    import: optional:${SECRETS_PROPERTIES_PATH}
   application:
     name: jarvis
 

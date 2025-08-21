@@ -19,7 +19,7 @@ public class JarvisController {
 
     private final SearchEngine searchEngine;
 
-    public JarvisController(SearchEngine searchEngine, BookstoreDao bookstoreDao) {
+    public JarvisController(SearchEngine searchEngine) {
         this.searchEngine = searchEngine;
     }
 

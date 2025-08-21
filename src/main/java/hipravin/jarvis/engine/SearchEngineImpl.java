@@ -110,7 +110,7 @@ public class SearchEngineImpl implements SearchEngine {
                 .map(e -> new ResponseItem(new Link(emptyToOthers(e.getKey()) + ": " + e.getValue().size(),
                         githubApiClient.githubBrowserSearchUrl(e.getKey(), query)),
                         GITHUB,
-                        shortDescription(e.getValue(), query, queryTerms)))
+                        shortDescription(e.getValue(), queryTerms)))
                 .toList();
 
         return new JarvisResponse("Github result count: " + csr.count(), responseItems);
@@ -143,8 +143,8 @@ public class SearchEngineImpl implements SearchEngine {
         return StringUtils.hasText(name) ? name : "Others";
     }
 
-    private String shortDescription(List<CodeSearchItem> codeSearchItems, String query, Set<String> queryTerms) {
-        List<String> descriptionLines = removeCommonLeadingSpaces(shortDescriptionLines(codeSearchItems, query, queryTerms));
+    private String shortDescription(List<CodeSearchItem> codeSearchItems, Set<String> queryTerms) {
+        List<String> descriptionLines = removeCommonLeadingSpaces(shortDescriptionLines(codeSearchItems, queryTerms));
         String description = String.join("\n", descriptionLines);
         String sanitized = ESAPI.encoder().encodeForHTML(description);
 
@@ -159,7 +159,7 @@ public class SearchEngineImpl implements SearchEngine {
         return matcher.replaceAll((mr) -> highlightTermFunction.apply(mr.group(0)));
     }
 
-    private List<String> shortDescriptionLines(List<CodeSearchItem> codeSearchItems, String query, Set<String> queryTerms) {
+    private List<String> shortDescriptionLines(List<CodeSearchItem> codeSearchItems, Set<String> queryTerms) {
         int maxLines = 5;
 
         List<String> bestMatch = new ArrayList<>();

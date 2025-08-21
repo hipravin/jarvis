@@ -1,5 +1,6 @@
 package hipravin.jarvis.bookstore.dao;
 
+import hipravin.jarvis.BaseIntegrationTest;
 import hipravin.jarvis.bookstore.dao.entity.BookEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageFtsEntity;
 import hipravin.jarvis.bookstore.load.BookReader;
@@ -28,10 +29,8 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(properties = {"spring.flyway.enabled=true"})
-@Testcontainers
-@ActiveProfiles({"integration"})
-class BookstoreDaoImplIT {
+
+class BookstoreDaoImplIT extends BaseIntegrationTest {
     static Path sampleSaltPdf = Path.of("src/test/resources/data/bookstore/estimating salt intake not so easy.pdf");
     static Path sampleGarlicPdf = Path.of("src/test/resources/data/bookstore/garlic-onion-15.JChromat.A2006.pdf");
     static Path sampleStarchPdf = Path.of("src/test/resources/data/bookstore/Hardy_QRB15_starch.pdf");
@@ -41,13 +40,6 @@ class BookstoreDaoImplIT {
 
     @Autowired
     BookstoreDao bookstoreDao;
-
-    @Container
-    @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
-            .withUrlParam("currentSchema", "jarvis")
-            .withUrlParam("reWriteBatchedInserts", "true")
-            .withUrlParam("logServerErrorDetail", "false");
 
     @Test
     void testSaveThenSearch() {

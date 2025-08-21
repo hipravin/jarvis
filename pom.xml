@@ -18,7 +18,6 @@
     <properties>
         <java.version>17</java.version>
 
-        <github-api.version>1.329</github-api.version>
         <jackson.version>2.18.1</jackson.version>
         <guava.version>33.4.0-jre</guava.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
@@ -158,13 +157,6 @@
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>${hsqldb.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.kohsuke</groupId>
-            <artifactId>github-api</artifactId>
-            <version>${github-api.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -322,20 +314,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <environmentVariables>
-                        <GH_TOKEN>stub-token</GH_TOKEN>
-                        <GOOGLE_API_KEY>stub-api-key</GOOGLE_API_KEY>
-                    </environmentVariables>
-                </configuration>
             </plugin>
-
         </plugins>
     </build>
 
     <profiles>
         <profile>
             <id>integration</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -348,14 +336,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
-                        <configuration>
-                            <excludes>
-                                <exclude>**/GithubApiClientImplIT.java</exclude>
-                                <exclude>**/GitHubApiPlaygroundIT.java</exclude>
-                                <exclude>**/GoogleBooksApiClientImplIT.java</exclude>
-                                <exclude>**/BookstoreDaoImplLocalIT.java</exclude>
-                            </excludes>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>

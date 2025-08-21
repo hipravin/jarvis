@@ -30,7 +30,7 @@ import static org.mockito.BDDMockito.given;
 class JarvisControllerTest {
     @LocalServerPort
     int port;
-    //TODO: mock SearchEngine, not it's internals. Test SearhEngine separately if required
+    //TODO: mock SearchEngine, not it's internals. Test SearchEngine separately if required
     @MockitoBean
     GithubApiClient githubApiClient;
 

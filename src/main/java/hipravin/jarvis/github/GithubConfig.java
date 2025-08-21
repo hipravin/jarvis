@@ -15,17 +15,17 @@ import java.time.Duration;
 @EnableConfigurationProperties(value = {GithubProperties.class})
 public class GithubConfig {
 
-    @Value("${github.connection.timeout}")
-    private long githubConnectionTimeoutMillis;
+    private final GithubProperties githubProperties;
 
-    @Value("${github.token}")
-    private String githubToken;
+    public GithubConfig(GithubProperties githubProperties) {
+        this.githubProperties = githubProperties;
+    }
 
     @Bean
     @Qualifier("githubHttpClientBuilder")
     public HttpClient.Builder githubHttpClientBuilder() {
         return HttpClient.newBuilder()
-                .connectTimeout(Duration.ofMillis(githubConnectionTimeoutMillis));
+                .connectTimeout(Duration.ofMillis(githubProperties.connectionTimeoutMillis()));
     }
 
     @Bean
@@ -33,7 +33,7 @@ public class GithubConfig {
     public HttpRequest.Builder githubHttpRequestBuilder() {
         return HttpRequest.newBuilder()
                 .header(HttpHeaders.ACCEPT, "application/vnd.github.text-match+json")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + githubToken);
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + githubProperties.token());
     }
 
 
