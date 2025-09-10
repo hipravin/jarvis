@@ -134,7 +134,7 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
                 .map(author -> "user:" + author)
                 .collect(Collectors.joining(" ", "", " "));
 
-        return () -> search(orAuthors + searchString);
+        return () -> search(orAuthors + searchString).sort(approvedAuthors);
     }
 
     private List<CodeSearchResult> requestConcurrently(List<Supplier<CodeSearchResult>> requests) {

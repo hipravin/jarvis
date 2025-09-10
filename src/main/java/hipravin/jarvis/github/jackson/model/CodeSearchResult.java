@@ -2,11 +2,9 @@ package hipravin.jarvis.github.jackson.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import hipravin.jarvis.github.GithubUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record CodeSearchResult(
@@ -39,5 +37,25 @@ public record CodeSearchResult(
         }
 
         return new CodeSearchResult(totalCount, incomplete, combinedItems);
+    }
+
+    public CodeSearchResult sort(Comparator<? super CodeSearchItem> itemComparator) {
+        List<CodeSearchItem> items = new ArrayList<>(this.codeSearchItems());
+        items.sort(itemComparator);
+
+        return new CodeSearchResult(this.count(), this.incompleteResults(), items);
+    }
+
+    public CodeSearchResult sort(List<String> authorsOrdered) {
+        Map<String, Integer> authorToPosition = new HashMap<>();
+        int position = 0;
+        for (String author : authorsOrdered) {
+            authorToPosition.put(author, position++);
+        }
+
+        Comparator<CodeSearchItem> byAuthorPosition = Comparator.comparing(item ->
+                authorToPosition.getOrDefault(GithubUtils.safeGetLogin(item), Integer.MAX_VALUE));
+
+        return this.sort(byAuthorPosition);
     }
 }
