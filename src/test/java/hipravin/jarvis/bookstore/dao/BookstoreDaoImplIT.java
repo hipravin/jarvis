@@ -69,6 +69,7 @@ class BookstoreDaoImplIT extends BaseIntegrationTest {
             bookstoreDao.save(bookLoader.read(carbBook.pdfContent(), "Other title")); //duplicated binary content
         });
 
+        //This check may fail if executed by IDEA - probably hibernate-enhance-maven-plugin is not applied (IDEA 2022)
         assertThrows(LazyInitializationException.class, () -> {
             bookstoreDao.findById(carb.getId()).getPdfContent();
         });
