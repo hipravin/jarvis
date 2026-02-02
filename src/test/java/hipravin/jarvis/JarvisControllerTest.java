@@ -2,8 +2,10 @@ package hipravin.jarvis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hipravin.jarvis.bookstore.dao.BookstoreDao;
 import hipravin.jarvis.engine.model.JarvisRequest;
 import hipravin.jarvis.engine.model.SearchProviderType;
+import hipravin.jarvis.exception.NotFoundException;
 import hipravin.jarvis.github.GithubApiClient;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
 import hipravin.jarvis.googlebooks.GoogleBooksApiClient;
@@ -23,19 +25,25 @@ import java.util.EnumSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = {"test"})
 class JarvisControllerTest {
     @LocalServerPort
     int port;
-    //TODO: mock SearchEngine, not it's internals. Test SearchEngine separately if required
     @MockitoBean
     GithubApiClient githubApiClient;
 
     @MockitoBean
     GoogleBooksApiClient googleBooksApiClient;
+
+    @MockitoBean
+    BookstoreDao bookstoreDao;
 
     private CsrfAwareHttpClient testHttpClient;
 
@@ -52,6 +60,8 @@ class JarvisControllerTest {
         given(this.googleBooksApiClient.search(TEST_SEARCH)).willReturn(emptyVolumes());
         given(this.googleBooksApiClient.search(BLANK_SEARCH)).willReturn(emptyVolumes());
         given(this.googleBooksApiClient.search(ERROR_SEARCH)).willThrow(new RuntimeException("expected error gb"));
+
+        doThrow(new NotFoundException("Book 1234567")).when(this.bookstoreDao).writePdfContentTo(eq(1234567L), any());
 
         testHttpClient = new CsrfAwareHttpClient("http://localhost:%d".formatted(port));
         var welcomeResponse = testHttpClient.get("/");
@@ -75,6 +85,13 @@ class JarvisControllerTest {
         var errorResponse = search(ERROR_SEARCH);
         assertTrue(errorResponse.body().contains("expected error gh"));
         assertTrue(errorResponse.body().contains("expected error gb"));
+    }
+
+    @Test
+    void testBookNotFound() throws IOException, InterruptedException {
+        var errorResponse = testHttpClient.get("/api/v1/bookstore/book/1234567/rawpdf#page=0");
+        assertEquals(404, errorResponse.statusCode());
+        assertTrue(errorResponse.body().contains("1234567"));
     }
 
     HttpResponse<String> search(String query) throws IOException, InterruptedException {

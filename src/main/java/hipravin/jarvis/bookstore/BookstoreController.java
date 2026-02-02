@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Map;
 
 @RestController
@@ -25,11 +24,11 @@ import java.util.Map;
 public class BookstoreController {
 
     private final BookstoreDao bookstoreDao;
-    private final BookReader bookLoader;
+    private final BookReader bookReader;
 
     public BookstoreController(BookstoreDao bookstoreDao, BookReader bookLoader) {
         this.bookstoreDao = bookstoreDao;
-        this.bookLoader = bookLoader;
+        this.bookReader = bookLoader;
     }
 
     @GetMapping("/manage/sample")
@@ -39,7 +38,7 @@ public class BookstoreController {
 
     @PostMapping("/manage/upload")
     public ResponseEntity<?> handleBookUpload(@RequestParam("file") MultipartFile file) throws IOException {
-        Book book = bookLoader.read(file.getInputStream().readAllBytes(), file.getOriginalFilename());
+        Book book = bookReader.read(file.getInputStream().readAllBytes(), file.getOriginalFilename());
         BookEntity bookEntity = bookstoreDao.save(book);
 
         return ResponseEntity.ok(Map.of("title", book.title(), "id", bookEntity.getId()));

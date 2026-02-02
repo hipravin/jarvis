@@ -2,9 +2,6 @@ services:
   jarvis:
     image: hipravin/jarvis:0.0.1
     container_name: jarvis
-    expose:
-      - "10010"
-      - "10011"
     ports:
       - "9080:10010"
       - "9081:10011"
