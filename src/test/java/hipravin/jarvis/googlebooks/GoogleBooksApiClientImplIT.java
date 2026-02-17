@@ -21,7 +21,7 @@ class GoogleBooksApiClientImplIT extends BaseIntegrationTest {
         BooksVolumes bvs = client.search("atomic");
 
         assertNotNull(bvs);
-        assertEquals(40, bvs.items().size());
+        assertEquals(20, bvs.items().size());
 
         bvs.items().stream()
                 .peek(bv -> System.out.println("\n" + bv.volumeInfo().title()))

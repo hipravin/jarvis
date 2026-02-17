@@ -2,9 +2,6 @@ services:
   jarvis:
     image: hipravin/jarvis:0.0.1
     container_name: jarvis
-    expose:
-      - "10010"
-      - "10011"
     ports:
       - "9080:10010"
       - "9081:10011"
@@ -29,5 +26,35 @@ services:
         source: "C:/dev/tmp/jarvis"
         target: "/application/diagnostic"
         read_only: false
+    networks:
+      - jarvis-network
     restart: unless-stopped
-
+  grafana:
+    build: './config/grafana'
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - jarvis-network
+    restart: unless-stopped
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus:/prometheus
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - jarvis-network
+    restart: unless-stopped
+networks:
+  jarvis-network:
+volumes:
+  prometheus:
+  grafana:

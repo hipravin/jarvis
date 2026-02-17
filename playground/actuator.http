@@ -1,4 +1,8 @@
 ###
+GET http://localhost:9081/actuator/prometheus
+Authorization: Basic admin aadmin
+
+###
 GET http://localhost:9081/actuator/info
 Accept: application/json
 Authorization: Basic admin aadmin
