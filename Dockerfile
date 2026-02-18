@@ -1,5 +1,5 @@
 # Perform the extraction in a separate builder container
-FROM bellsoft/liberica-openjre-debian:17-cds AS builder
+FROM bellsoft/liberica-openjre-debian:25-cds AS builder
 WORKDIR /builder
 # This points to the built jar file in the target folder
 # Adjust this to 'build/libs/*.jar' if you're using Gradle
@@ -13,7 +13,7 @@ RUN --mount=type=bind,source=target/jarvis.jar,target=application.jar \
     java -Djarmode=tools -jar application.jar extract --layers --destination extracted
 
 # This is the runtime container
-FROM bellsoft/liberica-openjre-debian:17-cds
+FROM bellsoft/liberica-openjre-debian:25-cds
 
 ARG UID=10001
 RUN adduser \

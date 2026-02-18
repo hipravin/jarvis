@@ -16,7 +16,7 @@
 
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>25</java.version>
 
         <jackson.version>2.18.1</jackson.version>
         <guava.version>33.4.0-jre</guava.version>
@@ -230,7 +230,7 @@
             <plugin>
                 <groupId>org.hibernate.orm.tooling</groupId>
                 <artifactId>hibernate-enhance-maven-plugin</artifactId>
-                <version>${hibernate.version}</version>
+                <version>6.6.42.Final</version>
                 <executions>
                     <execution>
                         <configuration>
