@@ -13,7 +13,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public abstract class BaseIntegrationTest {
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:18-alpine")
             .withUrlParam("currentSchema", "jarvis")
             .withUrlParam("reWriteBatchedInserts", "true")
             .withUrlParam("logServerErrorDetail", "false");

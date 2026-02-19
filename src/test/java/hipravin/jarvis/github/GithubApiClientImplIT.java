@@ -5,9 +5,6 @@ import hipravin.jarvis.engine.SearchEngine;
 import hipravin.jarvis.github.jackson.model.CodeSearchItem;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,14 +17,6 @@ class GithubApiClientImplIT  extends BaseIntegrationTest {
 
     @Autowired
     SearchEngine searchEngine;
-
-    @Container
-    @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
-            .withUrlParam("currentSchema", "jarvis")
-            .withUrlParam("reWriteBatchedInserts", "true")
-            .withUrlParam("logServerErrorDetail", "false");
-
 
     @Test
     void testSampleSearch() {
