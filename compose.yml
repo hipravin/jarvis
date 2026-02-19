@@ -1,13 +1,13 @@
 services:
   jarvis:
-    image: hipravin/jarvis:0.0.1
+    image: hipravin/jarvis:0.0.2
     container_name: jarvis
     ports:
       - "9080:10010"
       - "9081:10011"
       - "5005:5005"
     environment:
-      - JAVA_TOOL_OPTIONS=-Xmx512m 
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx512m 
         -XX:StartFlightRecording=dumponexit=true,maxsize=20m,maxage=30d,filename=/application/diagnostic/jarvis.jfr
         -XX:StartFlightRecording=duration=60s,filename=/application/diagnostic/jarvis-startup.jfr
         -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/application/diagnostic
