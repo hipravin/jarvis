@@ -75,6 +75,9 @@ management:
     process:
       enabled: true
 
+statistic:
+  search:
+    enabled: true
 
 bookstore:
   loader-root-path: ${BOOKSTORE_LOADER_DIR}

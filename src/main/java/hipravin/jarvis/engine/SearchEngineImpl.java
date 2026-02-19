@@ -14,6 +14,7 @@ import hipravin.jarvis.googlebooks.jackson.model.BooksVolume;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolumes;
 import hipravin.jarvis.googlebooks.jackson.model.SearchInfo;
 import org.owasp.esapi.ESAPI;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -34,20 +35,23 @@ import static hipravin.jarvis.engine.model.SearchProviderType.*;
 
 @Service
 public class SearchEngineImpl implements SearchEngine {
-    private final ExecutorService executor = Executors.newCachedThreadPool(new SearchThreadFactory());
+    private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
     private static final Pattern UNICODE_SPACES = Pattern.compile("(?U)\\s+");
 
     private final GithubApiClient githubApiClient;
     private final GoogleBooksApiClient googleBooksApiClient;
     private final GithubProperties githubProperties;
     private final BookstoreDao bookstoreDao;
+    private final ApplicationEventPublisher eventPublisher;
 
     public SearchEngineImpl(GithubApiClient githubApiClient, GoogleBooksApiClient googleBooksApiClient,
-                            GithubProperties githubProperties, BookstoreDao bookstoreDao) {
+                            GithubProperties githubProperties, BookstoreDao bookstoreDao,
+                            ApplicationEventPublisher applicationEventPublisher) {
         this.githubApiClient = githubApiClient;
         this.googleBooksApiClient = googleBooksApiClient;
         this.githubProperties = githubProperties;
         this.bookstoreDao = bookstoreDao;
+        this.eventPublisher = applicationEventPublisher;
     }
 
     @Override
@@ -57,7 +61,11 @@ public class SearchEngineImpl implements SearchEngine {
         var cfBookstore = searchAsync(providers, BOOKSTORE, () -> searchBookstore(request.query()));
         var cfGoogleBooks = searchAsync(providers, GOOGLE_BOOKS, () -> searchGoogleBooks(request.query()));
 
-        return JarvisResponse.combine(cfGithub.join(), cfBookstore.join(), cfGoogleBooks.join());
+        JarvisResponse response = CompletableFuture.allOf(cfGithub, cfBookstore, cfGoogleBooks)
+                .thenApply(_ -> JarvisResponse.combine(cfGithub.join(), cfBookstore.join(), cfGoogleBooks.join()))
+                .join();
+
+        return response;
     }
 
     private CompletableFuture<JarvisResponse> searchAsync(Set<SearchProviderType> searchProviders,
