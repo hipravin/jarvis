@@ -12,6 +12,7 @@ services:
         -XX:StartFlightRecording=duration=60s,filename=/application/diagnostic/jarvis-startup.jfr
         -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/application/diagnostic
       - BOOKSTORE_LOADER_DIR=/data/bookstore
+      - KAFKA_BOOTSTRAP_SERVERS=localhost:9092
       - SECRETS_PROPERTIES_PATH=/application/secrets.properties
     volumes:
       - type: bind
