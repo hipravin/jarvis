@@ -9,13 +9,7 @@ import hipravin.jarvis.exception.NotFoundException;
 import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Path;
@@ -57,7 +51,7 @@ class BookstoreDaoImplIT extends BaseIntegrationTest {
         assertNow(bookEntity.getLastUpdated(), Duration.ofSeconds(5));
 
         Book carbBook = bookLoader.read(sampleStarchPdf);
-        var garlic = bookstoreDao.save(bookLoader.read(sampleGarlicPdf));
+//        var garlic = bookstoreDao.save(bookLoader.read(sampleGarlicPdf));
         var carb = bookstoreDao.save(carbBook);
 
         SearchSummary search1 = testSearch("potato");
@@ -78,16 +72,14 @@ class BookstoreDaoImplIT extends BaseIntegrationTest {
         List<BookEntity> bookEntities = bookstoreDao.findAll();
         assertEquals(3, bookEntities.size());
         assertThrows(LazyInitializationException.class, () -> {
-            bookEntities.get(0).getPdfContent();
+            bookEntities.getFirst().getPdfContent();
         });
         //rawpdf
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bookstoreDao.writePdfContentTo(bookEntities.get(0).getId(), bos);
+        bookstoreDao.writePdfContentTo(bookEntities.getFirst().getId(), bos);
         assertEquals(saltBook.pdfContent().length, bos.size());
 
-        assertThrows(NotFoundException.class, () -> {
-            bookstoreDao.writePdfContentTo(-1L, new ByteArrayOutputStream());
-        });
+        assertThrows(NotFoundException.class, () -> bookstoreDao.writePdfContentTo(-1L, new ByteArrayOutputStream()));
     }
 
     record SearchSummary(int pageCount, Set<Long> documentIds, String bestMatchHightlighted) {
@@ -102,7 +94,7 @@ class BookstoreDaoImplIT extends BaseIntegrationTest {
             assertNotNull(page.getBook());
         }
         return new SearchSummary(pages.size(),
-                pages.stream().map(p -> p.getBookPageId().getBookId()).collect(Collectors.toSet()),
+                pages.stream().map(p -> p.getBookPageId().bookId()).collect(Collectors.toSet()),
                 pages.stream().map(BookPageFtsEntity::getContentHighlighted).findFirst().orElse("no pages matched"));
     }
 

@@ -30,6 +30,7 @@
         <testcontainers.version>2.0.3</testcontainers.version>
         <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
         <hibernate-maven-plugin.version>7.2.4.Final</hibernate-maven-plugin.version>
+        <hibernate-processor.version>7.2.4.Final</hibernate-processor.version>
     </properties>
 
     <dependencies>
@@ -73,6 +74,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-processor</artifactId>
+            <version>${hibernate-processor.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -196,6 +204,10 @@
                         <path>
                             <groupId>org.springframework.boot</groupId>
                             <artifactId>spring-boot-configuration-processor</artifactId>
+                        </path>
+                        <path>
+                            <groupId>org.hibernate.orm</groupId>
+                            <artifactId>hibernate-processor</artifactId>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

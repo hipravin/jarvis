@@ -42,16 +42,13 @@ public class SearchEngineImpl implements SearchEngine {
     private final GoogleBooksApiClient googleBooksApiClient;
     private final GithubProperties githubProperties;
     private final BookstoreDao bookstoreDao;
-    private final ApplicationEventPublisher eventPublisher;
 
     public SearchEngineImpl(GithubApiClient githubApiClient, GoogleBooksApiClient googleBooksApiClient,
-                            GithubProperties githubProperties, BookstoreDao bookstoreDao,
-                            ApplicationEventPublisher applicationEventPublisher) {
+                            GithubProperties githubProperties, BookstoreDao bookstoreDao) {
         this.githubApiClient = githubApiClient;
         this.googleBooksApiClient = googleBooksApiClient;
         this.githubProperties = githubProperties;
         this.bookstoreDao = bookstoreDao;
-        this.eventPublisher = applicationEventPublisher;
     }
 
     @Override
@@ -136,8 +133,8 @@ public class SearchEngineImpl implements SearchEngine {
 
     private ResponseItem fromBookPage(BookPageFtsEntity bp) {
         String title = bp.getBook().getTitle();
-        Long bookId = Objects.requireNonNull(bp.getBookPageId().getBookId());
-        Long pageNum = Objects.requireNonNull(bp.getBookPageId().getPageNum());
+        Long bookId = Objects.requireNonNull(bp.getBookPageId().bookId());
+        Long pageNum = Objects.requireNonNull(bp.getBookPageId().pageNum());
 
         String linkText = "%s, p.%d".formatted(title, pageNum);
         String linkHref = "/api/v1/bookstore/book/%d/rawpdf#page=%d".formatted(
@@ -200,7 +197,7 @@ public class SearchEngineImpl implements SearchEngine {
             return original;
         }
         if (original.size() == 1) {
-            return List.of(original.get(0).stripLeading());
+            return List.of(original.getFirst().stripLeading());
         }
 
         return original.stream()
@@ -208,31 +205,31 @@ public class SearchEngineImpl implements SearchEngine {
                 .toList();
     }
 
-    private List<AuthorResult> authorResultSummary(CodeSearchResult csr) {
-        Function<String, String> approvedAuthorOrOthers =
-                (author) -> githubProperties.approvedAuthors().contains(author) ? author : AuthorResult.OTHERS;
+//    private List<AuthorResult> authorResultSummary(CodeSearchResult csr) {
+//        Function<String, String> approvedAuthorOrOthers =
+//                (author) -> githubProperties.approvedAuthors().contains(author) ? author : AuthorResult.OTHERS;
+//
+//        Map<String, Long> authorCounts = csr.codeSearchItems().stream()
+//                .map(GithubUtils::safeGetLogin)
+//                .map(approvedAuthorOrOthers)
+//                .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()));
+//
+//        Stream<AuthorResult> results = authorCounts.entrySet().stream()
+//                .map(e -> new AuthorResult(e.getKey(), e.getValue()));
+//
+//        return Stream.concat(Stream.of(new AuthorResult(AuthorResult.TOTAL, csr.count())), results)
+//                .toList();
+//    }
 
-        Map<String, Long> authorCounts = csr.codeSearchItems().stream()
-                .map(GithubUtils::safeGetLogin)
-                .map(approvedAuthorOrOthers)
-                .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()));
-
-        Stream<AuthorResult> results = authorCounts.entrySet().stream()
-                .map(e -> new AuthorResult(e.getKey(), e.getValue()));
-
-        return Stream.concat(Stream.of(new AuthorResult(AuthorResult.TOTAL, csr.count())), results)
-                .toList();
-    }
-
-    private static class SearchThreadFactory implements ThreadFactory {
-        private final AtomicInteger threadNumber = new AtomicInteger(0);
-
-        @Override
-        public Thread newThread(Runnable r) {
-            Thread thread = new Thread(r);
-            thread.setDaemon(true);
-            thread.setName("Search engine worker #%d".formatted(this.threadNumber.getAndIncrement()));
-            return thread;
-        }
-    }
+//    private static class SearchThreadFactory implements ThreadFactory {
+//        private final AtomicInteger threadNumber = new AtomicInteger(0);
+//
+//        @Override
+//        public Thread newThread(Runnable r) {
+//            Thread thread = new Thread(r);
+//            thread.setDaemon(true);
+//            thread.setName("Search engine worker #%d".formatted(this.threadNumber.getAndIncrement()));
+//            return thread;
+//        }
+//    }
 }
