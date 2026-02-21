@@ -3,8 +3,8 @@ package hipravin.jarvis.config;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest;
+import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -22,7 +22,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.function.Supplier;
 
-import static org.springframework.boot.autoconfigure.security.SecurityProperties.BASIC_AUTH_ORDER;
+import static org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilterProperties.BASIC_AUTH_ORDER;
+
 
 @Configuration
 public class SecurityConfig {

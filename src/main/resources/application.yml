@@ -4,17 +4,36 @@ spring:
   application:
     name: jarvis
 
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    consumer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+      max-poll-records: 500
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      auto-offset-reset: latest
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+#        spring.json.value.default.type: hipravin.sampleskafka.dto.ClockTickEvent
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.headers: false
+    listener:
+      ack-mode: batch #record ack is about 1000 times slower than batch
+
   flyway:
-    enabled: false #run migrations manually
     default-schema: jarvis
+    enabled: false
 
   datasource:
     url: ${JARVIS_DB_URL}
     username: ${JARVIS_DB_USER}
     password: ${JARVIS_DB_PASSWORD}
-#    url: jdbc:postgresql://localhost:5432/playground?currentSchema=jarvis&reWriteBatchedInserts=true&logServerErrorDetail=false
-#    username: postgres
-#    password: admin
 
   servlet:
     multipart:
@@ -75,6 +94,9 @@ management:
     process:
       enabled: true
 
+statistic:
+  search:
+    enabled: true
 
 bookstore:
   loader-root-path: ${BOOKSTORE_LOADER_DIR}

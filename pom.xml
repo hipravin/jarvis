@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.4</version>
+        <version>4.0.2</version>
         <relativePath/>
     </parent>
     <groupId>hipravin</groupId>
@@ -17,25 +17,36 @@
     <properties>
         <java.version>25</java.version>
 
-        <jackson.version>2.18.1</jackson.version>
         <guava.version>33.4.0-jre</guava.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
-        <esapi.version>2.6.0.0</esapi.version>
+        <esapi.version>2.7.0.0</esapi.version>
         <pdfbox.version>3.0.4</pdfbox.version>
         <postgresql.version>42.7.10</postgresql.version>
         <testcontainers.postgresql.version>1.20.6</testcontainers.postgresql.version>
         <flyway-maven-plugin.version>11.4.0</flyway-maven-plugin.version>
-        <flyway-core.version>11.4.0</flyway-core.version>
+        <flyway-core.version>12.0.1</flyway-core.version>
         <hsqldb.version>2.7.4</hsqldb.version>
         <git-commit-id-maven-plugin.version>9.0.2</git-commit-id-maven-plugin.version>
         <testcontainers.version>2.0.3</testcontainers.version>
         <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
+        <hibernate-maven-plugin.version>7.2.4.Final</hibernate-maven-plugin.version>
+        <hibernate-processor.version>7.2.4.Final</hibernate-processor.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-kafka</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-flyway</artifactId>
         </dependency>
 
         <dependency>
@@ -63,6 +74,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-processor</artifactId>
+            <version>${hibernate-processor.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -97,18 +115,9 @@
 
         <dependency>
             <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-            <version>${flyway-core.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.flywaydb</groupId>
             <artifactId>flyway-database-postgresql</artifactId>
-            <version>${flyway-core.version}</version>
-            <scope>test</scope>
+            <scope>runtime</scope>
         </dependency>
-
 
         <dependency>
             <groupId>org.testcontainers</groupId>
@@ -149,15 +158,13 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
+            <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>
@@ -178,6 +185,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-kafka-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -191,6 +204,10 @@
                         <path>
                             <groupId>org.springframework.boot</groupId>
                             <artifactId>spring-boot-configuration-processor</artifactId>
+                        </path>
+                        <path>
+                            <groupId>org.hibernate.orm</groupId>
+                            <artifactId>hibernate-processor</artifactId>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
@@ -229,13 +246,12 @@
             </plugin>
 
             <plugin>
-                <groupId>org.hibernate.orm.tooling</groupId>
-                <artifactId>hibernate-enhance-maven-plugin</artifactId>
-                <version>6.6.42.Final</version>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-maven-plugin</artifactId>
+                <version>${hibernate-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <configuration>
-                            <failOnError>true</failOnError>
                             <enableLazyInitialization>true</enableLazyInitialization>
                         </configuration>
                         <goals>

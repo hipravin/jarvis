@@ -11,8 +11,8 @@ import java.util.Map;
 @Table(name = "BOOK")
 public class BookEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bookIdSeq")
-    @SequenceGenerator(sequenceName = "BOOK_ID_SEQ", allocationSize = 100, name = "bookIdSeq")
+    @GeneratedValue //jpa 3: When @GeneratedValue does not explicitly specify a generator name, the provider automatically picks the “closest” matching sequence or table generator defined in the same entity class or package.
+    @SequenceGenerator(sequenceName = "BOOK_ID_SEQ", allocationSize = 100)
     @Column(name = "ID")
     private Long id;
 
@@ -34,15 +34,14 @@ public class BookEntity {
     private byte[] pdfContent;
 
     @Column(name = "LAST_UPDATED")
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant lastUpdated = Instant.now();
 
 //    @OneToMany( // @OneToMany is practical only when many means few (c) vladmihalcea
-//            mappedBy = "book",
+//            mappedBy = BookPageBaseEntity_.BOOK,
 //            cascade = CascadeType.ALL,
 //            orphanRemoval = true
 //    )
-//    private List<BookPage> bookPages = new ArrayList<>();
+//    private List<BookPageEntity> bookPages = new ArrayList<>();
 
     public Long getId() {
         return id;
