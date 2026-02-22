@@ -1,7 +1,6 @@
 package hipravin.jarvis.github;
 
-import hipravin.jarvis.BaseIntegrationTest;
-import hipravin.jarvis.engine.SearchEngine;
+import hipravin.jarvis.JarvisIntegrationTest;
 import hipravin.jarvis.github.jackson.model.CodeSearchItem;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
-class GithubApiClientImplIT  extends BaseIntegrationTest {
+@JarvisIntegrationTest
+class GithubApiClientImplIT {
 
     @Autowired
     GithubApiClient githubApiClient;
-
-    @Autowired
-    SearchEngine searchEngine;
 
     @Test
     void testSampleSearch() {

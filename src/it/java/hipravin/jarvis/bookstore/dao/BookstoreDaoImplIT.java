@@ -1,6 +1,6 @@
 package hipravin.jarvis.bookstore.dao;
 
-import hipravin.jarvis.BaseIntegrationTest;
+import hipravin.jarvis.JarvisIntegrationTest;
 import hipravin.jarvis.bookstore.dao.entity.BookEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageFtsEntity;
 import hipravin.jarvis.bookstore.load.BookReader;
@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-class BookstoreDaoImplIT extends BaseIntegrationTest {
+@JarvisIntegrationTest
+class BookstoreDaoImplIT {
     static Path sampleSaltPdf = Path.of("src/test/resources/data/bookstore/estimating salt intake not so easy.pdf");
     static Path sampleGarlicPdf = Path.of("src/test/resources/data/bookstore/garlic-onion-15.JChromat.A2006.pdf");
     static Path sampleStarchPdf = Path.of("src/test/resources/data/bookstore/Hardy_QRB15_starch.pdf");
@@ -51,7 +51,7 @@ class BookstoreDaoImplIT extends BaseIntegrationTest {
         assertNow(bookEntity.getLastUpdated(), Duration.ofSeconds(5));
 
         Book carbBook = bookLoader.read(sampleStarchPdf);
-//        var garlic = bookstoreDao.save(bookLoader.read(sampleGarlicPdf));
+        bookstoreDao.save(bookLoader.read(sampleGarlicPdf));
         var carb = bookstoreDao.save(carbBook);
 
         SearchSummary search1 = testSearch("potato");

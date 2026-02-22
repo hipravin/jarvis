@@ -1,18 +1,15 @@
 package hipravin.jarvis.googlebooks;
 
-import hipravin.jarvis.BaseIntegrationTest;
+import hipravin.jarvis.JarvisIntegrationTest;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolumes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
-@ActiveProfiles(profiles = {"integration"})
-class GoogleBooksApiClientImplIT extends BaseIntegrationTest {
+@JarvisIntegrationTest
+class GoogleBooksApiClientImplIT {
     @Autowired
     GoogleBooksApiClient client;
 

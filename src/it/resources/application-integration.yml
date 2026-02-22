@@ -2,7 +2,7 @@ KAFKA_BOOTSTRAP_SERVERS: localhost:9092
 
 spring:
   config:
-    import: ${SECRETS_PROPERTIES_PATH:file:./secrets-integration.properties}
+    import: optional:${SECRETS_PROPERTIES_PATH:file:./secrets-integration.properties}
 
   flyway:
     enabled: true
