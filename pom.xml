@@ -31,6 +31,9 @@
         <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
         <hibernate-maven-plugin.version>7.2.4.Final</hibernate-maven-plugin.version>
         <hibernate-processor.version>7.2.4.Final</hibernate-processor.version>
+
+        <ci.build.number>unspecified
+        </ci.build.number><!-- default value, to be set by CI agent with mvn -Dci.build.number= -->
     </properties>
 
     <dependencies>
@@ -229,10 +232,8 @@
                         </goals>
                         <configuration>
                             <additionalProperties>
-                                <encoding.source>UTF-8</encoding.source>
-                                <encoding.reporting>UTF-8</encoding.reporting>
-                                <java.source>${java.version}</java.source>
-                                <java.target>${java.version}</java.target>
+                                <java.version>${java.version}</java.version>
+                                <ci.number>${ci.build.number}</ci.number>
                             </additionalProperties>
                         </configuration>
                     </execution>
@@ -326,17 +327,17 @@
                     </dependency>
                 </dependencies>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.owasp</groupId>-->
-<!--                <artifactId>dependency-check-maven</artifactId>                 -->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.owasp</groupId>-->
+            <!--                <artifactId>dependency-check-maven</artifactId>                 -->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>check</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -415,6 +416,17 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>ci-build</id>
+            <activation>
+                <property>
+                    <name>env.CI_BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <ci.build.number>${env.CI_BUILD_NUMBER}</ci.build.number>
+            </properties>
         </profile>
     </profiles>
 

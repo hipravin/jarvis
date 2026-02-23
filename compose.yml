@@ -1,6 +1,6 @@
 services:
   jarvis:
-    image: hipravin/jarvis:0.0.2
+    image: naxel302/jarvis:latest
     container_name: jarvis
     ports:
       - "9080:10010"
