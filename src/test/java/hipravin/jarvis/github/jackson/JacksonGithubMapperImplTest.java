@@ -1,6 +1,6 @@
 package hipravin.jarvis.github.jackson;
 
-import hipravin.jarvis.TestUtls;
+import hipravin.jarvis.TestUtils;
 import hipravin.jarvis.github.jackson.model.*;
 import org.junit.jupiter.api.Test;
 
@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JacksonGithubMapperImplTest {
 
-    String sampleContent = TestUtls.loadFromClasspath("data/github/file-content-sample.json");
-    String sampleSearchImmutableContent = TestUtls.loadFromClasspath("data/github/code-search-sample-immutable.json");
+    String sampleContent = TestUtils.loadFromClasspath("data/github/file-content-sample.json");
+    String sampleSearchImmutableContent = TestUtils.loadFromClasspath("data/github/code-search-sample-immutable.json");
 
     @Test
     void testContentMapping() {

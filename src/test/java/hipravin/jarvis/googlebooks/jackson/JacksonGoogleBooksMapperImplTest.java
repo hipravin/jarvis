@@ -1,18 +1,16 @@
 package hipravin.jarvis.googlebooks.jackson;
 
-import hipravin.jarvis.TestUtls;
+import hipravin.jarvis.TestUtils;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolume;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolumes;
 import hipravin.jarvis.googlebooks.jackson.model.SearchInfo;
 import hipravin.jarvis.googlebooks.jackson.model.VolumeInfo;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class JacksonGoogleBooksMapperImplTest {
-    String sampleContent = TestUtls.loadFromClasspath("data/googlebooks/search-completable-future-allof.json");
+    String sampleContent = TestUtils.loadFromClasspath("data/googlebooks/search-completable-future-allof.json");
 
     @Test
     void testReadSample() {
