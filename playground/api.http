@@ -1,0 +1,2 @@
+GET http://localhost:10010/api/v1/bookstore/book/77777777/rawpdf
+Accept: application/json,application/pdf

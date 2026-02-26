@@ -30,17 +30,31 @@ public abstract class TestUtils {
         }
     }
 
-    public static String httpGetAsStringEnsureOkNotNull(HttpClient httpClient, int port, String url) throws IOException, InterruptedException {
-        var promRequest = HttpRequest.newBuilder(URI.create("http://localhost:%d/%s".formatted(
-                        port, url)))
+    public static HttpResponse<String> httpGet(int port, String url) throws IOException, InterruptedException {
+        try (var httpClient = HttpClient.newBuilder().build()) {
+            return httpGet(httpClient, port, url);
+        }
+    }
+
+    public static HttpResponse<String> httpGet(HttpClient httpClient, int port, String url) throws IOException, InterruptedException {
+        var request = HttpRequest.newBuilder(URI.create("http://localhost:%d/%s".formatted(
+                        port, removeLeadingSlash(url))))
                 .GET()
                 .build();
 
-        var response = httpClient.send(promRequest, HttpResponse.BodyHandlers.ofString());
+        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    public static String httpGetAsStringEnsureOkNotNull(HttpClient httpClient, int port, String url) throws IOException, InterruptedException {
+        var response = httpGet(httpClient, port, url);
 
         assertEquals(HttpStatus.OK.value(), response.statusCode());
         assertNotNull(response.body());
 
         return response.body();
+    }
+
+    private static String removeLeadingSlash(String url) {
+        return url.startsWith("/") ? url.substring(1) : url;
     }
 }

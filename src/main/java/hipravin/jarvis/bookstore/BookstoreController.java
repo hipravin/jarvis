@@ -5,6 +5,8 @@ import hipravin.jarvis.bookstore.dao.BookstoreDao;
 import hipravin.jarvis.bookstore.dao.entity.BookEntity;
 import hipravin.jarvis.bookstore.load.BookReader;
 import hipravin.jarvis.bookstore.load.model.Book;
+import hipravin.jarvis.exception.NotFoundException;
+import hipravin.jarvis.openapi.TagGetBookContent;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,11 +33,6 @@ public class BookstoreController {
         this.bookReader = bookLoader;
     }
 
-    @GetMapping("/manage/sample")
-    public Map<String, String> sample() {
-        return Map.of("response", "Hello");
-    }
-
     @PostMapping("/manage/upload")
     public ResponseEntity<?> handleBookUpload(@RequestParam("file") MultipartFile file) throws IOException {
         Book book = bookReader.read(file.getInputStream().readAllBytes(), file.getOriginalFilename());
@@ -44,13 +41,15 @@ public class BookstoreController {
         return ResponseEntity.ok(Map.of("title", book.title(), "id", bookEntity.getId()));
     }
 
-    @GetMapping(path ="/book/{id}/rawpdfjpa", produces = MediaType.APPLICATION_PDF_VALUE)
+    @TagGetBookContent
+    @GetMapping(path = "/book/{id}/rawpdfjpa", produces = {MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<byte[]> rawPdf(@NotNull @PathVariable("id") Long id) {
         BookEntity bookEntity = bookstoreDao.findByIdFetchPdf(id);
         return ResponseEntity.ok(bookEntity.getPdfContent());
     }
 
-    @GetMapping(path ="/book/{id}/rawpdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    @TagGetBookContent
+    @GetMapping(path = "/book/{id}/rawpdf", produces = {MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<StreamingResponseBody> rawPdfStreaming(@NotNull @PathVariable("id") Long id) {
         StreamingResponseBody responseBody = out -> {
             bookstoreDao.writePdfContentTo(id, out);

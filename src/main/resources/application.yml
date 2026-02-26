@@ -76,7 +76,7 @@ management:
         enabled: true
   endpoint:
     health:
-      show-details: when_authorized
+      show-details: never
       probes:
         enabled: true
   info:
@@ -93,6 +93,12 @@ management:
       enabled: true
     process:
       enabled: true
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
 
 statistic:
   search:
@@ -146,3 +152,16 @@ logging:
     hipravin: DEBUG
     com.hipravin: DEBUG
     org.springframework: INFO
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: swagger
+
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
