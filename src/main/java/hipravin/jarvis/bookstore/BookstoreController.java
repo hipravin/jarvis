@@ -5,13 +5,15 @@ import hipravin.jarvis.bookstore.dao.BookstoreDao;
 import hipravin.jarvis.bookstore.dao.entity.BookEntity;
 import hipravin.jarvis.bookstore.load.BookReader;
 import hipravin.jarvis.bookstore.load.model.Book;
-import hipravin.jarvis.exception.NotFoundException;
 import hipravin.jarvis.openapi.TagGetBookContent;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +35,8 @@ public class BookstoreController {
         this.bookReader = bookLoader;
     }
 
+    @Operation(summary = "Upload new book manually")
+    @PreAuthorize("hasAuthority('BOOKSTORE_MANAGE')")
     @PostMapping("/manage/upload")
     public ResponseEntity<?> handleBookUpload(@RequestParam("file") MultipartFile file) throws IOException {
         Book book = bookReader.read(file.getInputStream().readAllBytes(), file.getOriginalFilename());
@@ -41,16 +45,24 @@ public class BookstoreController {
         return ResponseEntity.ok(Map.of("title", book.title(), "id", bookEntity.getId()));
     }
 
+    @Tag(name = "delete")
+    @DeleteMapping("/book/{id}")
+    @PreAuthorize("hasAuthority('BOOKSTORE_MANAGE')")
+    public ResponseEntity<Void> delete(@NotNull @PathVariable Long id) {
+        bookstoreDao.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @TagGetBookContent
     @GetMapping(path = "/book/{id}/rawpdfjpa", produces = {MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<byte[]> rawPdf(@NotNull @PathVariable("id") Long id) {
+    public ResponseEntity<byte[]> rawPdf(@NotNull @PathVariable Long id) {
         BookEntity bookEntity = bookstoreDao.findByIdFetchPdf(id);
         return ResponseEntity.ok(bookEntity.getPdfContent());
     }
 
     @TagGetBookContent
     @GetMapping(path = "/book/{id}/rawpdf", produces = {MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<StreamingResponseBody> rawPdfStreaming(@NotNull @PathVariable("id") Long id) {
+    public ResponseEntity<StreamingResponseBody> rawPdfStreaming(@NotNull @PathVariable Long id) {
         StreamingResponseBody responseBody = out -> {
             bookstoreDao.writePdfContentTo(id, out);
         };

@@ -15,6 +15,8 @@ public interface BookstoreDao {
 
     BookEntity findByIdFetchPdf(long id);
 
+    void deleteById(long id);
+
     void writePdfContentTo(long id, OutputStream outputStream); //???
 
     List<BookEntity> findAll();

@@ -7,6 +7,8 @@ import hipravin.jarvis.bookstore.load.BookReader;
 import hipravin.jarvis.bookstore.load.model.Book;
 import hipravin.jarvis.exception.NotFoundException;
 import org.hibernate.LazyInitializationException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -35,51 +37,91 @@ class BookstoreDaoImplIT {
     @Autowired
     BookstoreDao bookstoreDao;
 
+    @Autowired
+    BookRepository bookRepository;
+
+    BookEntity saltBook;
+    BookEntity garlicBook;
+    BookEntity starchBook;
+
+    @BeforeEach
+    void setUp() {
+        saltBook = readAndSaveBook(sampleSaltPdf);
+        garlicBook = readAndSaveBook(sampleGarlicPdf);
+        starchBook = readAndSaveBook(sampleStarchPdf);
+    }
+
+    @AfterEach
+    void tearDown() {
+        bookRepository.deleteAll();
+    }
+
     @Test
-    void testSaveThenSearch() {
-        Book saltBook = bookLoader.read(sampleSaltPdf);
-        BookEntity bookEntity = bookstoreDao.save(saltBook);
+    void testSaltBookSavedCorrectly() {
+        assertEquals("Estimating salt intake in humans: not so easy!1", saltBook.getMetadata().get("Title"));
+
+        BookEntity byIdEntity = bookstoreDao.findByIdFetchPdf(saltBook.getId());
+        assertArrayEquals(saltBook.getPdfContent(), byIdEntity.getPdfContent(),
+                "pdf contents are not equal for book " + byIdEntity.getTitle());
+        assertNow(saltBook.getLastUpdated(), Duration.ofSeconds(5));
+    }
+
+    @Test
+    void testDuplicateByPdfContent() {
+        Book carbBook = bookLoader.read(sampleStarchPdf);
+        assertThrows(DataAccessException.class,
+                () -> bookstoreDao.save(bookLoader.read(carbBook.pdfContent(), "Other title"))); //duplicated binary content
+    }
+
+    @Test
+    void testPdfLazyLoad() {
+        //This check may fail if executed by IDEA - probably hibernate-enhance-maven-plugin is not applied
+        assertThrows(LazyInitializationException.class,
+                () -> bookstoreDao.findById(starchBook.getId()).getPdfContent());
+    }
+
+    @Test
+    void testPdfContentStreaming() {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bookstoreDao.writePdfContentTo(saltBook.getId(), bos);
+        assertEquals(saltBook.getPdfContent().length, bos.size());
+    }
+
+    @Test
+    void testPdfContentStreamingNotFound() {
+        assertThrows(NotFoundException.class,
+                () -> bookstoreDao.writePdfContentTo(-1L, new ByteArrayOutputStream()));
+    }
+
+    @Test
+    void testSearch() {
+        SearchSummary summary = testSearch("potato");
+        assertEquals(1, summary.pageCount());
+        assertEquals(Set.of(starchBook.getId()), summary.documentIds());
+        assertTrue(summary.bestMatchHightlighted().contains("<b>potato</b>"));
+    }
+
+    @Test
+    void testDeleteNotExistent() {
+        assertThrows(NotFoundException.class, () -> {
+            bookstoreDao.deleteById(-1);
+        });
+    }
+
+    @Test
+    void testDelete() {
+        bookstoreDao.deleteById(starchBook.getId());
+        assertThrows(NotFoundException.class, () -> bookstoreDao.findById(starchBook.getId()));
+    }
+
+    BookEntity readAndSaveBook(Path pdfFilePath) {
+        Book book = bookLoader.read(pdfFilePath);
+        BookEntity bookEntity = bookstoreDao.save(book);
 
         assertNotNull(bookEntity);
         assertNotNull(bookEntity.getId());
 
-        assertEquals("Estimating salt intake in humans: not so easy!1", bookEntity.getMetadata().get("Title"));
-
-        BookEntity byIdEntity = bookstoreDao.findByIdFetchPdf(bookEntity.getId());
-        assertArrayEquals(bookEntity.getPdfContent(), byIdEntity.getPdfContent(),
-                "pdf contents are not equal for book " + byIdEntity.getTitle());
-        assertNow(bookEntity.getLastUpdated(), Duration.ofSeconds(5));
-
-        Book carbBook = bookLoader.read(sampleStarchPdf);
-        bookstoreDao.save(bookLoader.read(sampleGarlicPdf));
-        var carb = bookstoreDao.save(carbBook);
-
-        SearchSummary search1 = testSearch("potato");
-        assertEquals(1, search1.pageCount());
-        assertEquals(Set.of(carb.getId()), search1.documentIds());
-        assertTrue(search1.bestMatchHightlighted().contains("<b>potato</b>"));
-
-        assertThrows(DataAccessException.class, () -> {
-            bookstoreDao.save(bookLoader.read(carbBook.pdfContent(), "Other title")); //duplicated binary content
-        });
-
-        //This check may fail if executed by IDEA - probably hibernate-enhance-maven-plugin is not applied (IDEA 2022)
-        assertThrows(LazyInitializationException.class, () -> {
-            bookstoreDao.findById(carb.getId()).getPdfContent();
-        });
-
-        //get all
-        List<BookEntity> bookEntities = bookstoreDao.findAll();
-        assertEquals(3, bookEntities.size());
-        assertThrows(LazyInitializationException.class, () -> {
-            bookEntities.getFirst().getPdfContent();
-        });
-        //rawpdf
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bookstoreDao.writePdfContentTo(bookEntities.getFirst().getId(), bos);
-        assertEquals(saltBook.pdfContent().length, bos.size());
-
-        assertThrows(NotFoundException.class, () -> bookstoreDao.writePdfContentTo(-1L, new ByteArrayOutputStream()));
+        return bookEntity;
     }
 
     record SearchSummary(int pageCount, Set<Long> documentIds, String bestMatchHightlighted) {

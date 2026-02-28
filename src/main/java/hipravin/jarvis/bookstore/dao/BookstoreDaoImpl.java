@@ -10,10 +10,10 @@ import hipravin.jarvis.bookstore.load.model.BookPage;
 import hipravin.jarvis.exception.NotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class BookstoreDaoImpl implements BookstoreDao {
     private static final String BOOK_FTS_NATIVE_QUERY = """
             with pages_ranked as
@@ -49,7 +49,9 @@ public class BookstoreDaoImpl implements BookstoreDao {
         this.bookRepository = bookRepository;
     }
 
+
     @Override
+    @Transactional(readOnly = false)
     public BookEntity save(Book book) {
         BookEntity be = new BookEntity();
         be.setTitle(book.title());
@@ -82,6 +84,21 @@ public class BookstoreDaoImpl implements BookstoreDao {
         return be;
     }
 
+    @Transactional(readOnly = false, noRollbackFor = NotFoundException.class)
+    @Override
+    public void deleteById(long id) {
+        var deleteQuery = entityManager.createNativeQuery("delete from BOOK where id=?");
+        deleteQuery.setParameter(1, id);
+
+        int deleted = deleteQuery.executeUpdate();
+        if(deleted < 1) {
+            throw new NotFoundException("Book '%d'".formatted(id));
+        }
+
+        bookRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = false)
     @Override
     public void writePdfContentTo(long id, OutputStream outputStream) {
         jdbcClient.sql("select id, pdf_content from book where id = ?")
