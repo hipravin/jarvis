@@ -32,3 +32,20 @@ logging:
     ru.hipravin: DEBUG
     hipravin: DEBUG
     org.springframework: INFO
+
+---
+spring:
+  config:
+    activate:
+      on-profile: verbose
+
+logging:
+  level:
+    ru.hipravin: TRACE
+    hipravin: TRACE
+    org.springframework: DEBUG
+    org.springframework.security: TRACE
+    org.springframework.test.context.cache: DEBUG
+    org.hibernate.engine.jdbc.spi.SqlExceptionHelper: OFF
+    org.hibernate.SQL: DEBUG
+    org.postgresql: TRACE #log exact queries, even binary content
