@@ -91,14 +91,13 @@ public class BookstoreDaoImpl implements BookstoreDao {
         deleteQuery.setParameter(1, id);
 
         int deleted = deleteQuery.executeUpdate();
-        if(deleted < 1) {
+        if (deleted < 1) {
             throw new NotFoundException("Book '%d'".formatted(id));
         }
 
         bookRepository.deleteById(id);
     }
 
-    @Transactional(readOnly = false)
     @Override
     public void writePdfContentTo(long id, OutputStream outputStream) {
         jdbcClient.sql("select id, pdf_content from book where id = ?")

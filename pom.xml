@@ -22,7 +22,7 @@
         <esapi.version>2.7.0.0</esapi.version>
         <pdfbox.version>3.0.4</pdfbox.version>
         <postgresql.version>42.7.10</postgresql.version>
-        <testcontainers.postgresql.version>1.20.6</testcontainers.postgresql.version>
+        <testcontainers.postgresql.version>2.0.3</testcontainers.postgresql.version>
         <flyway-maven-plugin.version>11.4.0</flyway-maven-plugin.version>
         <flyway-core.version>12.0.1</flyway-core.version>
         <hsqldb.version>2.7.4</hsqldb.version>
@@ -40,6 +40,7 @@
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
 
         <argLine>-javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar</argLine>
+        <testcontainers-postgresql.version>2.0.3</testcontainers-postgresql.version>
     </properties>
 
     <dependencies>
@@ -136,15 +137,15 @@
 
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${testcontainers.postgresql.version}</version>
+            <artifactId>testcontainers-junit-jupiter</artifactId>
+            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${testcontainers.postgresql.version}</version>
+            <artifactId>testcontainers-postgresql</artifactId>
+            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
 
