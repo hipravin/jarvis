@@ -3,8 +3,10 @@ package hipravin.jarvis.bookstore;
 import hipravin.jarvis.bookstore.dao.BookstoreDao;
 import hipravin.jarvis.bookstore.load.BookReader;
 import hipravin.jarvis.exception.NotFoundException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -37,6 +39,12 @@ class BookstoreControllerTest {
     BookstoreDao bookstoreDao;
     @MockitoBean
     BookReader bookReader;
+
+    @BeforeEach
+    void setUp() {
+        Mockito.reset(bookstoreDao);
+        Mockito.reset(bookReader);
+    }
 
     @Test
     @WithMockUser(username = "anonymous") //test fails with 401 without @WithMockUser despite permitAll and actual non-mock behavior

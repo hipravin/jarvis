@@ -1,6 +1,5 @@
 package hipravin.jarvis.github;
 
-import com.google.common.collect.Lists;
 import hipravin.jarvis.exception.BadHeaderValueException;
 import hipravin.jarvis.exception.RateLimitExceedException;
 import hipravin.jarvis.exception.RemoteApiException;
@@ -27,6 +26,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Gatherers;
 
 import static hipravin.jarvis.github.GithubUtils.safeGetLogin;
 
@@ -94,8 +94,9 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
 
     @Override
     public CodeSearchResult searchApprovedAuthors(String searchString) {
-        List<List<String>> approvedAuthorsBatches = Lists.partition(List.copyOf(githubProperties.approvedAuthors()),
-                githubProperties.singleRequestMaxOr());
+        List<List<String>> approvedAuthorsBatches = githubProperties.approvedAuthors().stream()
+                .gather(Gatherers.windowFixed(githubProperties.singleRequestMaxOr()))
+                .toList();
 
         var requests = approvedAuthorsBatches.stream()
                 .map(batch -> searchCodeApprovedAuthorsBatchSupplier(batch, searchString))
