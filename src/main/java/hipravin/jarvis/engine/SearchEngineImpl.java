@@ -8,13 +8,11 @@ import hipravin.jarvis.github.GithubProperties;
 import hipravin.jarvis.github.GithubUtils;
 import hipravin.jarvis.github.jackson.model.CodeSearchItem;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
-import hipravin.jarvis.github.jackson.model.TextMatches;
 import hipravin.jarvis.googlebooks.GoogleBooksApiClient;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolume;
 import hipravin.jarvis.googlebooks.jackson.model.BooksVolumes;
 import hipravin.jarvis.googlebooks.jackson.model.SearchInfo;
 import org.owasp.esapi.ESAPI;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -22,13 +20,12 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Gatherers;
 import java.util.stream.Stream;
 
 import static hipravin.jarvis.engine.model.SearchProviderType.*;
@@ -149,7 +146,7 @@ public class SearchEngineImpl implements SearchEngine {
     }
 
     private String shortDescription(List<CodeSearchItem> codeSearchItems, Set<String> queryTerms) {
-        List<String> descriptionLines = removeCommonLeadingSpaces(shortDescriptionLines(codeSearchItems, queryTerms));
+        List<String> descriptionLines = stripExtraLeadingSpaces(shortDescriptionLines(codeSearchItems, queryTerms));
         String description = String.join("\n", descriptionLines);
         String sanitized = ESAPI.encoder().encodeForHTML(description);
 
@@ -164,35 +161,63 @@ public class SearchEngineImpl implements SearchEngine {
         return matcher.replaceAll((mr) -> highlightTermFunction.apply(mr.group(0)));
     }
 
-    private List<String> shortDescriptionLines(List<CodeSearchItem> codeSearchItems, Set<String> queryTerms) {
-        int maxLines = 5;
+    record Score(int distinctMatches, int allMatches) implements Comparable<Score> {
+        @Override
+        public int compareTo(SearchEngineImpl.Score o) {
+            int result = Integer.compare(distinctMatches, o.distinctMatches);
+            if (result == 0) {
+                result = Integer.compare(allMatches, o.allMatches);
+            }
+            return result;
+        }
 
-        List<String> bestMatch = new ArrayList<>();
+        public static Score calculateMatchScore(List<String> lines, Set<String> queryTerms) {
+            Set<String> distinctMatchTerms = new HashSet<>();
 
-        for (CodeSearchItem codeSearchItem : codeSearchItems) {
-            for (TextMatches textMatches : codeSearchItem.textMatches()) {
-                Iterable<String> textMatchesLines = () -> textMatches.fragment().lines().iterator();
-                List<String> sequentialLinesWithTerms = new ArrayList<>();
-                for (String textMatchesLine : textMatchesLines) {
-                    boolean containAnyTerm = queryTerms.stream().allMatch(term -> textMatchesLine.toLowerCase().contains(term.toLowerCase()));
-                    if (containAnyTerm) {
-                        sequentialLinesWithTerms.add(textMatchesLine);
-                        if (bestMatch.size() < sequentialLinesWithTerms.size()) {
-                            bestMatch = List.copyOf(sequentialLinesWithTerms);
-                        }
-                    } else {
-                        sequentialLinesWithTerms.clear();
-                    }
-                    if (sequentialLinesWithTerms.size() >= maxLines) {
-                        return sequentialLinesWithTerms;
+            int matchCount = 0;
+            for (String line : lines) {
+                String lineLc = line.toLowerCase();
+                for (String term : queryTerms) {
+                    if (lineLc.contains(term.toLowerCase())) {
+                        distinctMatchTerms.add(term);
+                        matchCount++;
                     }
                 }
             }
+            return new Score(distinctMatchTerms.size(), matchCount);
         }
-        return bestMatch;
     }
 
-    private static List<String> removeCommonLeadingSpaces(List<String> original) {
+    private List<String> shortDescriptionLines(List<CodeSearchItem> codeSearchItems, Set<String> queryTerms) {
+        int maxLines = 7;
+        List<String> blankLines = Stream.generate(() -> "").limit(maxLines).toList();
+
+        List<String> bestScored = codeSearchItems.stream()
+                .flatMap(csi -> csi.textMatches().stream())
+                .flatMap(tm -> Stream.concat(
+                        tm.fragment().lines()
+                                .filter(l -> !l.isBlank()),
+                        blankLines.stream()))
+                .gather(Gatherers.windowSliding(maxLines))
+                .max(Comparator.comparing(lines -> Score.calculateMatchScore(lines, queryTerms)))
+                .orElse(List.of());
+
+        return bestScored.stream()
+                .filter(l -> !l.isBlank()).toList();//remove synthetic empty lines
+    }
+
+    private static final Pattern LEADING_SPACES = Pattern.compile("^(\\s+).*$");
+
+    private static int leadingSpaceCharCount(String s) {
+        var m = LEADING_SPACES.matcher(s);
+        if (m.find()) {
+            return m.group(1).length();
+        } else {
+            return 0;
+        }
+    }
+
+    private static List<String> stripExtraLeadingSpaces(List<String> original) {
         if (original.isEmpty()) {
             return original;
         }
@@ -200,8 +225,12 @@ public class SearchEngineImpl implements SearchEngine {
             return List.of(original.getFirst().stripLeading());
         }
 
+        int extraSpaceCharCount = original.stream()
+                .mapToInt(SearchEngineImpl::leadingSpaceCharCount)
+                .min().orElse(0);
+
         return original.stream()
-                .map(String::stripLeading)
+                .map(s -> s.substring(extraSpaceCharCount))
                 .toList();
     }
 

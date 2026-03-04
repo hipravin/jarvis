@@ -7,6 +7,7 @@ import hipravin.jarvis.bookstore.dao.entity.BookPageFtsEntity;
 import hipravin.jarvis.bookstore.dao.entity.BookPageId;
 import hipravin.jarvis.bookstore.load.model.Book;
 import hipravin.jarvis.bookstore.load.model.BookPage;
+import hipravin.jarvis.exception.BookNotFoundException;
 import hipravin.jarvis.exception.NotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -73,8 +74,8 @@ public class BookstoreDaoImpl implements BookstoreDao {
 
     @Override
     public BookEntity findById(long id) {
-        return bookRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Book '%d'".formatted(id)));
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
     }
 
     @Override
@@ -92,7 +93,7 @@ public class BookstoreDaoImpl implements BookstoreDao {
 
         int deleted = deleteQuery.executeUpdate();
         if (deleted < 1) {
-            throw new NotFoundException("Book '%d'".formatted(id));
+            throw new BookNotFoundException(id);
         }
 
         bookRepository.deleteById(id);
@@ -110,7 +111,7 @@ public class BookstoreDaoImpl implements BookstoreDao {
                             throw new UncheckedIOException(e);
                         }
                     } else {
-                        throw new NotFoundException("Book '%d'".formatted(id));
+                        throw new BookNotFoundException(id);
                     }
                 });
     }
