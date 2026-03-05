@@ -231,6 +231,6 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
 
     @Override
     public void destroy() throws Exception {
-//        httpClient.close(); //since Java 23
+        httpClient.close();
     }
 }

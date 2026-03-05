@@ -1,0 +1,15 @@
+services:
+  keycloak:
+    container_name: jarvis-keycloak
+    image: keycloak/keycloak:26.5.4
+    ports:
+      - "8080:8080"
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - keycloak:/opt/keycloak/data/
+    restart: unless-stopped
+volumes:
+  keycloak:
