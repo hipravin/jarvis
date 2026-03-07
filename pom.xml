@@ -271,9 +271,10 @@
                 <version>${hibernate-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                        <configuration>
-                            <enableLazyInitialization>true</enableLazyInitialization>
-                        </configuration>
+                        <!--enableLazyInitialization is deprecated and lazy init is enabled by default-->
+<!--                        <configuration>-->
+<!--                            <enableLazyInitialization>true</enableLazyInitialization>-->
+<!--                        </configuration>-->
                         <goals>
                             <goal>enhance</goal>
                         </goals>

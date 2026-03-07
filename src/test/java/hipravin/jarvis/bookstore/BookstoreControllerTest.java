@@ -15,6 +15,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.json.JsonMapper;
 
 import java.io.OutputStream;
@@ -26,8 +27,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = {BookstoreController.class})
 @ActiveProfiles("test")
@@ -60,6 +60,8 @@ class BookstoreControllerTest {
         }).when(bookstoreDao).writePdfContentTo(eq(1L), osCapture.capture());
 
         mockMvc.perform(get("/api/v1/bookstore/book/{id}/rawpdf", 1))
+                .andExpect(request().asyncStarted())
+                .andDo(MvcResult::getAsyncResult)
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_PDF))
                 .andExpect(content().bytes(expectedByteContent));

@@ -21,13 +21,13 @@ public class SearchStatAspect {
         this.eventPublisher = eventPublisher;
     }
 
-    static class Pointcats {
+    static class Pointcuts {
         @Pointcut("execution(* hipravin.jarvis.engine.SearchEngine.search(..))")
         public void search() {
         }
     }
 
-    @Around("hipravin.jarvis.statistic.SearchStatAspect.Pointcats.search()")
+    @Around("hipravin.jarvis.statistic.SearchStatAspect.Pointcuts.search()")
     public Object doConcurrentOperation(ProceedingJoinPoint pjp) throws Throwable {
 
         long start = System.nanoTime();
