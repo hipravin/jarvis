@@ -1,7 +1,8 @@
 package hipravin.jarvis.resilienceshowcase;
 
-import org.springframework.resilience.annotation.ConcurrencyLimit;
-import org.springframework.resilience.annotation.Retryable;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -15,15 +16,9 @@ public class ResilientServiceImpl implements ResilientService {
     final AtomicLong concurrentCallCounter = new AtomicLong(0);
     final AtomicLong exceptionCounter = new AtomicLong(0);
 
-    @Retryable(
-            includes = {RuntimeException.class},
-            maxRetries = 10,
-            delay = 50,
-            jitter = 10, //delay +- jitter
-            multiplier = 2,
-            maxDelay = 200)
-    @ConcurrencyLimit(5)
-    @Override
+    @Retry(name = "resilientExternalService")
+    @CircuitBreaker(name = "resilientExternalService")
+    @Bulkhead(name = "resilientExternalService")
     public ResilientResultDto callExternalService() {
         concurrentCallCounter.incrementAndGet();
         long delayMs = ThreadLocalRandom.current().nextInt(30);

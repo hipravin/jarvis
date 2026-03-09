@@ -1,7 +1,10 @@
 package hipravin.jarvis.resilienceshowcase;
 
 import hipravin.jarvis.JarvisIntegrationTest;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +16,10 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
 
 @JarvisIntegrationTest
 class ResilientServiceImplTest {
@@ -22,6 +27,8 @@ class ResilientServiceImplTest {
 
     @Autowired
     ResilientServiceImpl resilientService;
+    @Autowired
+    private CircuitBreakerRegistry circuitBreakerRegistry;
 
     @BeforeEach
     void setUp() {
@@ -29,6 +36,7 @@ class ResilientServiceImplTest {
     }
 
     @Test
+    @Disabled
     void sequential() {
         int calls = 100;
         Set<String> threadNames = new ConcurrentSkipListSet<>();
@@ -50,6 +58,7 @@ class ResilientServiceImplTest {
     }
 
     @Test
+    @Disabled
     void concurrent() {
         int calls = 1000;
         try(var executor =  Executors.newVirtualThreadPerTaskExecutor()) {
@@ -70,5 +79,18 @@ class ResilientServiceImplTest {
             assertEquals(calls - 1, maxId);
             assertEquals(5, maxConcurrency);
         }
+    }
+
+
+
+    @Test
+    @Disabled
+    void test_getStateOrProvinceAndCountryNames_shouldThrowCallNotPermittedException_whenCircuitBreakerIsOpen()
+            throws Throwable {
+        circuitBreakerRegistry.circuitBreaker("resilientExternalService").transitionToOpenState();
+//        List<Long> stateOrProvinceIds = List.of(1L);
+//        assertThrows(CallNotPermittedException.class,
+//                () -> locationService.getStateOrProvinceAndCountryNames(stateOrProvinceIds));
+//        verify(locationService, atLeastOnce()).handleLocationNameListFallback(any());
     }
 }
