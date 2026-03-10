@@ -12,6 +12,8 @@ import org.springframework.resilience.annotation.EnableResilientMethods;
 import org.springframework.resilience.retry.MethodRetryEvent;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicLong;
@@ -45,5 +47,19 @@ public class JarvisApplication {
             log.warn("Retry #{}: {}, {}", retryCounter.get(),
                     methodRetryEvent.getMethod().getName(), methodRetryEvent.getFailure().getMessage());
         }
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {//TODO: figure out more reasonable CORS config
+                registry.addMapping("/**")
+                        .allowedOriginPatterns("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
     }
 }

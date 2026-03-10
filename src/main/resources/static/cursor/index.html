@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, height=1024">
+  <title>Jarvis — Code Snippets & Documentation</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1 class="logo">
+          <span class="logo-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+          </span>
+          Jarvis
+        </h1>
+        <button class="btn-new-chat" id="btnNewChat" title="New conversation">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          New chat
+        </button>
+      </div>
+      <nav class="chat-history" id="chatHistory">
+        <div class="history-placeholder" id="historyPlaceholder">No conversations yet</div>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="main-header">
+        <h2 class="current-chat-title" id="currentChatTitle">New conversation</h2>
+      </header>
+
+      <section class="messages" id="messages">
+        <div class="welcome-screen" id="welcomeScreen">
+          <div class="welcome-content">
+            <h3>How can I help you today?</h3>
+            <p>Ask for code snippets, documentation, or development advice.</p>
+            <div class="quick-prompts">
+              <button class="quick-prompt" data-query="Show me a React useEffect hook example">useEffect hook example</button>
+              <button class="quick-prompt" data-query="Explain async/await in JavaScript">async/await explained</button>
+              <button class="quick-prompt" data-query="Python list comprehension with filter">List comprehension</button>
+              <button class="quick-prompt" data-query="SQL JOIN types comparison">SQL JOIN types</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="input-area">
+        <form class="input-form" id="inputForm">
+          <div class="input-wrapper">
+            <textarea 
+              id="queryInput" 
+              placeholder="Ask for code, docs, or advice..." 
+              rows="1"
+              maxlength="4000"
+            ></textarea>
+            <button type="submit" class="btn-send" id="btnSend" title="Send">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+          <p class="input-hint">Press Enter to send, Shift+Enter for new line</p>
+        </form>
+      </footer>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

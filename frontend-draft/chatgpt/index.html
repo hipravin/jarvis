@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Assistant Chat</title>
+    <style>
+        /* Reset browser styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 20px;
+            max-width: 1920px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 1800px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        /* Chat history area */
+        #history {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f0f4f8;
+        }
+
+        .message {
+            margin-bottom: 15px;
+        }
+
+        .user {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .response {
+            margin-left: 20px;
+            color: #555;
+        }
+
+        /* Input area */
+        #input-area {
+            display: flex;
+            padding: 10px 20px;
+            border-top: 1px solid #ddd;
+            background-color: #fafafa;
+        }
+
+        #query-input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #send-btn {
+            margin-left: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #send-btn:hover {
+            background-color: #0069d9;
+        }
+
+        /* Responsive adjustments for larger screens */
+        @media (min-width: 1920px) {
+            body {
+                max-width: 1920px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="history"></div>
+    <div id="input-area">
+        <input type="text" id="query-input" placeholder="Ask for code snippets, documentation, advice..." />
+        <button id="send-btn">Send</button>
+    </div>
+</div>
+
+<script>
+    const historyContainer = document.getElementById('history');
+    const inputField = document.getElementById('query-input');
+    const sendButton = document.getElementById('send-btn');
+
+    // Function to add messages to chat history
+    function addMessage(sender, text) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message';
+
+        const senderSpan = document.createElement('span');
+        senderSpan.className = sender;
+        senderSpan.textContent = sender === 'user' ? 'You: ' : 'Bot: ';
+
+        const textSpan = document.createElement('span');
+        textSpan.className = 'response';
+        textSpan.innerHTML = text; // Can include HTML for code snippets
+
+        messageDiv.appendChild(senderSpan);
+        messageDiv.appendChild(textSpan);
+        historyContainer.appendChild(messageDiv);
+
+        // Scroll to bottom
+        historyContainer.scrollTop = historyContainer.scrollHeight;
+    }
+
+    // Dummy response generator (simulate server response)
+    function getResponse(query) {
+        // For demo, simple canned responses or echo
+        if (query.toLowerCase().includes('javascript')) {
+            return `<pre><code>console.log('Hello World');</code></pre>`;
+        } else if (query.toLowerCase().includes('api')) {
+            return 'Here is documentation for remote APIs: ...';
+        } else if (query.trim() !== '') {
+            return 'This is a placeholder response. Your query: "' + query + '"';
+        } else {
+            return 'Please type your question.';
+        }
+    }
+
+    // Handle sending message
+    function sendMessage() {
+        const query = inputField.value.trim();
+        if (query === '') return;
+
+        addMessage('user', query);
+        inputField.value = '';
+
+        // Get bot response
+        const responseText = getResponse(query);
+        setTimeout(() => {
+            addMessage('bot', responseText);
+        }, 500); // simulate latency
+    }
+
+    // Event listeners
+    sendButton.addEventListener('click', sendMessage);
+    inputField.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+</script>
+
+</body>
+</html>

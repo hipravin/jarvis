@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -40,13 +41,9 @@ public class JarvisController {
 
     @TagSearch
     @GetMapping("/query")
-    public ResponseEntity<JarvisResponse> query(@NotBlank @RequestParam("q") String query,
-                                                @RequestParam("sp") List<String> providers) {
+    public ResponseEntity<JarvisResponse> query(@NotBlank @RequestParam("q") String query) {
 
-        var searchProviders = providers.stream()
-                .map(SearchProviderType::fromString)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
+        var searchProviders = EnumSet.allOf(SearchProviderType.class);
 
         JarvisResponse response = searchEngine.search(new JarvisRequest(query, searchProviders));
         return ResponseEntity.ok(response);
