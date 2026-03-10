@@ -71,7 +71,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v*/bookstore/manage/**").hasAuthority(BOOKSTORE_MANAGE_AUTHORITY)
                                 .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/", "/login", "/error").permitAll()
-                                .anyRequest().authenticated())
+                                .anyRequest().permitAll())
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
