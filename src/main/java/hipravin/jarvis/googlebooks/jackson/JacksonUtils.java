@@ -3,10 +3,7 @@ package hipravin.jarvis.googlebooks.jackson;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import hipravin.jarvis.github.jackson.model.TextMatch;
-import hipravin.jarvis.github.jackson.model.TextMatchDeserializer;
 
 public abstract class JacksonUtils {
     private JacksonUtils() {

@@ -1,0 +1,3 @@
+//https://api.stackexchange.com/docs
+###
+GET https://api.stackexchange.com/2.3/search/excerpts?order=desc&sort=relevance&q=resilience4j%20circuitbreaker&site=stackoverflow

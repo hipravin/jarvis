@@ -166,6 +166,17 @@ github:
     - danvega
     - apereo
 
+stackexchange:
+  api-base-url: "https://api.stackexchange.com/2.3"
+  connection:
+    timeout: 10_000
+  excerpts:
+    url: "/search/excerpts"
+    params:
+      "site": "stackoverflow"
+      "order": "desc"
+      "sort": "relevance"
+
 logging:
   level:
     hipravin: DEBUG
@@ -178,6 +189,7 @@ spring:
   config:
     activate:
       on-profile: swagger
+
 
 springdoc:
   swagger-ui:
