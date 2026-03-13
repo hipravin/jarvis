@@ -7,7 +7,8 @@ import java.util.Arrays;
 public enum SearchProviderType {
     GITHUB("GH"),
     GOOGLE_BOOKS("GB"),
-    BOOKSTORE("BS");
+    BOOKSTORE("BS"),
+    STACKEXCHANGE("SE");
 
     private final String alias;
 

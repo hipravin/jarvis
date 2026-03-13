@@ -72,7 +72,7 @@ class ResilientServiceImplTest {
                     .max().orElse(-1);
 
             var maxId = futures.stream()
-                    .mapToLong(f -> f.join().callCount())
+                    .mapToLong(f -> f.resultNow().callCount())
                     .max().orElse(-1);
 
             assertTrue(resilientService.getExceptionCounter().get() > 0);

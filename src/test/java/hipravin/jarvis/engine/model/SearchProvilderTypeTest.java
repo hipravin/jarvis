@@ -28,6 +28,14 @@ class SearchProvilderTypeTest {
     }
 
     @Test
+    void testFromValidStackExchange() {
+        assertEquals(SearchProviderType.STACKEXCHANGE, fromString("SE"));
+        assertEquals(SearchProviderType.STACKEXCHANGE, fromString("se"));
+        assertEquals(SearchProviderType.STACKEXCHANGE, fromString("STACKEXCHANGE"));
+        assertEquals(SearchProviderType.STACKEXCHANGE, fromString(SearchProviderType.STACKEXCHANGE.name()));
+    }
+
+    @Test
     void testFromInvalid() {
         assertThrows(IllegalArgumentException.class, () -> fromString(" undefined"));
     }
