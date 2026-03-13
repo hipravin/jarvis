@@ -2,6 +2,7 @@ package hipravin.jarvis.stackexchange.client;
 
 import hipravin.jarvis.stackexchange.client.dto.ResponseItems;
 import hipravin.jarvis.stackexchange.client.dto.SearchExcerpt;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,17 +35,16 @@ public class StackExchangeApiClientImpl implements StackExchangeApiClient {
         this.mapper = mapper;
     }
 
+    @Retry(name = "stackExchangeClient")
     @Override
     public ResponseItems<SearchExcerpt> searchExcerpts(String query) {
-        var uri = UriComponentsBuilder.fromUriString(
-                        props.apiBaseUrl() + props.excerptUrl())
+        var uri = UriComponentsBuilder.fromUriString(props.apiBaseUrl() + props.excerptUrl())
                 .queryParams(MultiValueMap.fromSingleValue(props.searchExcerptsParams()))
                 .queryParam("q", query)
                 .build().toUri();
 
-        var request = requestBuilder.uri(uri)
-                .GET()
-                .build();
+        var request = requestBuilder.uri(uri).GET().build();
+
         try {
             var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             ensureStatusOk(request, response);

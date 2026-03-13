@@ -95,6 +95,18 @@ management:
       enabled: true
 
 resilience4j:
+  retry:
+    configs:
+      default:
+        maxAttempts: 3
+        waitDuration: 100ms
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+#        retryExceptions:
+#          - java.io.IOException
+#          - java.util.concurrent.TimeoutException
+#        ignoreExceptions:
+#          - io.github.robwin.exception.BusinessException
   circuitbreaker:
     configs:
       default:
@@ -188,11 +200,10 @@ logging:
 spring:
   config:
     activate:
-      on-profile: swagger
-
+      on-profile: noswagger
 
 springdoc:
   swagger-ui:
-    enabled: true
+    enabled: false
   api-docs:
-    enabled: true
+    enabled: false
