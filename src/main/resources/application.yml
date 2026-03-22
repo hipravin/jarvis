@@ -135,6 +135,10 @@ statistic:
   search:
     enabled: true
 
+jarvis:
+  search-service:
+    timeout-ms: 60000
+
 bookstore:
   loader-root-path: ${BOOKSTORE_LOADER_DIR}
   initialload:

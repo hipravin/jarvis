@@ -33,5 +33,4 @@ public class Config {
         return HttpRequest.newBuilder()
                 .header(HttpHeaders.ACCEPT, "application/json");
     }
-
 }

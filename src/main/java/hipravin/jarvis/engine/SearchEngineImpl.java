@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Gatherers;
 import java.util.stream.Stream;
 
-import static hipravin.jarvis.engine.model.SearchProviderType.*;
+import static hipravin.jarvis.engine.model.InformationSource.*;
 
 @Service
 public class SearchEngineImpl implements SearchEngine {
@@ -50,7 +50,7 @@ public class SearchEngineImpl implements SearchEngine {
 
     @Override
     public JarvisResponse search(JarvisRequest request) {
-        Set<SearchProviderType> providers = request.searchProviders();
+        Set<InformationSource> providers = request.searchProviders();
         var cfGithub = searchAsync(providers, GITHUB, () -> searchGithub(request.query()));
         var cfBookstore = searchAsync(providers, BOOKSTORE, () -> searchBookstore(request.query()));
         var cfGoogleBooks = searchAsync(providers, GOOGLE_BOOKS, () -> searchGoogleBooks(request.query()));
@@ -62,8 +62,8 @@ public class SearchEngineImpl implements SearchEngine {
         return response;
     }
 
-    private CompletableFuture<JarvisResponse> searchAsync(Set<SearchProviderType> searchProviders,
-                                                          SearchProviderType provider,
+    private CompletableFuture<JarvisResponse> searchAsync(Set<InformationSource> searchProviders,
+                                                          InformationSource provider,
                                                           Supplier<JarvisResponse> searchSupplier) {
         if ((searchProviders != null) && searchProviders.contains(provider)) {
             return CompletableFuture.supplyAsync(searchSupplier, executor)

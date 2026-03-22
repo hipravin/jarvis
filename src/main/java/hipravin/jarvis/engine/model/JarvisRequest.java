@@ -9,6 +9,6 @@ import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record JarvisRequest(
         @JsonProperty("query") @NotBlank String query,
-        @JsonProperty("providers") Set<SearchProviderType> searchProviders
+        @JsonProperty("providers") Set<InformationSource> searchProviders
 ) {
 }

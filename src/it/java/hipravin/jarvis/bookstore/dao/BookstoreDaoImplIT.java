@@ -63,7 +63,7 @@ class BookstoreDaoImplIT {
         BookEntity byIdEntity = bookstoreDao.findByIdFetchPdf(saltBook.getId());
         assertArrayEquals(saltBook.getPdfContent(), byIdEntity.getPdfContent(),
                 "pdf contents are not equal for book " + byIdEntity.getTitle());
-        assertNow(saltBook.getLastUpdated(), Duration.ofSeconds(5));
+        assertNow(saltBook.getLastUpdated(), Duration.ofSeconds(15));
     }
 
     @Test

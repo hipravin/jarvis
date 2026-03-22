@@ -23,12 +23,12 @@ public class StackExchangeApiClientImpl implements StackExchangeApiClient {
     private final StackExchangeProperties props;
     private final HttpClient httpClient;
     private final HttpRequest.Builder requestBuilder;
-    private final StackExchangeMapper mapper;
+    private final JsonReader mapper;
 
     public StackExchangeApiClientImpl(StackExchangeProperties stackExchangeProperties,
                                       @Qualifier("stackExchangeHttpClient") HttpClient httpClient,
                                       @Qualifier("stackExchangeHttpRequestBuilder") HttpRequest.Builder requestBuilder,
-                                      StackExchangeMapper mapper) {
+                                      JsonReader mapper) {
         this.props = stackExchangeProperties;
         this.httpClient = httpClient;
         this.requestBuilder = requestBuilder;
@@ -49,16 +49,27 @@ public class StackExchangeApiClientImpl implements StackExchangeApiClient {
             var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             ensureStatusOk(request, response);
 
-            return mapper.readSearchExcerpts(response.body());
+            var result = mapper.readSearchExcerpts(response.body());
+            logQuotaRemaining(result);
+
+            return result;
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            var msg = (e.getMessage() != null) ? e.getMessage() : "";
+            throw new RuntimeException(
+                    "SE error: '%s' for '%s'".formatted(msg, query));
         }
     }
 
     static <T> void ensureStatusOk(HttpRequest request, HttpResponse<T> response) {
-        if(response.statusCode() != HttpStatus.OK.value()) {
+        if (response.statusCode() != HttpStatus.OK.value()) {
             log.warn("Request failed: {}: status {}, body: {}", request.uri(), response.statusCode(), response.body());
             throw new RuntimeException("Request Failed");
+        }
+    }
+
+    static <T> void logQuotaRemaining(ResponseItems<T> items) {
+        if(log.isDebugEnabled()) {
+            log.debug("Quota max/remaining: {}/{}", items.quotaMax(), items.quotaRemaining());
         }
     }
 }

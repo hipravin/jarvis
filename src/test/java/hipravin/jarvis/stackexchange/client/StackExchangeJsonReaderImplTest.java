@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StackExchangeJsonMapperImplTest {
+class StackExchangeJsonReaderImplTest {
 
     String sampleResponseResilience4j = TestUtils.loadFromClasspath("data/stackexchange/sample-resilience4j.json");
-    StackExchangeMapper mapper = new StackExchangeJsonMapperImpl();
+    JsonReader mapper = new StackExchangeJsonReaderImpl();
 
     @Test
     void sampleResilience4jRead() {

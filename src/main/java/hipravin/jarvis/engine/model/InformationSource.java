@@ -4,7 +4,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 
-public enum SearchProviderType {
+public enum InformationSource {
     GITHUB("GH"),
     GOOGLE_BOOKS("GB"),
     BOOKSTORE("BS"),
@@ -12,7 +12,7 @@ public enum SearchProviderType {
 
     private final String alias;
 
-    SearchProviderType(String alias) {
+    InformationSource(String alias) {
         this.alias = alias;
     }
 
@@ -20,7 +20,7 @@ public enum SearchProviderType {
         return alias;
     }
 
-    public static SearchProviderType fromString(String searchEngineType) {
+    public static InformationSource fromString(String searchEngineType) {
         if(!StringUtils.hasText(searchEngineType)) {
             return null;
         }

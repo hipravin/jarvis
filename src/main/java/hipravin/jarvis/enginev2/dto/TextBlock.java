@@ -1,6 +1,7 @@
 package hipravin.jarvis.enginev2.dto;
 
-public record MainBlock(
+public record TextBlock(
+        TextFormat format,
         String text
 ) {
 }

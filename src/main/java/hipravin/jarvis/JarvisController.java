@@ -3,9 +3,8 @@ package hipravin.jarvis;
 import hipravin.jarvis.engine.SearchEngine;
 import hipravin.jarvis.engine.model.JarvisRequest;
 import hipravin.jarvis.engine.model.JarvisResponse;
-import hipravin.jarvis.engine.model.SearchProviderType;
+import hipravin.jarvis.engine.model.InformationSource;
 import hipravin.jarvis.openapi.TagSearch;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.slf4j.Logger;
@@ -15,9 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 @Validated
@@ -43,7 +39,7 @@ public class JarvisController {
     @GetMapping("/query")
     public ResponseEntity<JarvisResponse> query(@NotBlank @RequestParam("q") String query) {
 
-        var searchProviders = EnumSet.allOf(SearchProviderType.class);
+        var searchProviders = EnumSet.allOf(InformationSource.class);
 
         JarvisResponse response = searchEngine.search(new JarvisRequest(query, searchProviders));
         return ResponseEntity.ok(response);

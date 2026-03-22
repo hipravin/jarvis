@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hipravin.jarvis.bookstore.dao.BookstoreDao;
 import hipravin.jarvis.engine.model.JarvisRequest;
-import hipravin.jarvis.engine.model.SearchProviderType;
+import hipravin.jarvis.engine.model.InformationSource;
 import hipravin.jarvis.exception.NotFoundException;
 import hipravin.jarvis.github.GithubApiClient;
 import hipravin.jarvis.github.jackson.model.CodeSearchResult;
@@ -101,7 +101,7 @@ class JarvisControllerEngineTest {
 
     String searchRequestBody(String query) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(new JarvisRequest(query, EnumSet.of(SearchProviderType.GITHUB, SearchProviderType.GOOGLE_BOOKS)));
+        return mapper.writeValueAsString(new JarvisRequest(query, EnumSet.of(InformationSource.GITHUB, InformationSource.GOOGLE_BOOKS)));
     }
 
     static CodeSearchResult emptySearchResult() {

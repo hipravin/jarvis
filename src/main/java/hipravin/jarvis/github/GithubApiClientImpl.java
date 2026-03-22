@@ -185,7 +185,7 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
         return new String(Base64.getDecoder().decode(encoded), StandardCharsets.UTF_8);
     }
 
-    static <T> void logRateLimits(HttpHeaders headers) {
+    static void logRateLimits(HttpHeaders headers) {
         try {
             long limit = getMandatoryHeaderValueAsLong(headers, "X-RateLimit-Limit");
             long used = getMandatoryHeaderValueAsLong(headers, "X-RateLimit-Used");

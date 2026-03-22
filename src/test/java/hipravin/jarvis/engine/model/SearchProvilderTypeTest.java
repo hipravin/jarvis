@@ -2,7 +2,7 @@ package hipravin.jarvis.engine.model;
 
 import org.junit.jupiter.api.Test;
 
-import static hipravin.jarvis.engine.model.SearchProviderType.fromString;
+import static hipravin.jarvis.engine.model.InformationSource.fromString;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SearchProvilderTypeTest {
@@ -13,26 +13,26 @@ class SearchProvilderTypeTest {
 
     @Test
     void testFromValidGithub() {
-        assertEquals(SearchProviderType.GITHUB, fromString("GH"));
-        assertEquals(SearchProviderType.GITHUB, fromString("gh"));
-        assertEquals(SearchProviderType.GITHUB, fromString("GITHUB"));
-        assertEquals(SearchProviderType.GITHUB, fromString(SearchProviderType.GITHUB.name()));
+        assertEquals(InformationSource.GITHUB, fromString("GH"));
+        assertEquals(InformationSource.GITHUB, fromString("gh"));
+        assertEquals(InformationSource.GITHUB, fromString("GITHUB"));
+        assertEquals(InformationSource.GITHUB, fromString(InformationSource.GITHUB.name()));
     }
 
     @Test
     void testFromValidGoogleBooks() {
-        assertEquals(SearchProviderType.GOOGLE_BOOKS, fromString("GB"));
-        assertEquals(SearchProviderType.GOOGLE_BOOKS, fromString("gb"));
-        assertEquals(SearchProviderType.GOOGLE_BOOKS, fromString("GOOGLE_BOOKS"));
-        assertEquals(SearchProviderType.GOOGLE_BOOKS, fromString(SearchProviderType.GOOGLE_BOOKS.name()));
+        assertEquals(InformationSource.GOOGLE_BOOKS, fromString("GB"));
+        assertEquals(InformationSource.GOOGLE_BOOKS, fromString("gb"));
+        assertEquals(InformationSource.GOOGLE_BOOKS, fromString("GOOGLE_BOOKS"));
+        assertEquals(InformationSource.GOOGLE_BOOKS, fromString(InformationSource.GOOGLE_BOOKS.name()));
     }
 
     @Test
     void testFromValidStackExchange() {
-        assertEquals(SearchProviderType.STACKEXCHANGE, fromString("SE"));
-        assertEquals(SearchProviderType.STACKEXCHANGE, fromString("se"));
-        assertEquals(SearchProviderType.STACKEXCHANGE, fromString("STACKEXCHANGE"));
-        assertEquals(SearchProviderType.STACKEXCHANGE, fromString(SearchProviderType.STACKEXCHANGE.name()));
+        assertEquals(InformationSource.STACKEXCHANGE, fromString("SE"));
+        assertEquals(InformationSource.STACKEXCHANGE, fromString("se"));
+        assertEquals(InformationSource.STACKEXCHANGE, fromString("STACKEXCHANGE"));
+        assertEquals(InformationSource.STACKEXCHANGE, fromString(InformationSource.STACKEXCHANGE.name()));
     }
 
     @Test

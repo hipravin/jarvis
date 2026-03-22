@@ -6,13 +6,14 @@ const leftPane = document.querySelector(".left-pane");
 const ghToggle = document.getElementById("gh-toggle");
 const gbToggle = document.getElementById("gb-toggle");
 const bsToggle = document.getElementById("bs-toggle");
+const seToggle = document.getElementById("se-toggle");
 
 let userMessage = null; // Variable to store user's message
 let lastSearchResponseBody = null;
 
 const inputInitHeight = chatInput.scrollHeight;
 
-const API_URL = `/api/v1/jarvis/query`;
+const API_URL = `/api/search`;
 
 const createChatLi = (message, className) => {
     // Create a chat <li> element with passed message and className
@@ -36,25 +37,28 @@ const fillItems = (items, chatLi) => {
     items.forEach((item) => {
         const li = document.createElement("li");
         li.innerHTML =
-            `<div class="response-item"><a href="${item.header.href}" target="_blank"></a><p></p></div>`;
+            `<div class="response-item"><a href="${item.header.header.href}" target="_blank"></a><p></p></div>`;
 
         const searchSourceIcon = document.createElement("span");
         searchSourceIcon.classList.add("search-source-icon");
-        if (item.searchProvider === "GITHUB") {
+        if (item.source === "GITHUB") {
             searchSourceIcon.classList.add("material-symbols-outlined");
             searchSourceIcon.textContent = "code_blocks";
-        }  else if (item.searchProvider === "BOOKSTORE") {
+        }  else if (item.source === "BOOKSTORE") {
             searchSourceIcon.classList.add("material-symbols-outlined");
             searchSourceIcon.textContent = "import_contacts";
-        } else if (item.searchProvider === "GOOGLE_BOOKS") {
+        } else if (item.source === "GOOGLE_BOOKS") {
             searchSourceIcon.classList.add("material-symbols-outlined");
             searchSourceIcon.textContent = "book_2";
+        } else if (item.source === "STACKEXCHANGE") {
+            searchSourceIcon.classList.add("material-symbols-outlined");
+            searchSourceIcon.textContent = "code_blocks";
         }
         li.querySelector(".response-item").prepend(searchSourceIcon);
 
-        li.querySelector(".response-item >a").textContent = item.header.title;
+        li.querySelector(".response-item >a").textContent = item.header.header.title;
         // li.querySelector(".response-item >p").textContent = item.shortDescription;
-        li.querySelector(".response-item >p").innerHTML = item.shortDescription;
+        li.querySelector(".response-item >p").innerHTML = item.main.text;
         responseItemsUl.appendChild(li);
     });
 }
@@ -126,8 +130,8 @@ const generateResponse = async (chatElement) => {
 
         messageElement.textContent = "";
         messageElement.textContent = data.response;
-        if (data.items) {
-            fillItems(data.items, messageElement)
+        if (data.excerpts) {
+            fillItems(data.excerpts, messageElement)
         }
     } catch (error) {
         // Handle error
@@ -199,4 +203,7 @@ bsToggle.addEventListener("click", (e) => {
 });
 gbToggle.addEventListener("click", (e) => {
     toggleClass(gbToggle, "provider-on", "provider-off");
+});
+seToggle.addEventListener("click", (e) => {
+    toggleClass(seToggle, "provider-on", "provider-off");
 });

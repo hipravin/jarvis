@@ -7,7 +7,7 @@ import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.json.JsonMapper;
 
 @Component
-public class StackExchangeJsonMapperImpl implements StackExchangeMapper {
+public class StackExchangeJsonReaderImpl implements JsonReader {
     private final JsonMapper jsonMapper = configureJsonMapper();
 
     @Override
