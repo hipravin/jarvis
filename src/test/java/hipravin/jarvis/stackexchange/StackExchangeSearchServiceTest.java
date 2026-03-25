@@ -2,13 +2,15 @@ package hipravin.jarvis.stackexchange;
 
 import hipravin.jarvis.TestUtils;
 import hipravin.jarvis.engine.model.InformationSource;
-import hipravin.jarvis.enginev2.dto.*;
+import hipravin.jarvis.enginev2.dto.Excerpt;
+import hipravin.jarvis.enginev2.dto.SearchRequest;
+import hipravin.jarvis.enginev2.dto.SearchResponse;
+import hipravin.jarvis.enginev2.dto.TextFormat;
+import hipravin.jarvis.stackexchange.client.JsonReader;
 import hipravin.jarvis.stackexchange.client.StackExchangeApiClient;
 import hipravin.jarvis.stackexchange.client.StackExchangeJsonReaderImpl;
-import hipravin.jarvis.stackexchange.client.JsonReader;
 import hipravin.jarvis.stackexchange.client.dto.ResponseItems;
 import hipravin.jarvis.stackexchange.client.dto.SearchExcerpt;
-import hipravin.jarvis.stackexchange.mapper.StackExchangeDtoMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -22,7 +24,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = {StackExchangeDtoMapper.class, StackExchangeSearchService.class})
+@SpringBootTest(classes = {StackExchangeSearchService.class})
 class StackExchangeSearchServiceTest {
 
     @Autowired
@@ -49,11 +51,10 @@ class StackExchangeSearchServiceTest {
 
         Excerpt excerpt = excerpts.getFirst();
 
-        assertEquals(Icons.STACKEXCHANGE_ICON, excerpt.header().icon());
         assertEquals("Wrapping Resilience4j circuitbreaker around a service method with multiple arguments",
-                excerpt.header().header().title());
+                excerpt.title().title());
 
-        assertEquals("https://stackoverflow.com/questions/56132097/", excerpt.header().header().href());
+        assertEquals("https://stackoverflow.com/questions/56132097/", excerpt.title().url());
 
         assertEquals(TextFormat.HTML, excerpt.main().format());
         assertTrue(excerpt.main().text().contains(
@@ -77,6 +78,20 @@ class StackExchangeSearchServiceTest {
         var error = response.errors().getFirst();
         assertTrue(error.message().contains(exceptionMessage));
         assertTrue(error.message().contains(exceptionMessage));
+    }
+
+    @Test
+    void collapseAdjacentNewLines() {
+        String multiline = """
+               start
+               
+               
+               
+               mid
+               end""";
+
+        String collapsed = service.collapseAdjacentNewlines(multiline);
+        assertEquals("start\n\nmid\nend", collapsed);
     }
 
     static ResponseItems<SearchExcerpt> staticResponse(String classpathResource) {

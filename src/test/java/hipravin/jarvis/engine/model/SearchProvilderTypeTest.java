@@ -2,41 +2,41 @@ package hipravin.jarvis.engine.model;
 
 import org.junit.jupiter.api.Test;
 
-import static hipravin.jarvis.engine.model.InformationSource.fromString;
+import static hipravin.jarvis.engine.model.InformationSource.fromAlias;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SearchProvilderTypeTest {
     @Test
     void testFromNull() {
-        assertNull(fromString(null));
+        assertNull(fromAlias(null));
     }
 
     @Test
     void testFromValidGithub() {
-        assertEquals(InformationSource.GITHUB, fromString("GH"));
-        assertEquals(InformationSource.GITHUB, fromString("gh"));
-        assertEquals(InformationSource.GITHUB, fromString("GITHUB"));
-        assertEquals(InformationSource.GITHUB, fromString(InformationSource.GITHUB.name()));
+        assertEquals(InformationSource.GITHUB, fromAlias("GH"));
+        assertEquals(InformationSource.GITHUB, fromAlias("gh"));
+        assertEquals(InformationSource.GITHUB, fromAlias("GITHUB"));
+        assertEquals(InformationSource.GITHUB, fromAlias(InformationSource.GITHUB.name()));
     }
 
     @Test
     void testFromValidGoogleBooks() {
-        assertEquals(InformationSource.GOOGLE_BOOKS, fromString("GB"));
-        assertEquals(InformationSource.GOOGLE_BOOKS, fromString("gb"));
-        assertEquals(InformationSource.GOOGLE_BOOKS, fromString("GOOGLE_BOOKS"));
-        assertEquals(InformationSource.GOOGLE_BOOKS, fromString(InformationSource.GOOGLE_BOOKS.name()));
+        assertEquals(InformationSource.GOOGLE_BOOKS, fromAlias("GB"));
+        assertEquals(InformationSource.GOOGLE_BOOKS, fromAlias("gb"));
+        assertEquals(InformationSource.GOOGLE_BOOKS, fromAlias("GOOGLE_BOOKS"));
+        assertEquals(InformationSource.GOOGLE_BOOKS, fromAlias(InformationSource.GOOGLE_BOOKS.name()));
     }
 
     @Test
     void testFromValidStackExchange() {
-        assertEquals(InformationSource.STACKEXCHANGE, fromString("SE"));
-        assertEquals(InformationSource.STACKEXCHANGE, fromString("se"));
-        assertEquals(InformationSource.STACKEXCHANGE, fromString("STACKEXCHANGE"));
-        assertEquals(InformationSource.STACKEXCHANGE, fromString(InformationSource.STACKEXCHANGE.name()));
+        assertEquals(InformationSource.STACKEXCHANGE, fromAlias("SE"));
+        assertEquals(InformationSource.STACKEXCHANGE, fromAlias("se"));
+        assertEquals(InformationSource.STACKEXCHANGE, fromAlias("STACKEXCHANGE"));
+        assertEquals(InformationSource.STACKEXCHANGE, fromAlias(InformationSource.STACKEXCHANGE.name()));
     }
 
     @Test
     void testFromInvalid() {
-        assertThrows(IllegalArgumentException.class, () -> fromString(" undefined"));
+        assertThrows(IllegalArgumentException.class, () -> fromAlias(" undefined"));
     }
 }

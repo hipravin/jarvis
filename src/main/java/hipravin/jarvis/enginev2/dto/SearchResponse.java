@@ -1,5 +1,7 @@
 package hipravin.jarvis.enginev2.dto;
 
+import hipravin.jarvis.engine.model.InformationSource;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +11,7 @@ public record SearchResponse(
         List<Excerpt> excerpts,
         List<Error> errors
 ) {
+
     public static SearchResponse success(List<Excerpt> excerpts) {
         return new SearchResponse(excerpts, Collections.emptyList());
     }

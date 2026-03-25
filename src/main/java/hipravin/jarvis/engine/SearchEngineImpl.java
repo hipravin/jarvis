@@ -110,7 +110,7 @@ public class SearchEngineImpl implements SearchEngine {
 
         List<ResponseItem> responseItems = byAuthor.entrySet().stream()
                 .map(e -> new ResponseItem(new Link(emptyToOthers(e.getKey()) + ": " + e.getValue().size(),
-                        githubApiClient.githubBrowserSearchUrl(e.getKey(), query)),
+                        githubApiClient.buildUserSearchUrl(e.getKey(), query)),
                         GITHUB,
                         shortDescription(e.getValue(), queryTerms)))
                 .toList();

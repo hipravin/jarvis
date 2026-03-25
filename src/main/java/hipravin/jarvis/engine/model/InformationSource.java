@@ -3,6 +3,7 @@ package hipravin.jarvis.engine.model;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public enum InformationSource {
     GITHUB("GH"),
@@ -20,13 +21,13 @@ public enum InformationSource {
         return alias;
     }
 
-    public static InformationSource fromString(String searchEngineType) {
-        if(!StringUtils.hasText(searchEngineType)) {
+    public static InformationSource fromAlias(String alias) {
+        if(!StringUtils.hasText(alias)) {
             return null;
         }
 
         return Arrays.stream(values())
-                .filter(se -> se.alias.equalsIgnoreCase(searchEngineType) || se.name().equalsIgnoreCase(searchEngineType))
-                .findAny().orElseThrow(() -> new IllegalArgumentException("Invalid search provider: " + searchEngineType));
+                .filter(se -> se.alias.equalsIgnoreCase(alias) || se.name().equalsIgnoreCase(alias))
+                .findAny().orElseThrow(() -> new IllegalArgumentException("Invalid information source alias: " + alias));
     }
 }

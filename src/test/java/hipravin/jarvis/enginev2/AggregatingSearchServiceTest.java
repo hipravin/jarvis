@@ -85,10 +85,10 @@ class AggregatingSearchServiceTest {
         assertTrue(sr.errors().isEmpty());
         assertEquals(4, sr.excerpts().size());
 
-        assertEquals("title key1", sr.excerpts().get(0).header().header().title());
-        assertEquals("title key2", sr.excerpts().get(1).header().header().title());
-        assertEquals("title key3", sr.excerpts().get(2).header().header().title());
-        assertEquals("title key4", sr.excerpts().get(3).header().header().title());
+        assertEquals("title key1", sr.excerpts().get(0).title().title());
+        assertEquals("title key2", sr.excerpts().get(1).title().title());
+        assertEquals("title key3", sr.excerpts().get(2).title().title());
+        assertEquals("title key4", sr.excerpts().get(3).title().title());
     }
 
     @Test
@@ -110,9 +110,12 @@ class AggregatingSearchServiceTest {
     }
 
     SearchResponse mockSearchResponse(String key, InformationSource source) {
-        return new SearchResponse(List.of(new Excerpt(
-                source, new HeaderBlock(Icons.BOOKSTORE_ICON, new Link("title " + key, "http://href/" + key)),
-                new TextBlock(TextFormat.HTML, "main text block " + key))),
-                List.of());
+        var singleExcerpt = Excerpt.builder()
+                .source(InformationSource.BOOKSTORE)
+                .title("title " + key, "http://href/" + key)
+                .mainHtml("main text block " + key)
+                .build();
+
+        return new SearchResponse(List.of(singleExcerpt), List.of());
     }
 }

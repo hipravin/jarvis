@@ -2,6 +2,7 @@ package hipravin.jarvis.github;
 
 import hipravin.jarvis.JarvisIntegrationTest;
 import hipravin.jarvis.github.jackson.model.CodeSearchItem;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @JarvisIntegrationTest
+@Disabled //Rate limit exceeded because there is another test calling Github API
 class GithubApiClientImplIT {
 
     @Autowired

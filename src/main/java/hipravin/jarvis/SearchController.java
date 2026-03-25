@@ -12,6 +12,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.EnumSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Validated
 @RestController
@@ -26,8 +28,12 @@ public class SearchController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> search(@NotBlank @RequestParam("q") String query) {
-        return ResponseEntity.ok(searchService.search(new SearchRequest(query, EnumSet.allOf(InformationSource.class))));
+    public ResponseEntity<Object> search(@NotBlank @RequestParam("q") String query,
+                                         @RequestParam(value = "is", required = false) Set<String> informationSources) {
+        Set<InformationSource> sources = (informationSources == null || informationSources.isEmpty())
+                ? EnumSet.allOf(InformationSource.class)
+                : informationSources.stream().map(InformationSource::fromAlias).collect(Collectors.toSet());
+        return ResponseEntity.ok(searchService.search(new SearchRequest(query, sources)));
     }
 
     @PostMapping

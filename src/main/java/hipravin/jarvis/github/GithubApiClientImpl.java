@@ -107,7 +107,7 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
     }
 
     @Override
-    public String githubBrowserSearchUrl(String user, String query) {
+    public String buildUserSearchUrl(String user, String query) {
         String specificUserSearchQuery = (StringUtils.hasText(user)) ? "user:%s %s".formatted(user, query) : query;
 
         return githubProperties.codeSearchBrowserUrlTemplate()

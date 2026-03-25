@@ -10,5 +10,5 @@ import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record SearchRequest(
         @JsonProperty("query") @NotBlank String query,
-        @JsonProperty("providers") Set<InformationSource> searchProviders) {
+        @JsonProperty("sources") Set<InformationSource> informationSources) {
 }

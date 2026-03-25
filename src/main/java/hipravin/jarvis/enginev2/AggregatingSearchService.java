@@ -39,7 +39,7 @@ public class AggregatingSearchService implements SearchService {
         final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 
         List<ServiceQueryTask> tasks = services.stream()
-                .filter(service -> request.searchProviders().contains(service.getSource()))
+                .filter(service -> request.informationSources().contains(service.getSource()))
                 .map(service -> new ServiceQueryTask(service,
                         supplyAsync(() -> service.search(request), executor)
                                 .exceptionally(SearchResponse::failed)))
