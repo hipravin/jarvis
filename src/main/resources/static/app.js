@@ -6,13 +6,14 @@ const leftPane = document.querySelector(".left-pane");
 const ghToggle = document.getElementById("gh-toggle");
 const gbToggle = document.getElementById("gb-toggle");
 const bsToggle = document.getElementById("bs-toggle");
+const seToggle = document.getElementById("se-toggle");
 
 let userMessage = null; // Variable to store user's message
 let lastSearchResponseBody = null;
 
 const inputInitHeight = chatInput.scrollHeight;
 
-const API_URL = `/api/v1/jarvis/query`;
+const API_URL = `/api/search`;
 
 const createChatLi = (message, className) => {
     // Create a chat <li> element with passed message and className
@@ -36,43 +37,32 @@ const fillItems = (items, chatLi) => {
     items.forEach((item) => {
         const li = document.createElement("li");
         li.innerHTML =
-            `<div class="response-item"><a href="${item.header.href}" target="_blank"></a><p></p></div>`;
+            `<div class="response-item"><a href="${item.title.url}" target="_blank"></a><p></p></div>`;
 
         const searchSourceIcon = document.createElement("span");
         searchSourceIcon.classList.add("search-source-icon");
-        if (item.searchProvider === "GITHUB") {
+        if (item.source === "GITHUB") {
             searchSourceIcon.classList.add("material-symbols-outlined");
-            searchSourceIcon.textContent = "code_blocks";
-        }  else if (item.searchProvider === "BOOKSTORE") {
+            searchSourceIcon.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="25" height="25"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>';
+        } else if (item.source === "BOOKSTORE") {
             searchSourceIcon.classList.add("material-symbols-outlined");
             searchSourceIcon.textContent = "import_contacts";
-        } else if (item.searchProvider === "GOOGLE_BOOKS") {
+        } else if (item.source === "GOOGLE_BOOKS") {
             searchSourceIcon.classList.add("material-symbols-outlined");
             searchSourceIcon.textContent = "book_2";
+        } else if (item.source === "STACKEXCHANGE") {
+            searchSourceIcon.classList.add("material-symbols-outlined");
+            searchSourceIcon.textContent = "stacks";
         }
         li.querySelector(".response-item").prepend(searchSourceIcon);
 
-        li.querySelector(".response-item >a").textContent = item.header.title;
+        li.querySelector(".response-item >a").textContent = item.title.title;
         // li.querySelector(".response-item >p").textContent = item.shortDescription;
-        li.querySelector(".response-item >p").innerHTML = item.shortDescription;
+        li.querySelector(".response-item >p").innerHTML = item.main.text;
         responseItemsUl.appendChild(li);
     });
 }
 
-const fillAuthors = (authors, chatLi) => {
-    let chatAuthorsUl = chatLi.querySelector("ul");
-    if (!chatAuthorsUl) {
-        chatAuthorsUl = document.createElement("ul");
-        chatLi.appendChild(chatAuthorsUl);
-    }
-    chatAuthorsUl.className = "authors-ul";
-
-    authors.forEach((author) => {
-        const li = document.createElement("li");
-        li.innerHTML = `<a href="#">${author.author + ": " + author.count}</a>`;
-        chatAuthorsUl.appendChild(li);
-    });
-}
 
 const createLink = (title, href) => {
     let a = document.createElement('a');
@@ -93,9 +83,13 @@ const enabledSearchProviders = () => {
     if (bsToggle.classList.contains("provider-on")) {
         providers.push("BOOKSTORE");
     }
+    if (seToggle.classList.contains("provider-on")) {
+        providers.push("STACKEXCHANGE");
+    }
     if (gbToggle.classList.contains("provider-on")) {
         providers.push("GOOGLE_BOOKS");
     }
+
 
     return providers;
 }
@@ -109,7 +103,7 @@ const generateResponse = async (chatElement) => {
         },
         body: JSON.stringify({
             "query": userMessage,
-            "providers": enabledSearchProviders()
+            "sources": enabledSearchProviders()
         }),
     }
 
@@ -126,8 +120,8 @@ const generateResponse = async (chatElement) => {
 
         messageElement.textContent = "";
         messageElement.textContent = data.response;
-        if (data.items) {
-            fillItems(data.items, messageElement)
+        if (data.excerpts) {
+            fillItems(data.excerpts, messageElement)
         }
     } catch (error) {
         // Handle error
@@ -199,4 +193,7 @@ bsToggle.addEventListener("click", (e) => {
 });
 gbToggle.addEventListener("click", (e) => {
     toggleClass(gbToggle, "provider-on", "provider-off");
+});
+seToggle.addEventListener("click", (e) => {
+    toggleClass(seToggle, "provider-on", "provider-off");
 });

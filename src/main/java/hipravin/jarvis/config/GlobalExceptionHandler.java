@@ -53,11 +53,12 @@ public class GlobalExceptionHandler {
             ValidationException.class,
             MethodArgumentTypeMismatchException.class,
             MethodArgumentNotValidException.class}, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<ProblemDetail> handleBadRequest(NotFoundException ex, HttpServletRequest httpServletRequest) {
+    ResponseEntity<ProblemDetail> handleBadRequest(Exception ex, HttpServletRequest httpServletRequest) {
         registerErrorObservation(httpServletRequest, ex);//TODO: figure out why no errors in grafana
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
         problemDetail.setTitle("Bad request");
+        problemDetail.setDetail(ex.getMessage());
 
         return ResponseEntity.of(problemDetail).build();
     }

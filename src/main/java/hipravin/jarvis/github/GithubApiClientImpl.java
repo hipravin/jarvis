@@ -107,7 +107,7 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
     }
 
     @Override
-    public String githubBrowserSearchUrl(String user, String query) {
+    public String buildUserSearchUrl(String user, String query) {
         String specificUserSearchQuery = (StringUtils.hasText(user)) ? "user:%s %s".formatted(user, query) : query;
 
         return githubProperties.codeSearchBrowserUrlTemplate()
@@ -185,7 +185,7 @@ public class GithubApiClientImpl implements GithubApiClient, DisposableBean {
         return new String(Base64.getDecoder().decode(encoded), StandardCharsets.UTF_8);
     }
 
-    static <T> void logRateLimits(HttpHeaders headers) {
+    static void logRateLimits(HttpHeaders headers) {
         try {
             long limit = getMandatoryHeaderValueAsLong(headers, "X-RateLimit-Limit");
             long used = getMandatoryHeaderValueAsLong(headers, "X-RateLimit-Used");

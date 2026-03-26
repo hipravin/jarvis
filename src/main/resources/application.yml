@@ -95,6 +95,18 @@ management:
       enabled: true
 
 resilience4j:
+  retry:
+    configs:
+      default:
+        maxAttempts: 3
+        waitDuration: 100ms
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+#        retryExceptions:
+#          - java.io.IOException
+#          - java.util.concurrent.TimeoutException
+#        ignoreExceptions:
+#          - io.github.robwin.exception.BusinessException
   circuitbreaker:
     configs:
       default:
@@ -122,6 +134,10 @@ springdoc:
 statistic:
   search:
     enabled: true
+
+jarvis:
+  search-service:
+    timeout-ms: 60000
 
 bookstore:
   loader-root-path: ${BOOKSTORE_LOADER_DIR}
@@ -166,6 +182,17 @@ github:
     - danvega
     - apereo
 
+stackexchange:
+  api-base-url: "https://api.stackexchange.com/2.3"
+  connection:
+    timeout: 10_000
+  excerpts:
+    url: "/search/excerpts"
+    params:
+      "site": "stackoverflow"
+      "order": "desc"
+      "sort": "relevance"
+
 logging:
   level:
     hipravin: DEBUG
@@ -177,10 +204,10 @@ logging:
 spring:
   config:
     activate:
-      on-profile: swagger
+      on-profile: noswagger
 
 springdoc:
   swagger-ui:
-    enabled: true
+    enabled: false
   api-docs:
-    enabled: true
+    enabled: false

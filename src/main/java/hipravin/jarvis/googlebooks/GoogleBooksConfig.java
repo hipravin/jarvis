@@ -12,7 +12,7 @@ import java.net.http.HttpRequest;
 import java.time.Duration;
 
 @Configuration
-@EnableConfigurationProperties(value = {GoogleBooksProperties.class})
+@EnableConfigurationProperties(GoogleBooksProperties.class)
 public class GoogleBooksConfig {
 
     @Value("${googlebooks.connection.timeout}")

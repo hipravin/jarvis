@@ -1,0 +1,630 @@
+{
+  "items": [
+    {
+      "tags": [
+        "spring-boot",
+        "resilience4j"
+      ],
+      "question_score": 4,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 1,
+      "is_answered": true,
+      "question_id": 56132097,
+      "item_type": "question",
+      "score": 4,
+      "last_activity_date": 1559308315,
+      "creation_date": 1557841887,
+      "body": "Resilience4j-circuitbreaker allows us to wrap a service using decorator functions, but from what I can tell it only allows functional interfaces such as Supplier, Consumer, and Function which accept at most 1 input. \n\nIf I have a service which has a method which accepts 2 arguments, how would i be able to wrap it with the circuitbreaker? \n\nIn https://www.baeldung.com/resilience4j: \n\n\n\nIf process(int i) was something like process(int i, String s), which decorator Function would be able to be used for this purpose?\n",
+      "excerpt": "<span class=\"highlight\">Resilience4j</span>-<span class=\"highlight\">circuitbreaker</span> allows us to wrap a service using decorator functions, but from what I can tell it only allows functional interfaces such as Supplier, Consumer, and Function which accept at &hellip; In https://www.baeldung.com/<span class=\"highlight\">resilience4j</span>: \n\ninterface RemoteService {\n    int process(int i);\n}\n\nCircuitBreakerRegistry registry = CircuitBreakerRegistry.of(config);\n<span class=\"highlight\">CircuitBreaker</span> <span class=\"highlight\">circuitBreaker</span> = registry.circuitBreaker &hellip; ",
+      "title": "Wrapping Resilience4j circuitbreaker around a service method with multiple arguments"
+    },
+    {
+      "tags": [
+        "spring-cloud",
+        "spring-webflux",
+        "resilience4j",
+        "spring-cloud-circuitbreaker"
+      ],
+      "question_score": 2,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 1,
+      "is_answered": false,
+      "question_id": 70174294,
+      "item_type": "question",
+      "score": 2,
+      "last_activity_date": 1662464171,
+      "creation_date": 1638296631,
+      "body": "I&#39;m trying to migrate my Spring Boot 2 Resilience4j implementation to the one provided by Spring Cloud Circuitbreaker.\nSo basically, from resilience4j-spring-boot2 + resilience4j-reactor dependencies to spring-cloud-starter-circuitbreaker-reactor-resilience4j dependency.\nAccording to Spring Cloud documentation, I found out that it was possible to configure the CircuitBreaker (containing the TimeLimiter module) and the Bulkhead modules of Resilience4j through customizers.\nHowever, I don&#39;t see any configuration available for the Retry and RateLimiter modules, that are available features in R4J documentation.\nIs there a way to configure those modules directly with Spring Cloud Circuitbreaker so they are part of the ReactiveCircuitBreakerFactory? Or do I still need to configure a RetryRegistry appart from it?\n",
+      "excerpt": "I&#39;m trying to migrate my Spring Boot 2 <span class=\"highlight\">Resilience4j</span> implementation to the one provided by Spring Cloud <span class=\"highlight\">Circuitbreaker</span>. &hellip; So basically, from <span class=\"highlight\">resilience4j</span>-spring-boot2 + <span class=\"highlight\">resilience4j</span>-reactor dependencies to spring-cloud-starter-<span class=\"highlight\">circuitbreaker</span>-reactor-<span class=\"highlight\">resilience4j</span> dependency. &hellip; ",
+      "title": "Resilience4j Retry module in Spring Cloud Circuitbreaker"
+    },
+    {
+      "tags": [
+        "java",
+        "spring",
+        "feign",
+        "circuit-breaker",
+        "resilience4j"
+      ],
+      "question_score": 1,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 2,
+      "is_answered": true,
+      "question_id": 61367905,
+      "item_type": "question",
+      "score": 1,
+      "last_activity_date": 1587982717,
+      "creation_date": 1587566430,
+      "body": "I am trying to build a Resilience4J  using custom \n\nUsing the following code to build \n\n\n\nI am using this to make a HTTP Call. Which always takes more than 1000 milliseconds to respond. Ideally, CircuitBreaker should transition to OPEN state if 50 if first 100 calls are slow. But it is transitioning to OPEN state only after 100 calls.\n\nNot able to understand this behaviour. Looking for help.\n",
+      "excerpt": "I am trying to build a <span class=\"highlight\">Resilience4J</span> <span class=\"highlight\">Circuitbreaker</span> using custom CircuitbreakerConfig\n\nUsing the following code to build CircuitbreakerConfig\n\nCircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig &hellip; <span class=\"highlight\">circuitBreaker</span> = CircuitBreaker.of(&quot;sample-cb&quot;, circuitBreakerConfig);\n\n\nI am using this to make a HTTP Call. &hellip; ",
+      "title": "Resilience4J Circuitbreaker Configs not working properly"
+    },
+    {
+      "tags": [
+        "spring-boot",
+        "microservices",
+        "resilience4j"
+      ],
+      "question_score": 1,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 0,
+      "is_answered": false,
+      "question_id": 61110895,
+      "item_type": "question",
+      "score": 1,
+      "last_activity_date": 1586384052,
+      "creation_date": 1586384052,
+      "body": "I tried to use retry with only circuitbreaker, even then it is not working. Can you please tell us how to chain them(retry + circuitbreaker) together.\nIt is giving preference to circuitbreakerm \n\n\nI have added this code too in yml file\n\n\n\nresilience4j.retry.retry-aspect-order=1\n\nStill doesent work ...\n\nI am using Resilience4J 0.17.0 version \n",
+      "excerpt": "I tried to use retry with only <span class=\"highlight\">circuitbreaker</span>, even then it is not working. Can you please tell us how to chain them(retry + <span class=\"highlight\">circuitbreaker</span>) together. &hellip; I am using <span class=\"highlight\">Resilience4J</span> 0.17.0 version &hellip; ",
+      "title": "retry + circuitbreaker in resilience4j"
+    },
+    {
+      "tags": [
+        "java",
+        "spring-boot",
+        "resilience4j",
+        "spring-cloud-circuitbreaker"
+      ],
+      "question_score": 0,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 1,
+      "is_answered": false,
+      "question_id": 66349994,
+      "item_type": "question",
+      "score": 0,
+      "last_activity_date": 1615274022,
+      "creation_date": 1614166176,
+      "body": "I&#39;m using a circuit breaker of Resilience4J and I need to ignore some custom exceptions so I need to change the default configuration. I&#39;m working with microservices so I have a microservice connected to a database which have some basic requests like get by id and I also have an edge service which use these requests. I need, for example, if the id doesn&#39;t exist, the microservice throws a custom exception and the circuitbreaker doesn&#39;t open in this case.\nMicroservice with the database:\n\nGet request\n\n\n\nService\npublic SalesRepDTO getSalesRep(Integer id) {\n\n}\n\n\nEdge service:\n\nService\n\n\nSalesRepNotFoundException.class is the exception I want to ignore, but the circuitbreaker isn&#39;t changing the configuration. Any suggestion?\n",
+      "excerpt": "I&#39;m using a circuit breaker of <span class=\"highlight\">Resilience4J</span> and I need to ignore some custom exceptions so I need to change the default configuration. &hellip; I need, for example, if the id doesn&#39;t exist, the microservice throws a custom exception and the <span class=\"highlight\">circuitbreaker</span> doesn&#39;t open in this case. &hellip; ",
+      "title": "Configuration in Resilience4J CircuitBreaker not working"
+    },
+    {
+      "tags": [
+        "circuit-breaker",
+        "resilience4j"
+      ],
+      "question_score": 0,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 1,
+      "is_answered": false,
+      "question_id": 70609265,
+      "item_type": "question",
+      "score": 0,
+      "last_activity_date": 1642508202,
+      "creation_date": 1641481992,
+      "body": "I&#39;m using resilience4j circuit breaker module. I can break the circuit when throw an exception. That&#39;s OK. But I also need to check HttpResponse message. I couldn&#39;t find how to use recordResult function. Is there anyone success to use it?\n\n",
+      "excerpt": "I&#39;m using <span class=\"highlight\">resilience4j</span> circuit breaker module. I can break the circuit when throw an exception. That&#39;s OK. But I also need to check HttpResponse message. &hellip; <span class=\"highlight\">circuitBreaker</span> = circuitBreakerRegistry\n                .<span class=\"highlight\">circuitBreaker</span>(&quot;name&quot;);\n        return <span class=\"highlight\">circuitBreaker</span>;\n\n    }\n} &hellip; ",
+      "title": "Resilience4j CircuitBreaker resultRecord problem"
+    },
+    {
+      "tags": [
+        "spring",
+        "spring-cloud",
+        "circuit-breaker",
+        "resilience4j"
+      ],
+      "question_score": 3,
+      "is_accepted": false,
+      "has_accepted_answer": true,
+      "answer_count": 1,
+      "is_answered": true,
+      "question_id": 79414166,
+      "item_type": "question",
+      "score": 3,
+      "last_activity_date": 1739204459,
+      "creation_date": 1738745880,
+      "body": "We are seeing an issue with resilience4j circuit breaker after a recent upgrade of Spring Boot &amp; Cloud dependencies.\nWe upgraded the following below:\n\n\n\ngroupId\nartifactId\nold version\nupgraded version\n\n\n\n\norg.springframework.boot\nspring-boot\n3.3.7\n3.4.1\n\n\norg.springframework.cloud\nspring-cloud-dependencies\n2023.0.1\n2024.0.0\n\n\n\nThe Circuitbreaker Resilience4j version what we use in our application is 3.1.3 version.\n\n\n\ngroupId\nartifactId\nversion used\n\n\n\n\norg.springframework.cloud\nspring-cloud-starter-circuitbreaker-resilience4j\n3.1.3\n\n\n\nAfter the Spring Boot &amp; Cloud dependencies upgrade, we see the test cases related to the Circuitbreaker are breaking because the the Circuitbreaker is not behaving expected after the upgrade.\nThe configuration related to Circuitbreaker Resilience4j are unchanged.\nOur configuration (values which would be used to execute the integration test)\n\nBefore the upgrade, the resilience4j version 2.1.0 was getting bundled. Now after the upgrade, it is the resilience4j version 2.2.0 . Is there any known issue OR Is there any configuration change that we need to adjust ?\nIt would be really helpful if someone can throw some light into this.\nThanks in advance!\nWe tried to upgrade the  to 3.2.0, which didn&#39;t help.\nTried looking for compatibility matrix information which we couldn&#39;t find anywhere.\nEnabled debug logs  which also didn&#39;t give much clue.\nThe configuration related to Circuitbreaker Resilience4j we tweaked based on trial and error basis, since it didn&#39;t help, kept the configuration unchanged.\n",
+      "excerpt": "The configuration related to <span class=\"highlight\">Circuitbreaker</span> <span class=\"highlight\">Resilience4j</span> are unchanged. &hellip; The configuration related to <span class=\"highlight\">Circuitbreaker</span> <span class=\"highlight\">Resilience4j</span> we tweaked based on trial and error basis, since it didn&#39;t help, kept the configuration unchanged. &hellip; ",
+      "title": "The resilience4j circuitbreaker does not seems to work expected after the Spring Boot &amp; Cloud dependencies upgrade"
+    },
+    {
+      "tags": [
+        "execution",
+        "circuit-breaker",
+        "resilience4j",
+        "time-limiting",
+        "resilience4j-retry"
+      ],
+      "question_score": 6,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 2,
+      "is_answered": true,
+      "question_id": 60216375,
+      "item_type": "question",
+      "score": 6,
+      "last_activity_date": 1641662273,
+      "creation_date": 1581627598,
+      "body": "I am trying to use Resilience4j features.\nMy use case is to combine the 3 modules:\n\ncircuitbreaker\nretry\ntimelimiter\n\nI want to combine all these modules and execute the method only once.\nCode\nHere is what I have tried.\n\nIssue\nMy  method executes twice instead of expected once.\nHas anyone seen this issue earlier?\n",
+      "excerpt": "I am trying to use <span class=\"highlight\">Resilience4j</span> features.\nMy use case is to combine the 3 modules:\n\n<span class=\"highlight\">circuitbreaker</span>\nretry\ntimelimiter\n\nI want to combine all these modules and execute the method only once. &hellip; Supplier&lt;R&gt; supplier = this::doSomething;\n\ntimeLimiter.executeFutureSupplier(() -&gt; CompletableFuture.supplyAsync(supplier));\n\nreturn Decorators.ofSupplier(supplier)\n                .withCircuitBreaker(<span class=\"highlight\">circuitBreaker</span> &hellip; ",
+      "title": "Integrating circuitbreaker, retry and timelimiter in Resilience4j"
+    },
+    {
+      "tags": [
+        "java",
+        "spring-boot",
+        "spring-cloud-gateway",
+        "circuit-breaker",
+        "resilience4j"
+      ],
+      "question_score": 1,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 2,
+      "is_answered": true,
+      "question_id": 70981731,
+      "item_type": "question",
+      "score": 1,
+      "last_activity_date": 1732015164,
+      "creation_date": 1643951927,
+      "body": "I&#39;m trying to implement circuit breaker on my cloud gateway using spring cloud resilience4j, getting &quot;Unable to find GatewayFilterFactory with name CircuitBreaker\n&quot; error.\nDependencies I&#39;m using\n\nSpring Cloud Version:\n\nMain Class\n\napplication.yml configuration\n\nBased on the documentation https://cloud.spring.io/spring-cloud-gateway/reference/html/#spring-cloud-circuitbreaker-filter-factory the configuration to me looks fine, if I&#39;m missing anything?\nI have went trough the suggestions provided under Unable to find GatewayFilterFactory with name CircuitBreaker and related posts, nothing is working for me.\n\n",
+      "excerpt": "I&#39;m trying to implement circuit breaker on my cloud gateway using spring cloud <span class=\"highlight\">resilience4j</span>, getting &quot;Unable to find GatewayFilterFactory with name <span class=\"highlight\">CircuitBreaker</span>\n&quot; error. &hellip; spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;\n        &lt;/dependency&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-cloud-starter-<span class=\"highlight\">circuitbreaker</span>-<span class=\"highlight\">resilience4j</span> &hellip; ",
+      "title": "Spring Cloud API Gateway : Resilience4j : Unable to find GatewayFilterFactory with name CircuitBreaker"
+    },
+    {
+      "tags": [
+        "spring-boot",
+        "resilience4j"
+      ],
+      "question_score": 0,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 1,
+      "is_answered": false,
+      "question_id": 61973544,
+      "item_type": "question",
+      "score": 0,
+      "last_activity_date": 1590558436,
+      "creation_date": 1590244217,
+      "body": "I have a existing spring boot project developed in Spring boot 1.3.0 RELEASE. I want to use resilience4j retry and circuitbreaker functionality.\nI find resilience4j used in spring boot 2.0+ versions mostly.\nCan I use resilience4j with Spring boot 1.3.0 release version and go into production as there is less support for spring boot legacy versions I feel correct me if I am wrong?\nAny guide if I can accommodate resilience4j in spring boot 1.3.0 release for retry and circuitbreaker will help.\n\nNote: It&#39;s not possible to upgrade Spring boot version which is 1.3.0 Release in this case\nThanks in advance\n",
+      "excerpt": "I want to use <span class=\"highlight\">resilience4j</span> retry and <span class=\"highlight\">circuitbreaker</span> functionality.\nI find <span class=\"highlight\">resilience4j</span> used in spring boot 2.0+ versions mostly. &hellip; Any guide if I can accommodate <span class=\"highlight\">resilience4j</span> in spring boot 1.3.0 release for retry and <span class=\"highlight\">circuitbreaker</span> will help. &hellip; ",
+      "title": "Need to use resilience4j retry and circuitbreaker in spring boot 1.3.0 Release"
+    },
+    {
+      "tags": [
+        "spring-boot",
+        "aspectj",
+        "circuit-breaker",
+        "resilience4j"
+      ],
+      "question_score": 1,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 0,
+      "is_answered": false,
+      "question_id": 78526563,
+      "item_type": "question",
+      "score": 1,
+      "last_activity_date": 1716526876,
+      "creation_date": 1716526876,
+      "body": "I have circuitbreaker implemented in my springboot application. I have used following dependency:\n\nAnd I have following properties configured for my testing:\n\nWhen I test in my local it works fine, where in case of exception after 6 events, circuit is opened.\nAnd after 300seconds (5 minutes) circuitbreaker goes in half open state.\nI have following logs configured:\n\nThe issue what I am facing is when I deploy my code in my dev/ppe environment, after 6 events with exception I am getting circuit open log.\nBut after that its not moving to half open state, and I don&#39;t see any logs from the configuration.\nI read somewhere to add  dependency, and after adding that, still its not working in the dev/ppe environment. But working as expected in local.\n\n",
+      "excerpt": "I have <span class=\"highlight\">circuitbreaker</span> implemented in my springboot application. &hellip; I have used following dependency:\nimplementation &#39;org.springframework.cloud:spring-cloud-starter-<span class=\"highlight\">circuitbreaker</span>-<span class=\"highlight\">resilience4j</span>&#39;\n\nAnd I have following properties configured for my testing:\n<span class=\"highlight\">resilience4j</span>: &hellip; ",
+      "title": "Resilience4j CircuitBreaker not going in half open state in server"
+    },
+    {
+      "tags": [
+        "properties",
+        "micronaut",
+        "circuit-breaker",
+        "resilience4j"
+      ],
+      "question_score": 1,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 0,
+      "is_answered": false,
+      "question_id": 73515462,
+      "item_type": "question",
+      "score": 1,
+      "last_activity_date": 1661650879,
+      "creation_date": 1661650879,
+      "body": "Resilience4j version: 1.7.1\nJava version: 11\nMicronaut version: 3.2.7\nCan we change the CircuitBreaker Properties of an instance dynamically while the application is running?\nThe following returns an existing Bean or creates a new one.\n\nAt start up of the application, I am doing this to create the CircuitBreakerRegistry and adding an instance  to the circuitBreakerRegistry entryMap.\n\nAfter start up, at a later time, if I want to change the  to  for the instance , is that an option in ?\n",
+      "excerpt": "<span class=\"highlight\">Resilience4j</span> version: 1.7.1\nJava version: 11\nMicronaut version: 3.2.7\nCan we change the <span class=\"highlight\">CircuitBreaker</span> Properties of an instance dynamically while the application is running? &hellip; *\n * @param name   the name of the <span class=\"highlight\">CircuitBreaker</span>\n * @param config a custom <span class=\"highlight\">CircuitBreaker</span> configuration\n * @return The {@link <span class=\"highlight\">CircuitBreaker</span>}\n */\n<span class=\"highlight\">CircuitBreaker</span> <span class=\"highlight\">circuitBreaker</span>(String name, CircuitBreakerConfig &hellip; ",
+      "title": "Updating the Resilience4j CircuitBreaker Properties in Micronaut while the app is running"
+    },
+    {
+      "tags": [
+        "spring",
+        "spring-cloud",
+        "asynchttpclient",
+        "circuit-breaker",
+        "resilience4j"
+      ],
+      "question_score": 1,
+      "is_accepted": false,
+      "has_accepted_answer": true,
+      "answer_count": 1,
+      "is_answered": true,
+      "question_id": 64448108,
+      "item_type": "question",
+      "score": 1,
+      "last_activity_date": 1603441288,
+      "creation_date": 1603206744,
+      "body": "I am trying to use the spring cloud resilience4j library to implement a circuit breaker for when an vendor api returns 500 errors or when it times out, the api is called using AsyncHttpClient. The problem seems to be that the circuit breaker is never opened and the fallback method is never executed when the API is returning 500 errors.\nCould it be due to the fact I am overriding the onFailure (do this to capture metrics)\nThe factory is declared as follows:\n\nThe factory config is defined as follows:\n\nThe API is called with the following method, which also has the circuit breaker and .run method:\n\nand finally here is the fallback method i would like to invoke:\n\n",
+      "excerpt": "I am trying to use the spring cloud <span class=\"highlight\">resilience4j</span> library to implement a circuit breaker for when an vendor api returns 500 errors or when it times out, the api is called using AsyncHttpClient. &hellip; <span class=\"highlight\">circuitBreaker</span> = circuitBreakerFactory.create(&quot;<span class=\"highlight\">circuitBreaker</span>&quot;);\n\n\n\n    final AsyncHttpClient.BoundRequestBuilder builder = requestBuilder\n            .prepareRequest(asyncHttpClient, request, variantName &hellip; ",
+      "title": "Spring Cloud Resilience4j Circuitbreaker not calling fallback"
+    },
+    {
+      "tags": [
+        "java",
+        "circuit-breaker",
+        "resilience4j",
+        "resilience4j-retry"
+      ],
+      "question_score": 1,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 1,
+      "is_answered": true,
+      "question_id": 69105678,
+      "item_type": "question",
+      "score": 1,
+      "last_activity_date": 1632084754,
+      "creation_date": 1631114276,
+      "body": "I am trying to build a simple CircuitBreaker in my Spring Boot (which uses Swagger).\nThe idea is that the first app, calls another which can be Up or Down, I want to implement a CircuitBreaker which gives an error message if the second app is down.\nThe main problem is that with I try to use the @CircuitBreaker annotation, says that it cannot be resolved to a type.\n\nMy pom.xml is\n\nI dont know how to solve the error. Maybe its the dependencies? I tried withouth the annotation, using\n\nBut it gives the same error, &quot;cannot be resolved&quot;.\n",
+      "excerpt": "&lt;/artifactId&gt;\n    &lt;version&gt;1.7.0&lt;/version&gt;\n  &lt;/dependency&gt;\n\n&lt;dependency&gt;\n    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;\n    &lt;artifactId&gt;spring-cloud-starter-<span class=\"highlight\">circuitbreaker</span>-reactor-<span class=\"highlight\">resilience4j</span>&lt;/artifactId &hellip; -- https://mvnrepository.com/artifact/io.github.resilience4j/<span class=\"highlight\">resilience4j</span>-retry --&gt;\n    &lt;dependency&gt;\n      &lt;groupId&gt;io.github.resilience4j&lt;/groupId&gt;\n      &lt;artifactId&gt;<span class=\"highlight\">resilience4j</span>-<span class=\"highlight\">circuitbreaker</span>&lt;/artifactId &hellip; ",
+      "title": "CircuitBreaker cannot be resolved to a type using Resilience4J"
+    },
+    {
+      "tags": [
+        "spring",
+        "spring-boot",
+        "resilience4j"
+      ],
+      "question_score": 1,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 0,
+      "is_answered": false,
+      "question_id": 78414125,
+      "item_type": "question",
+      "score": 1,
+      "last_activity_date": 1714747075,
+      "creation_date": 1714572313,
+      "body": "I have this resilience4j CircuitBreaker implementation which I want to migrate from Hystrix:\nHystrix endpoint:\n\nMigrated to :\n\nHow I can return this custom exception from method ?\n\n",
+      "excerpt": "I have this <span class=\"highlight\">resilience4j</span> <span class=\"highlight\">CircuitBreaker</span> implementation which I want to migrate from Hystrix:\nHystrix endpoint:\n@HystrixCommand(groupKey = &quot;group1&quot;, commandKey = &quot;createAccount&quot;, threadPoolKey = &quot;priority &hellip; &gt; greeting() {\n    .....\n}\n\nMigrated to @<span class=\"highlight\">CircuitBreaker</span>:\n@RestController\npublic class Endpoint {\n\n    @<span class=\"highlight\">CircuitBreaker</span>(name = &quot;createAccount&quot;, fallbackMethod = &quot;fallbackGetListValues&quot;)\n    @GetMapping(&quot; &hellip; ",
+      "title": "Return custom error from @CircuitBreaker fallbackMethod"
+    },
+    {
+      "tags": [
+        "spring-cloud",
+        "resilience4j"
+      ],
+      "question_score": 2,
+      "is_accepted": false,
+      "has_accepted_answer": true,
+      "answer_count": 1,
+      "is_answered": true,
+      "question_id": 56497396,
+      "item_type": "question",
+      "score": 2,
+      "last_activity_date": 1559933764,
+      "creation_date": 1559921727,
+      "body": "I am confused with  using . When the dependent service is down it, the fallback is not executed. \nDo I need additional configuration? \n\nFor the  using  this is working without any further configuration. See my example code here: https://github.com/altfatterz/resilience4j-demo\n\nHere is my example\n\n\n\nusing the following configuration:\n\n\n",
+      "excerpt": "For the <span class=\"highlight\">CircuitBreaker</span> using RestTemplate this is working without any further configuration. &hellip; See my example code here: https://github.com/altfatterz/<span class=\"highlight\">resilience4j</span>-demo\n\nHere is my example\n\n    @GetMapping(&quot;/&quot;)\n    public Mono&lt;String&gt; hello() {\n        return webClient.build()\n                .get &hellip; ",
+      "title": "spring-cloud-circuitbreaker with reactive resilience4j"
+    },
+    {
+      "tags": [
+        "spring",
+        "resilience4j"
+      ],
+      "question_score": 1,
+      "is_accepted": false,
+      "has_accepted_answer": true,
+      "answer_count": 2,
+      "is_answered": true,
+      "question_id": 55816033,
+      "item_type": "question",
+      "score": 1,
+      "last_activity_date": 1691634312,
+      "creation_date": 1556038473,
+      "body": "I would like to use Resilience4j to deal with fault tolerance, I am using  and .\nI would like to separate business logic of fault tolerance behavior, to not &quot;dirty&quot; my business code.\nSo, I am thinking to use Command pattern to execute my methods that will be treat, like Hystrix do with .\nExample:\n\nCalling in my Controller:\n\nMy doubts:\n1 - In this case,  really needs to be static, because I understood that the same object needs to be shared between the same method that you want to threat, I am right?\n2 - How I have many instances of this application,  works individually for each instance? I am right?\n",
+      "excerpt": "I would like to use <span class=\"highlight\">Resilience4j</span> to deal with fault tolerance, I am using <span class=\"highlight\">CircuitBreaker</span> and TimerLimit. &hellip; Example:\npublic class MyCommand {\n\n    private static final <span class=\"highlight\">CircuitBreaker</span> <span class=\"highlight\">circuitBreaker</span>;\n    private Long param1, param2;\n    private MyService myService;\n    private static final TimeLimiter timeLimiter &hellip; ",
+      "title": "Resilience4j + Spring instance of CircuitBreaker"
+    },
+    {
+      "tags": [
+        "java",
+        "spring",
+        "spring-boot",
+        "circuit-breaker",
+        "resilience4j"
+      ],
+      "question_score": 3,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 1,
+      "is_answered": true,
+      "question_id": 63681211,
+      "item_type": "question",
+      "score": 3,
+      "last_activity_date": 1603790789,
+      "creation_date": 1598933067,
+      "body": "I have configured by resilience4j circuitbreaker factory bean like below.But i couldnot get a function to ovveride event listeners example to open , close etc .Please help\n\n",
+      "excerpt": "I have configured by <span class=\"highlight\">resilience4j</span> <span class=\"highlight\">circuitbreaker</span> factory bean like below.But i couldnot get a function to ovveride event listeners example to open , close etc .Please help\n@Bean\npublic Customizer&lt;Resilience4JCircuitBreakerFactory &hellip; ",
+      "title": "How to configure to events in Resilience4j Spring starter"
+    },
+    {
+      "tags": [
+        "spring-boot",
+        "httpclient",
+        "spring-cloud",
+        "java-11",
+        "resilience4j"
+      ],
+      "question_score": 0,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 0,
+      "is_answered": false,
+      "question_id": 76035384,
+      "item_type": "question",
+      "score": 0,
+      "last_activity_date": 1681908273,
+      "creation_date": 1681736050,
+      "body": "I am trying to implement resilience4j in Spring Boot 2 application.\nWhen I implement on Controller class it is working properly.\nBut when I implment in the inner/service methods and tried to trigger @CircuitBreaker, its not working at all.\nfirst method\n\nSecond Method\n\nI am trying to implement @CircuitBreaker when the application/service class is calling a servlet.\nI have also tried to implement @CircuitBreaker from the same inner service class and called another Rest Template call (another sample Spring Boot application) and its working properly.\nSo the problem seems to be with the HttpClient and WebClient.\nBoth are not triggering @CircuitBreaker.\nIs there any work around for this problem.\nAdding more information as per the comment :\nWe have working solution for\n\nHere the external service  we are calling using &#39;restTemplate.postForEntity()&#39; is a Rest component.\nThis is working and  @CircuitBreaker is triggered.\nBut when the  external service is a servlet and not a rest service, @CircuitBreaker is not being triggered.\nInstead of restTemplate.postForEntity(), we are using HttpClient to call external service.\nIt is not working,@CircuitBreaker is not being triggered\n",
+      "excerpt": "I am trying to implement <span class=\"highlight\">resilience4j</span> in Spring Boot 2 application.\nWhen I implement on Controller class it is working properly. &hellip; It is not working,@<span class=\"highlight\">CircuitBreaker</span> is not being triggered &hellip; ",
+      "title": "Spring Boot 2 not triggering @CircuitBreaker of resilience4j when calling a servlet from service methods"
+    },
+    {
+      "tags": [
+        "java",
+        "circuit-breaker",
+        "resilience4j",
+        "resilience4j-retry"
+      ],
+      "question_score": 0,
+      "is_accepted": false,
+      "has_accepted_answer": true,
+      "answer_count": 1,
+      "is_answered": true,
+      "question_id": 66843973,
+      "item_type": "question",
+      "score": 0,
+      "last_activity_date": 1617801667,
+      "creation_date": 1616951011,
+      "body": "I am working on a springboot application and want to add the resilience4j- retry mechanism.\nI did the following steps:\n\nAdded the actuator, aop and resilience4j dependencies in pom.xml\n\n\nCreated a method in the controller which will try and hit a dummy service(expected to fail). Added the @Retry annotation on my method.\n\n\nAdded the configuration to the application.properties\n\n\n\nresilience4j.retry.instances.sample-api.maxAttempts=5\n\nAlso, I tried with maxRetryAttempts. But nothing changes.\nI expected it to retry number of times that has been configured in the application.properties.\nHowever, it just tries once.\nNot sure if I am missing something.\nCan somebody please help with this?\n",
+      "excerpt": "I am working on a springboot application and want to add the <span class=\"highlight\">resilience4j</span>- retry mechanism. &hellip; I did the following steps:\n\nAdded the actuator, aop and <span class=\"highlight\">resilience4j</span> dependencies in pom.xml\n &lt;dependency&gt;\n     &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n     &lt;artifactId&gt;spring-boot-starter-actuator &hellip; ",
+      "title": "resilience4j springboot 2 annotations (@Retry, @CircuitBreaker) not working"
+    },
+    {
+      "tags": [
+        "java",
+        "spring-boot",
+        "resilience4j"
+      ],
+      "question_score": 4,
+      "is_accepted": false,
+      "has_accepted_answer": true,
+      "answer_count": 1,
+      "is_answered": true,
+      "question_id": 64269326,
+      "item_type": "question",
+      "score": 4,
+      "last_activity_date": 1602273134,
+      "creation_date": 1602184978,
+      "body": "I spent a whole day trying to find why this does not work so I think it might be useful if I share the question and the answer.\nThe Resilience4j library provides an elegant annotation-based solution from Spring Boot 2. All you need to do is just annotate a method (or a class) with one of the provided annotations, such as , , , ,  and the appropriate resilience pattern is automagically added.\nI added the expected dependency to the Maven pom.xml:\n    \n\nNow the compiler is happy, so I can add the annotations:\n    \n\nThe program compiles, runs, however the annotations are completely ignored.\n",
+      "excerpt": "The <span class=\"highlight\">Resilience4j</span> library provides an elegant annotation-based solution from Spring Boot 2. &hellip; All you need to do is just annotate a method (or a class) with one of the provided annotations, such as @<span class=\"highlight\">CircuitBreaker</span>, @Retry, @RateLimiter, @Bulkhead, @Thread and the appropriate resilience pattern &hellip; ",
+      "title": "resilience4j-spring-boot-2 annotations (@Retry, @CircuitBreaker...) are completely ignored"
+    },
+    {
+      "tags": [
+        "spring-boot",
+        "spring-cloud",
+        "circuit-breaker",
+        "resilience4j"
+      ],
+      "question_score": 0,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 0,
+      "is_answered": false,
+      "question_id": 76126692,
+      "item_type": "question",
+      "score": 0,
+      "last_activity_date": 1682662796,
+      "creation_date": 1682662095,
+      "body": "I&#225;m trying to implement resilience4j using spring annotation @CircuitBreaker. I have 2 microservices: order-service and inventory-service. Order-service has a post method in controller that uses a service to call the inventory. Everything works fine until i add the @CircuitBreaker annotation. When i add it i get a nullPointerException on the service.\nHere is the exception: this is the exception i get\nOrderController:\n\nOrderService: \n\n\nproperties: \n\nI tried to use resilience4j with spring annotation @CircuitBreaker and instead of working fine it makes my spring context not to load my service bean.\n",
+      "excerpt": "I&#225;m trying to implement <span class=\"highlight\">resilience4j</span> using spring annotation @<span class=\"highlight\">CircuitBreaker</span>. I have 2 microservices: order-service and inventory-service. &hellip; Everything works fine until i add the @<span class=\"highlight\">CircuitBreaker</span> annotation. When i add it i get a nullPointerException on the service. &hellip; ",
+      "title": "NPE when using @CircuitBreaker"
+    },
+    {
+      "tags": [
+        "spring-boot",
+        "circuit-breaker",
+        "resilience4j"
+      ],
+      "question_score": 1,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 1,
+      "is_answered": true,
+      "question_id": 65900515,
+      "item_type": "question",
+      "score": 1,
+      "last_activity_date": 1611819418,
+      "creation_date": 1611660621,
+      "body": "I&#39;ve decorated the following method with a Resilience4j CircuitBreaker:\n\nMy circuit breaker config is stored in application.yaml:\n\nThis file is definitely being found, and a similar setup works fine with the  annotation. I&#39;ve lowered the  from 2000ms to 1ms, and even tried introducing a  call to the method to verify it&#39;s taking longer than the duration threshold. The method runs around 100 times (edit: and the problem still occurs when  and  are set well below this number).\nBut my circuit breaker doesn&#39;t open, after around 100 calls to this method. As I see it, it should open if more than 50% of those calls take more than 1ms. Am I missing something?\n",
+      "excerpt": "I&#39;ve decorated the following method with a <span class=\"highlight\">Resilience4j</span> <span class=\"highlight\">CircuitBreaker</span>:\n @<span class=\"highlight\">CircuitBreaker</span>(name = &quot;getSwaggerFileName&quot;)\n private Optional&lt;String&gt; getSwaggerFileName(String url) {\n            return Optional.ofNullable &hellip; (restTemplate.getForObject(url, SwaggerQueryResponse.class))\n                    .flatMap(SwaggerQueryResponse::getFileName); \n }\n\nMy circuit breaker config is stored in application.yaml:\n<span class=\"highlight\">resilience4j</span>: &hellip; ",
+      "title": "Resilience4j circuit breaker doesn&#39;t open when slowCallRateThreshold is reached?"
+    },
+    {
+      "tags": [
+        "spring",
+        "spring-webflux",
+        "circuit-breaker",
+        "resilience4j"
+      ],
+      "question_score": 1,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 1,
+      "is_answered": false,
+      "question_id": 60952235,
+      "item_type": "question",
+      "score": 1,
+      "last_activity_date": 1585824645,
+      "creation_date": 1585662750,
+      "body": "I have many services and each of these services call many different remote endpoints, using a base service i.e. service1 -&gt;base_service-&gt;endpoint1,2,5, service2 -&gt;base_service-&gt;endpoint2,3,5\nand so on. \nBase service uses Spring WebClient to make http calls.\n\nNow, I need to crate a configurable circuit breaker wrapper to wrap all of these calls.\nI am totally clueless about this but I am aware of circuit breaker pattern. Can you please guide me in the right direction?.\n",
+      "excerpt": "I have many services and each of these services call many different remote endpoints, using a base service i.e. service1 -&gt;base_service-&gt;endpoint1,2,5, service2 -&gt;base_service-&gt;endpoint2,3,5\nand so on &hellip; ",
+      "title": "How to write a Resilience4j CircuitBreaker wrapper around rest calls"
+    },
+    {
+      "tags": [
+        "servlets",
+        "jboss7.x",
+        "metrics",
+        "prometheus",
+        "resilience4j"
+      ],
+      "question_score": 1,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 0,
+      "is_answered": false,
+      "question_id": 52221031,
+      "item_type": "question",
+      "score": 1,
+      "last_activity_date": 1536317586,
+      "creation_date": 1536317586,
+      "body": "I am using resilience4j circuitbreakers and am having trouble exporting the metrics with the prometheus servlet client. I am deploying to a jbossas7 server, but my /metrics endpoint doesn&#39;t show anything. Anyone any ideas? I am injecting the circuitbreaker into a bean, which works fine with the circuitbreaker initiation code below, which resides in a factory.\n\nWhen I debug my code, I see the circuitbreaker being made and registered in the collectorRegistry. But when it is written in the servlet of the simpleclient servlet, nothing is written to the output. It just skips to the finally block in the client library code\n\nweb.xml\n\n\n\npom.xml dependencies\n\n\n\ncircuitbreaker initiation\n\n\n",
+      "excerpt": "I am using <span class=\"highlight\">resilience4j</span> circuitbreakers and am having trouble exporting the metrics with the prometheus servlet client. &hellip; metrics&lt;/servlet-name&gt;\n    &lt;url-pattern&gt;/metrics&lt;/url-pattern&gt;\n&lt;/servlet-mapping&gt;\n\n&lt;/web-app&gt;\n\n\npom.xml dependencies\n\n&lt;dependency&gt;\n        &lt;groupId&gt;io.github.resilience4j&lt;/groupId&gt;\n        &lt;artifactId&gt;<span class=\"highlight\">resilience4j</span>-<span class=\"highlight\">circuitbreaker</span> &hellip; ",
+      "title": "Prometheus metrics servlet doesn&#39;t show any metrics"
+    },
+    {
+      "tags": [
+        "kotlin",
+        "kotlin-coroutines",
+        "resilience4j"
+      ],
+      "question_score": 0,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 0,
+      "is_answered": false,
+      "question_id": 59836379,
+      "item_type": "question",
+      "score": 0,
+      "last_activity_date": 1579593015,
+      "creation_date": 1579593015,
+      "body": "I&#39;m using resilience4j-kotlin CircuitBreaker and I want to show metrics. \n\nI&#39;m Adding this dependency. \nio.github.resilience4j:resilience4j-micrometer\n\nadd this codes.\n\n\n\nCircuitBreaker working successful but metrics didn&#39;t show on &quot;../actuator/metrics&quot;.\neven circuit open.\n\nIs it working on kotlin-coroutine? \n",
+      "excerpt": "I&#39;m using <span class=\"highlight\">resilience4j</span>-kotlin <span class=\"highlight\">CircuitBreaker</span> and I want to show metrics. \n\nI&#39;m Adding this dependency. \nio.github.resilience4j:resilience4j-micrometer\n\nadd this codes. &hellip; (&quot;backendA&quot;);\n<span class=\"highlight\">CircuitBreaker</span> boo = circuitBreakerRegistry\n  .<span class=\"highlight\">circuitBreaker</span>(&quot;backendB&quot;);\n\nTaggedCircuitBreakerMetrics\n  .ofCircuitBreakerRegistry(circuitBreakerRegistry)\n  .bindTo(meterRegistry)\n\n\n\n<span class=\"highlight\">CircuitBreaker</span> &hellip; ",
+      "title": "Why resilience4j-kotlin metrics not working?"
+    },
+    {
+      "tags": [
+        "java",
+        "spring",
+        "resilience4j"
+      ],
+      "question_score": 0,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 1,
+      "is_answered": false,
+      "question_id": 57891877,
+      "item_type": "question",
+      "score": 0,
+      "last_activity_date": 1568361844,
+      "creation_date": 1568213872,
+      "body": "I&#39;m trying to use the Spring Boot annotations for Resilience4j.\n\nWhen I use the annotation \n\nmy Intellij shows red for the circuitBreaker-name BACKEND.\n\nHow can/should I define a circuitBreaker which can be recoginzed by the name in the annotation?\n",
+      "excerpt": "I&#39;m trying to use the Spring Boot annotations for <span class=\"highlight\">Resilience4j</span>. &hellip; When I use the annotation @<span class=\"highlight\">CircuitBreaker</span>(name = BACKEND, fallbackMethod = &quot;fallback&quot;)\n\nmy Intellij shows red for the <span class=\"highlight\">circuitBreaker</span>-name BACKEND. &hellip; ",
+      "title": "Where to define the name for @CircuitBreaker(name = BACKEND, fallbackMethod = &quot;fallback&quot;)?"
+    },
+    {
+      "tags": [
+        "spring-boot",
+        "apache-camel",
+        "spring-camel",
+        "micrometer",
+        "resilience4j"
+      ],
+      "question_score": 2,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 1,
+      "is_answered": false,
+      "question_id": 63682180,
+      "item_type": "question",
+      "score": 2,
+      "last_activity_date": 1603878579,
+      "creation_date": 1598940055,
+      "body": "I am using Camel with Spring Boot and Micrometer. In one of my routes I am using a circuitbreaker with Resilience4j:\n\nI am using Micrometer managed by Spring. Before moving to resilience4j with Hystrix I could simply bind it to my Micrometer registry:\n\nFor Resilience4j there does not exist a binder unfortunately. There is some documentation about how to bind the Resilience4j CircuitBreakerRegistry to Micrometer:\nhttps://resilience4j.readme.io/docs/micrometer\nand also how to do it with Spring:\nhttps://resilience4j.readme.io/docs/getting-started-3\nI tried to simply autowire the Resilience4j CircuitBreakerRegistry to Micrometer:\n\nUnfortunately Spring does not find the CircuitBreakerRegistry Bean.\nTherefore my question is how to bind the CircuitBreakerRegistry, or more abstract the metrics from Resilience4j, to Micrometer when using Camel with Spring?\nThe only other possible solution I could think of is to manage all Resilience4j configuration manually, define the beans, and hand it over to my Camel configuration. This though seems to me to a lot of work and boilerplate code considering the simple task of binding my Resilience4j  metrics.\nI am using the following versions:\n\nCamel 3.4.3\nSpring 2.3.3.RELEASE\nMicormeter 1.5.4\n\nAlso I am using camel spring boot starter dependencies:\n\n",
+      "excerpt": "In one of my routes I am using a <span class=\"highlight\">circuitbreaker</span> with <span class=\"highlight\">Resilience4j</span>:\n.<span class=\"highlight\">circuitBreaker</span>()\n            .resilience4jConfiguration()\n            .timeoutEnabled(true)\n            .timeoutDuration(2000) &hellip; () {\n        return new HystrixMetricsBinder();\n    }\n}\n\nFor <span class=\"highlight\">Resilience4j</span> there does not exist a binder unfortunately. &hellip; ",
+      "title": "How to integrate Resilience4j metrics to Micrometer in Camel Spring Boot"
+    },
+    {
+      "tags": [
+        "spring-boot",
+        "circuit-breaker",
+        "resilience4j",
+        "resilience4j-retry",
+        "spring-cloud-circuitbreaker"
+      ],
+      "question_score": 0,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 1,
+      "is_answered": false,
+      "question_id": 77703713,
+      "item_type": "question",
+      "score": 0,
+      "last_activity_date": 1704965717,
+      "creation_date": 1703248940,
+      "body": "to make the application fault tolerant, wanted to combine Retry mechanism along with CircuitBreaker of resilience4j.\nI&#39;m trying to achieve this &quot;When in a single CircuitBreaker call, the Retry failures exceeds the CircuitBreaker failuretRateThreshold, then the CircuitBreaker should trip to OPEN state, but it is not happening.\n\nexcepectation as per my understanding: the Retry will do retries for 10 calls, but all of them fail with 504. As the CircuitBreaker also considers 504 as exception, CircuitBreaker should change to OPEN state upon 5 failures of the calls  based on configuration.\nwhat is happening: Retry keeps calling serviceB for 10 times, and CircuitBreaker remains in CLSOED state only.\n",
+      "excerpt": "to make the application fault tolerant, wanted to combine Retry mechanism along with <span class=\"highlight\">CircuitBreaker</span> of <span class=\"highlight\">resilience4j</span>. &hellip; I&#39;m trying to achieve this &quot;When in a single <span class=\"highlight\">CircuitBreaker</span> call, the Retry failures exceeds the <span class=\"highlight\">CircuitBreaker</span> failuretRateThreshold, then the <span class=\"highlight\">CircuitBreaker</span> should trip to OPEN state, but it is not happening &hellip; ",
+      "title": "Use resilience4j CircutiBreaker with Retry module"
+    },
+    {
+      "tags": [
+        "spring",
+        "kotlin",
+        "circuit-breaker",
+        "resilience4j"
+      ],
+      "question_score": 0,
+      "is_accepted": false,
+      "has_accepted_answer": false,
+      "answer_count": 2,
+      "is_answered": true,
+      "question_id": 74224630,
+      "item_type": "question",
+      "score": 0,
+      "last_activity_date": 1712328476,
+      "creation_date": 1666884793,
+      "body": "I am using kotlin, with Spring Boot and resilience4j.\nI am trying to set up a circuitbreaker to trigger when my other service is down, but now when i send request in Postman, it goes into the &quot;getCatById&quot; still and keeps returning me 500 internal server error, instead of going into the callback i have set.\n\napplication.yml\n\nDependencies:\n\n\n",
+      "excerpt": "I am using kotlin, with Spring Boot and <span class=\"highlight\">resilience4j</span>. &hellip; &quot;http://localhost:8080/api&quot;\nserver:\n  port: 8085\n\n<span class=\"highlight\">resilience4j</span>:\n  <span class=\"highlight\">circuitbreaker</span>:\n    configs:\n      shared:\n        register-health-indicator: true\n        sliding-window-type: count_based\n        sliding-window-size &hellip; ",
+      "title": "CircuitBreaker will not open R4J"
+    }
+  ],
+  "has_more": true,
+  "quota_max": 300,
+  "quota_remaining": 255
+}

@@ -41,6 +41,7 @@
 
         <argLine>-javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar</argLine>
         <testcontainers-postgresql.version>2.0.3</testcontainers-postgresql.version>
+        <wiremock-spring-boot.version>4.0.9</wiremock-spring-boot.version>
     </properties>
 
     <repositories>
@@ -152,6 +153,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-testcontainers</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wiremock.integrations</groupId>
+            <artifactId>wiremock-spring-boot</artifactId>
+            <version>${wiremock-spring-boot.version}</version>
         </dependency>
 
         <dependency>
