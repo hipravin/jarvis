@@ -45,7 +45,18 @@
     if (role === 'assistant' && !options.loading) {
       const text = typeof content === 'string' ? content : (content.response || '');
       const items = options.items || (typeof content === 'object' && content.items) || [];
-      bodyHtml = formatMessage(text) + renderItems(items);
+      const errorsRaw = options.errors || (typeof content === 'object' && content.errors) || [];
+      const errors = Array.isArray(errorsRaw) ? errorsRaw : [];
+
+      let errorsHtml = '';
+      if (errors.length) {
+        const lis = errors
+          .map((e) => '<li class="search-error-item">' + escapeHtml(String(e)) + '</li>')
+          .join('');
+        errorsHtml = '<div class="search-errors"><ul>' + lis + '</ul></div>';
+      }
+
+      bodyHtml = errorsHtml + formatMessage(text) + renderItems(items);
     } else {
       bodyHtml = escapeHtml(typeof content === 'string' ? content : (content.response || content));
     }
@@ -74,24 +85,84 @@
     btnSend.disabled = show;
   }
 
-  // const API_BASE = 'http://localhost:9080';
   const API_BASE = '';
 
   async function fetchResponse(query) {
-    const url = API_BASE + '/api/v1/jarvis/query?q=' + encodeURIComponent(query);
+    const url = API_BASE + '/api/search?q=' + encodeURIComponent(query);
     const res = await fetch(url, { method: 'GET' });
 
     const contentType = res.headers.get('content-type') || '';
-    const body = contentType.includes('application/json') ? await res.json() : null;
+    if (!contentType.includes('json')) {
+      throw new Error('Search request returned non-JSON response');
+    }
+
+    const body = await res.json();
 
     if (!res.ok) {
-      const detail = body?.detail || body?.title || ('HTTP ' + res.status);
+      // Prefer a server-provided message, but fall back to HTTP status.
+      const detail = body?.detail || body?.title || body?.message || ('HTTP ' + res.status);
       throw new Error(detail);
     }
 
-    const text = body?.response;
-    if (text == null) throw new Error('No response in server reply');
-    return { response: text, items: body?.items || [] };
+    // SearchResponse format (per updated server):
+    // - errors: list of strings/objects (may be empty)
+    // - excerpts: list of { title, url, text }
+    // Some servers may misspell `errors` as `erros`; tolerate both.
+    const errorsRaw = body?.errors ?? body?.erros ?? [];
+    const errors = Array.isArray(errorsRaw)
+      ? errorsRaw.map((e) => {
+          if (typeof e === 'string') return e;
+          if (e && typeof e === 'object') return e.message || e.detail || e.title || String(e);
+          return String(e);
+        })
+      : typeof errorsRaw === 'string'
+        ? [errorsRaw]
+        : [];
+
+    const excerptsRaw = body?.excerpts ?? [];
+    // Expected SearchResponse excerpt format (per server update):
+    // {
+    //   source: string,
+    //   title: { title: string, url: string },
+    //   main: { text: string /* pre-formatted HTML */ }
+    // }
+    const excerpts = Array.isArray(excerptsRaw)
+      ? excerptsRaw
+          .map((ex) => {
+            if (!ex || typeof ex !== 'object') return null;
+
+            const source = typeof ex.source === 'string' ? ex.source : '';
+
+            const titleObj = ex.title && typeof ex.title === 'object' ? ex.title : {};
+            const titleTitle =
+              typeof titleObj?.title === 'string'
+                ? titleObj.title
+                : (typeof ex?.title === 'string' ? ex.title : 'Result');
+            const titleUrl =
+              typeof titleObj?.url === 'string'
+                ? titleObj.url
+                : (typeof titleObj?.href === 'string'
+                    ? titleObj.href
+                    : (typeof ex?.url === 'string' ? ex.url : (typeof ex?.href === 'string' ? ex.href : '#')));
+
+            const mainObj = ex.main && typeof ex.main === 'object' ? ex.main : {};
+            const mainText =
+              typeof mainObj?.text === 'string'
+                ? mainObj.text
+                : (typeof mainObj?.html === 'string'
+                    ? mainObj.html
+                    : (typeof ex?.main === 'string' ? ex.main : (typeof ex?.text === 'string' ? ex.text : (typeof ex?.snippet === 'string' ? ex.snippet : ''))));
+
+            return {
+              source,
+              title: { title: titleTitle, url: titleUrl },
+              main: { text: mainText }
+            };
+          })
+          .filter(Boolean)
+      : [];
+
+    return { errors, excerpts };
   }
 
   function getProviderIcon(provider) {
@@ -104,6 +175,17 @@
     }
     if (p === 'BOOKSTORE') {
       return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>';
+    }
+    if (p === 'STACKEXCHANGE') {
+      // Stack Overflow brand icon (tabler brand-stackoverflow)
+      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M0 0h24v24H0z" fill="none" stroke="none"/>' +
+        '<path d="M4 17v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-1"/>' +
+        '<path d="M8 16h8"/>' +
+        '<path d="M8.322 12.582l7.956 .836"/>' +
+        '<path d="M8.787 9.168l7.826 1.664"/>' +
+        '<path d="M10.096 5.764l7.608 2.472"/>' +
+        '</svg>';
     }
     return '<span class="provider-text">' + escapeHtml(provider || '') + '</span>';
   }
@@ -119,20 +201,26 @@
   }
 
   function renderItems(items) {
-    if (!items || items.length === 0) return '';
+    // `items` are normalized SearchResponse excerpts:
+    // [{ source, title: { title, url }, main: { text /* HTML */ } }, ...]
+    if (!Array.isArray(items) || items.length === 0) return '';
+
     let html = '<div class="response-items">';
-    for (const item of items) {
-      const header = item.header || {};
-      const title = header.title || 'Link';
-      const href = header.href || '#';
-      const desc = item.shortDescription || '';
-      const provider = item.searchProvider || '';
-      html += '<div class="response-item">' +
+    for (const excerpt of items) {
+      const source = excerpt?.source ? String(excerpt.source) : '';
+      const titleTitle = excerpt?.title?.title ? String(excerpt.title.title) : 'Result';
+      const titleUrl = excerpt?.title?.url ? String(excerpt.title.url) : '#';
+      const mainHtml = excerpt?.main?.text ? String(excerpt.main.text) : '';
+
+      const providerKey = (source || 'unknown').toLowerCase().replace(/_/g, '-');
+
+      html +=
+        '<div class="response-item">' +
         '<div class="response-item-header">' +
-        '<span class="provider-icon provider-' + (provider || 'unknown').toLowerCase().replace(/_/g, '-') + '" title="' + escapeHtml(provider) + '">' + getProviderIcon(provider) + '</span>' +
-        '<a class="response-item-link" href="' + escapeHtml(href) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(title) + '</a>' +
+        '<span class="provider-icon provider-' + escapeHtml(providerKey) + '" title="' + escapeHtml(source) + '">' + getProviderIcon(source) + '</span>' +
+        '<a class="response-item-link" href="' + escapeHtml(titleUrl) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(titleTitle) + '</a>' +
         '</div>' +
-        '<div class="response-item-desc">' + formatShortDescription(desc) + '</div>' +
+        '<div class="response-item-desc">' + mainHtml + '</div>' +
         '</div>';
     }
     html += '</div>';
@@ -182,14 +270,14 @@
     try {
       const data = await fetchResponse(query);
       loadingEl.remove();
-      addMessage('assistant', data.response, { items: data.items });
+      addMessage('assistant', '', { items: data.excerpts, errors: data.errors });
       scrollQueryIntoViewSmooth(userMessageEl);
 
       if (activeHistoryId) {
         const h = history.get(activeHistoryId);
         if (h) {
           h.messages.push({ role: 'user', content: query });
-          h.messages.push({ role: 'assistant', content: data.response, items: data.items });
+          h.messages.push({ role: 'assistant', content: '', items: data.excerpts, errors: data.errors });
         }
       } else {
         const title = getTitleFromQuery(query);
@@ -197,7 +285,7 @@
           title,
           messages: [
             { role: 'user', content: query },
-            { role: 'assistant', content: data.response, items: data.items }
+            { role: 'assistant', content: '', items: data.excerpts, errors: data.errors }
           ]
         };
         history.set(conversationId, conv);
@@ -240,7 +328,7 @@
     const userMsgs = messagesEl.querySelectorAll('.message');
     userMsgs.forEach((el) => el.remove());
 
-    conv.messages.forEach((m) => addMessage(m.role, m.content, { items: m.items }));
+    conv.messages.forEach((m) => addMessage(m.role, m.content, { items: m.items, errors: m.errors }));
     renderHistory();
   }
 

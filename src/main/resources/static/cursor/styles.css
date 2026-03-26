@@ -302,6 +302,21 @@ body {
   margin-bottom: 0;
 }
 
+/* Search errors */
+.search-errors {
+  margin-bottom: 12px;
+  color: #dc2626;
+}
+
+.search-errors ul {
+  margin: 6px 0 0 18px;
+  padding: 0;
+}
+
+.search-error-item {
+  margin: 2px 0;
+}
+
 /* Response items (snippets from items array) */
 .response-items {
   margin-top: 16px;
@@ -349,6 +364,10 @@ body {
 
 .provider-icon.provider-bookstore {
   background: #5c4d7a;
+}
+
+.provider-icon.provider-stackexchange {
+  background: #1e5397;
 }
 
 .provider-icon.provider-unknown {
