@@ -76,9 +76,9 @@ management:
         enabled: true
   endpoint:
     health:
-      show-details: never
+      show-details: when_authorized #For HTTP endpoints, a user is considered to be authorized if they have authenticated and have the roles configured by the endpoint’s roles property. By default, any authenticated user is authorized.
       probes:
-        enabled: true
+        enabled: true #liveness and readiness probes, enabled by default
   info:
     git:
       enabled: true

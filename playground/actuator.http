@@ -8,7 +8,7 @@ Accept: application/json
 Authorization: Basic admin aadmin
 
 ###
-GET http://localhost:10011/actuator/info
+GET http://localhost:10011/actuator/health
 Accept: application/json
 Authorization: Basic admin aadmin
 
