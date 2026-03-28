@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: secured,swagger
   config:
     import: optional:${SECRETS_PROPERTIES_PATH}
   application:
@@ -127,9 +129,9 @@ resilience4j:
 
 springdoc:
   swagger-ui:
-    enabled: true
+    enabled: false
   api-docs:
-    enabled: true
+    enabled: false
 
 statistic:
   search:
@@ -199,15 +201,31 @@ logging:
     com.hipravin: DEBUG
     org.springframework: INFO
 
+---
+spring:
+  config:
+    activate:
+      on-profile: secured
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: jarvisclient
+            #            client-secret: devcompanion-keycloak-secret  #if client set to 'confidential' in admin console
+            scope: openid
+        provider:
+          keycloak:
+            issuer-uri: ${KEYCLOAK_URL}/realms/jarvisrealm
 
 ---
 spring:
   config:
     activate:
-      on-profile: noswagger
+      on-profile: swagger
 
 springdoc:
   swagger-ui:
-    enabled: false
+    enabled: true
   api-docs:
-    enabled: false
+    enabled: true

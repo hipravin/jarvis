@@ -500,6 +500,10 @@ body {
   color: var(--text-muted);
 }
 
+.highlight {
+  font-weight: bold;
+}
+
 /* Scrollbar */
 .messages::-webkit-scrollbar,
 .chat-history::-webkit-scrollbar {

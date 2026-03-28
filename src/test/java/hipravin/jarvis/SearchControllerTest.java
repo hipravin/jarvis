@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(controllers = {SearchController.class})
+@Import(SecurityTestConfiguration.class)
 @ActiveProfiles("test")
 class SearchControllerTest {
     @Autowired
@@ -47,7 +48,6 @@ class SearchControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "anonymous")
     void searchSampleQuery() throws Exception {
         when(searchService.search(any())).thenReturn(SearchResponse.success(List.of()));
 
@@ -62,7 +62,6 @@ class SearchControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "anonymous")
     void searchSampleQueryIsUnspecified() throws Exception {
         when(searchService.search(any())).thenReturn(SearchResponse.success(List.of()));
 
@@ -76,7 +75,6 @@ class SearchControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "anonymous")
     void searchInvalidAlias() throws Exception {
         when(searchService.search(any())).thenReturn(SearchResponse.success(List.of()));
 
@@ -97,7 +95,6 @@ class SearchControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "anonymous")
     void searchBlank() throws Exception {
         when(searchService.search(any())).thenReturn(SearchResponse.success(List.of()));
 
