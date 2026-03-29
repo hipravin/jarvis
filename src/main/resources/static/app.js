@@ -7,13 +7,16 @@ const ghToggle = document.getElementById("gh-toggle");
 const gbToggle = document.getElementById("gb-toggle");
 const bsToggle = document.getElementById("bs-toggle");
 const seToggle = document.getElementById("se-toggle");
+const loggedInLabel = document.getElementById("logged-in-label");
 
 let userMessage = null; // Variable to store user's message
 let lastSearchResponseBody = null;
 
 const inputInitHeight = chatInput.scrollHeight;
 
-const API_URL = `/api/search`;
+const BASE_API_URL = '';
+const SEARCH_URL = `${BASE_API_URL}/api/search`;
+const USER_INFO_URL = `${BASE_API_URL}/api/user/info`;
 
 const createChatLi = (message, className) => {
     // Create a chat <li> element with passed message and className
@@ -63,18 +66,6 @@ const fillItems = (items, chatLi) => {
     });
 }
 
-
-const createLink = (title, href) => {
-    let a = document.createElement('a');
-    let link = document.createTextNode(title);
-    a.appendChild(link);
-    a.title = title;
-    a.href = href;
-    a.target = "_blank";
-
-    return a;
-}
-
 const enabledSearchProviders = () => {
     const providers = [];
     if (ghToggle.classList.contains("provider-on")) {
@@ -89,7 +80,6 @@ const enabledSearchProviders = () => {
     if (gbToggle.classList.contains("provider-on")) {
         providers.push("GOOGLE_BOOKS");
     }
-
 
     return providers;
 }
@@ -112,7 +102,7 @@ const generateResponse = async (chatElement) => {
     const messageElement = chatElement.querySelector("p");
 
     try {
-        const response = await fetch(API_URL, requestOptions);
+        const response = await fetch(SEARCH_URL, requestOptions);
         const data = await response.json();
         if (!response.ok) {
             throw new Error(data.title + ": " + data.detail);
@@ -133,6 +123,13 @@ const generateResponse = async (chatElement) => {
     }
 }
 
+const requesUserInfo = async () => {
+    let response = await fetch(USER_INFO_URL);
+    let user = await response.json();
+
+    loggedInLabel.textContent = `Hello, ${user?.username}`;
+    return user;
+}
 
 const handleChat = () => {
     userMessage = chatInput.value.trim(); // Get user entered message and remove extra whitespace
@@ -183,6 +180,12 @@ chatInput.addEventListener("keydown", (e) => {
         handleChat();
     }
 });
+document.addEventListener('DOMContentLoaded', (event) => {
+    requesUserInfo();
+});
+// window.onload(() => {
+//     requestLoggedIn();
+// });
 
 sendChatBtn.addEventListener("click", handleChat);
 ghToggle.addEventListener("click", (e) => {
