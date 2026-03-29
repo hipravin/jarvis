@@ -15,6 +15,7 @@ services:
       - BOOKSTORE_LOADER_DIR=/data/bookstore
       - KAFKA_BOOTSTRAP_SERVERS=broker:29092
       - JARVIS_DB_URL=jdbc:postgresql://host.docker.internal:5432/jarvisdb?currentSchema=jarvis&reWriteBatchedInserts=true&logServerErrorDetail=false
+      - KEYCLOAK_URL=http://host.docker.internal:8080
     volumes:
       - type: bind
         source: "C:/Users/Alex/YandexDisk/jarvis/bookstore"

@@ -1,17 +1,17 @@
 package hipravin.jarvis.monitoring;
 
+import hipravin.jarvis.SecurityTestConfiguration;
 import hipravin.jarvis.TestUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalManagementPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
 import java.net.http.HttpClient;
 import java.util.Arrays;
 
@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka
 @ActiveProfiles(profiles = {"test"})
+@Import(SecurityTestConfiguration.class)
 public class PrometheusMetricTest {
     @LocalManagementPort
     int managementPort;
@@ -30,12 +31,6 @@ public class PrometheusMetricTest {
     @BeforeAll
     void beforeAll() {
         httpClient = HttpClient.newBuilder()
-                .authenticator(new Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("admin", "aadmin".toCharArray());
-                    }
-                })
                 .build();
     }
 

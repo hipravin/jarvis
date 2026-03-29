@@ -1,11 +1,13 @@
 package hipravin.jarvis.bookstore;
 
+import hipravin.jarvis.SecurityTestConfiguration;
 import hipravin.jarvis.bookstore.dao.BookstoreDao;
 import hipravin.jarvis.bookstore.load.BookReader;
 import hipravin.jarvis.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.test.context.EmbeddedKafka;
@@ -20,6 +22,7 @@ import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka
+@Import(SecurityTestConfiguration.class)
 @ActiveProfiles(profiles = {"test"})
 class BookstoreControllerEmbeddedServerTest {
     @LocalServerPort
