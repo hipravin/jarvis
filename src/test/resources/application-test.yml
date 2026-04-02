@@ -1,4 +1,6 @@
 #KEYCLOAK_URL: http://stubkeycloak:8080
+ACTUATOR_USER: "user"
+ACTUATOR_PASSWORD: "{bcrypt}$2a$10$e.FByjmyWgR3r97UL4GG/O53NrYpnZ5rlpXFHmi5dDqrEa/CKmzyS"
 
 googlebooks:
   books-search-url: "https://stub-googleapis/books/v1/volumes"

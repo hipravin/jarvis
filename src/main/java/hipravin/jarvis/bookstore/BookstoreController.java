@@ -38,7 +38,7 @@ public class BookstoreController {
     @Operation(summary = "Upload new book manually")
     @PreAuthorize("hasAuthority('BOOKSTORE_MANAGE')")
     @PostMapping("/manage/upload")
-    public ResponseEntity<?> handleBookUpload(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<Object> handleBookUpload(@RequestParam("file") MultipartFile file) throws IOException {
         Book book = bookReader.read(file.getInputStream().readAllBytes(), file.getOriginalFilename());
         BookEntity bookEntity = bookstoreDao.save(book);
 

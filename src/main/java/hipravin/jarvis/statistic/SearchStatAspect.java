@@ -1,7 +1,7 @@
 package hipravin.jarvis.statistic;
 
-import hipravin.jarvis.engine.model.JarvisRequest;
-import hipravin.jarvis.engine.model.JarvisResponse;
+import hipravin.jarvis.enginev2.dto.SearchRequest;
+import hipravin.jarvis.enginev2.dto.SearchResponse;
 import hipravin.jarvis.event.SearchCompletedEvent;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -22,21 +22,21 @@ public class SearchStatAspect {
     }
 
     static class Pointcuts {
-        @Pointcut("execution(* hipravin.jarvis.engine.SearchEngine.search(..))")
+        @Pointcut("execution(* hipravin.jarvis.enginev2.AggregatingSearchService.search(..))")
         public void search() {
         }
     }
 
     @Around("hipravin.jarvis.statistic.SearchStatAspect.Pointcuts.search()")
-    public Object doConcurrentOperation(ProceedingJoinPoint pjp) throws Throwable {
+    public Object searchStat(ProceedingJoinPoint pjp) throws Throwable {
 
         long start = System.nanoTime();
 
         var retval = pjp.proceed();
-        if (pjp.getArgs().length > 0 && pjp.getArgs()[0] instanceof JarvisRequest request
-                && retval instanceof JarvisResponse response) {
-            eventPublisher.publishEvent(SearchCompletedEvent.of(request, response, Duration.ofNanos(System.nanoTime() - start),
-                    this));
+        if (pjp.getArgs().length > 0 && pjp.getArgs()[0] instanceof SearchRequest request
+                && retval instanceof SearchResponse response) {
+            eventPublisher.publishEvent(new SearchCompletedEvent(this,
+                    request, response, Duration.ofNanos(System.nanoTime() - start)));
         }
 
         return retval;

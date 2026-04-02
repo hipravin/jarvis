@@ -64,6 +64,8 @@ server:
 management:
   server:
     port: 10011
+    user: ${ACTUATOR_USER} #custom property
+    password: ${ACTUATOR_PASSWORD} #custom property
   endpoints:
     web:
       exposure:

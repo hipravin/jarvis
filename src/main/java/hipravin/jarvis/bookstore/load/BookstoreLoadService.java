@@ -1,6 +1,4 @@
-package hipravin.jarvis.bookstore;
-
-import hipravin.jarvis.bookstore.load.DirectoryUtil;
+package hipravin.jarvis.bookstore.load;
 
 public interface BookstoreLoadService {
     void loadAll();

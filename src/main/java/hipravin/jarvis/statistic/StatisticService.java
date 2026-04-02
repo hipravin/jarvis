@@ -28,8 +28,8 @@ public class StatisticService {
                     }
                 });
 
-        log.info("Search completed: {} matches, took: {} ms, request: '{}'",
-                searchCompletedEvent.getResponse().responseItems().size(),
+        log.debug("Search completed: {} matches, took: {} ms, request: '{}'",
+                searchCompletedEvent.getResponse().excerpts().size(),
                 searchCompletedEvent.getElapsed().toMillis(),
                 searchCompletedEvent.getRequest().query());
     }

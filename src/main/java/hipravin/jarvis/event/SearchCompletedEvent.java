@@ -1,34 +1,32 @@
 package hipravin.jarvis.event;
 
-import hipravin.jarvis.engine.model.JarvisRequest;
-import hipravin.jarvis.engine.model.JarvisResponse;
+import hipravin.jarvis.enginev2.dto.SearchRequest;
+import hipravin.jarvis.enginev2.dto.SearchResponse;
 import org.springframework.context.ApplicationEvent;
 
+import java.io.Serial;
 import java.time.Duration;
 
 public class SearchCompletedEvent extends ApplicationEvent {
-    private final JarvisRequest request;
-    private final JarvisResponse response;
+    @Serial
+    private static final long serialVersionUID = 4035962450760777706L;
+
+    private final transient SearchRequest request;
+    private final transient SearchResponse response;
     private final Duration elapsed;
 
-
-
-    public SearchCompletedEvent(Object source, JarvisRequest request, JarvisResponse response, Duration elapsed) {
+    public SearchCompletedEvent(Object source, SearchRequest request, SearchResponse response, Duration elapsed) {
         super(source);
         this.request = request;
         this.response = response;
         this.elapsed = elapsed;
     }
 
-    public static SearchCompletedEvent of(JarvisRequest request, JarvisResponse response, Duration elapsed, Object source) {
-        return new SearchCompletedEvent(source, request, response, elapsed);
-    }
-
-    public JarvisRequest getRequest() {
+    public SearchRequest getRequest() {
         return request;
     }
 
-    public JarvisResponse getResponse() {
+    public SearchResponse getResponse() {
         return response;
     }
 

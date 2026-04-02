@@ -5,16 +5,21 @@ import hipravin.jarvis.engine.model.InformationSource;
 import hipravin.jarvis.enginev2.dto.Excerpt;
 import hipravin.jarvis.enginev2.dto.SearchRequest;
 import hipravin.jarvis.enginev2.dto.SearchResponse;
+import hipravin.jarvis.statistic.StatisticService;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 import java.util.EnumSet;
 import java.util.stream.Collectors;
 
 import static hipravin.jarvis.engine.model.InformationSource.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
 
 @JarvisIntegrationTest
 class AggregatingSearchServiceIT {
@@ -23,8 +28,12 @@ class AggregatingSearchServiceIT {
     @Autowired
     AggregatingSearchService searchService;
 
+    @Autowired
+    @MockitoSpyBean
+    StatisticService statisticService;
+
     @Test
-    void searchSample() {
+    void searchSample() throws Exception {
         SearchResponse response = searchService.search(new SearchRequest(
                 "resilience4j circuitbreaker", EnumSet.allOf(InformationSource.class)));
 
@@ -45,6 +54,10 @@ class AggregatingSearchServiceIT {
         shallowCheckFirstOfKind(response, GITHUB);
         shallowCheckFirstOfKind(response, STACKEXCHANGE);
         shallowCheckFirstOfKind(response, GOOGLE_BOOKS);
+
+        Thread.sleep(1000);
+
+        verify(statisticService, atLeastOnce()).searchCompleted(any());
     }
 
     void shallowCheckFirstOfKind(SearchResponse response, InformationSource source) {

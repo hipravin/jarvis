@@ -1,8 +1,5 @@
 package hipravin.jarvis.bookstore.load;
 
-import hipravin.jarvis.bookstore.BookstoreLoadService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -11,15 +8,15 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Component
 public class BookstoreUpdateWatcher implements DisposableBean {
-    private static final Logger log = LoggerFactory.getLogger(BookstoreUpdateWatcher.class);
-
     private final ExecutorService watchExecutorService = Executors.newSingleThreadExecutor();
 
     private final BookstoreProperties bookstoreProperties;
     private final BookstoreLoadService bookstoreLoadService;
+    private Future<?> watchRunnableFuture;
 
     public BookstoreUpdateWatcher(BookstoreProperties bookstoreProperties, BookstoreLoadService bookstoreLoadService) {
         this.bookstoreProperties = bookstoreProperties;
@@ -27,23 +24,25 @@ public class BookstoreUpdateWatcher implements DisposableBean {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void onApplicationReady(ApplicationReadyEvent applicationReadyEvent) {
+    public void startWatching() {
         Runnable watchRunnable = DirectoryUtil.watchForUpdatesRunnable(
                 bookstoreProperties.loaderRootPath(),
                 this::handleBookstoreUpdate);
 
-        watchExecutorService.submit(watchRunnable);
+        watchRunnableFuture = watchExecutorService.submit(watchRunnable);
     }
 
     private void handleBookstoreUpdate(List<DirectoryUtil.ChangeEvent> changeEvents) {
         for (DirectoryUtil.ChangeEvent changeEvent : changeEvents) {
             bookstoreLoadService.handleUpdate(changeEvent);
-
         }
     }
 
     @Override
-    public void destroy() throws Exception {
-        watchExecutorService.shutdownNow();
+    public void destroy() {
+        if(watchRunnableFuture != null) {
+            watchRunnableFuture.cancel(true);
+        }
+        watchExecutorService.close();
     }
 }

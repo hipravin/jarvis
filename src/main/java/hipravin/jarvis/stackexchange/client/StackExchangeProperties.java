@@ -3,7 +3,6 @@ package hipravin.jarvis.stackexchange.client;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import org.springframework.boot.context.properties.bind.Name;
 import org.springframework.validation.annotation.Validated;
 
@@ -17,7 +16,4 @@ public record StackExchangeProperties(
         @Positive @Name("connection.timeout") long connectionTimeoutMillis,
         @Name("excerpts.params") Map<String, String> searchExcerptsParams
 ) {
-    @ConstructorBinding
-    public StackExchangeProperties {
-    }
 }

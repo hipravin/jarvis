@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest;
 import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +33,10 @@ import org.springframework.security.web.context.RequestAttributeSecurityContextR
 import org.springframework.security.web.csrf.*;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 
@@ -44,6 +48,12 @@ public class SecurityConfig {
 
     private static final String ACTUATOR_AUTHORITY_NAME = "ACTUATOR";
     private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
+
+    @Value("${management.server.user}")
+    private String actuatorUser;
+
+    @Value("${management.server.password}")
+    private String actuatorPassword;
 
     @Bean
     @Order(1)
@@ -98,13 +108,12 @@ public class SecurityConfig {
                     OidcIdToken idToken = oidcUserAuthority.getIdToken();
 //                    OidcUserInfo userInfo = oidcUserAuthority.getUserInfo();
 
-                    if (idToken.getClaim("resource_access") instanceof Map<?, ?> resourceAccess) {
-                        if (resourceAccess.get("jarvisclient") instanceof Map<?, ?> clientRoles) {
-                            if (clientRoles.get("roles") instanceof List<?> roles) {
-                                roles.forEach(r -> mappedAuthorities.add(
-                                        new SimpleGrantedAuthority(String.valueOf(r))));
-                            }
-                        }
+                    if (idToken.getClaim("resource_access") instanceof Map<?, ?> resourceAccess
+                            && resourceAccess.get("jarvisclient") instanceof Map<?, ?> clientRoles
+                            && clientRoles.get("roles") instanceof List<?> roles) {
+
+                        roles.forEach(r -> mappedAuthorities.add(
+                                new SimpleGrantedAuthority(String.valueOf(r))));
                     }
 //                    ((LinkedTreeMap) ((LinkedTreeMap) idToken.getClaim("resource_access")).get("jarvisclient")).get("roles")
 
@@ -159,7 +168,7 @@ public class SecurityConfig {
 
     UserDetailsService actuatorUserDetailsService() {
         return new InMemoryUserDetailsManager(
-                User.withUsername("admin").password("{bcrypt}$2a$10$e.FByjmyWgR3r97UL4GG/O53NrYpnZ5rlpXFHmi5dDqrEa/CKmzyS") //aadmin
+                User.withUsername(actuatorUser).password(actuatorPassword)
                         .authorities(ACTUATOR_AUTHORITY_NAME).build());
     }
 }
