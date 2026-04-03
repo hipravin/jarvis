@@ -73,16 +73,17 @@ public class BookstoreLoadServiceImpl implements BookstoreLoadService {
     }
 
     private void readAndSaveNewBook(Path bookPdf) {
-        BookLoadEvent jfr = BookLoadEvent.begin(bookPdf);
+        BookLoadEvent event = BookLoadEvent.begin(bookPdf);
         try {
             Book book = bookReader.read(bookPdf);
             log.debug("Book read successful from path '{}', title: {}", bookPdf, book.title());
             BookEntity bookEntity = bookstoreDao.save(book);
             log.debug("New book saved: id: {}, pages: {}, title: {}", bookEntity.getId(), book.pages().size(), bookEntity.getTitle());
-            jfr.commitSuccess();
+
+            BookLoadEvent.commitSuccess(event);
         } catch (RuntimeException e) {
             log.error("Failed to save pdf book: '{}', {}", bookPdf, e.getMessage(), e);
-            jfr.commitException(e);
+            BookLoadEvent.commitException(event, e);
         }
     }
 }

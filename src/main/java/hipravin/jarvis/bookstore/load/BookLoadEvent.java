@@ -5,10 +5,12 @@ import jdk.jfr.*;
 import java.nio.file.Path;
 import java.util.Optional;
 
-@Name("BookLoad")
+@Name(BookLoadEvent.NAME)
 @Category({"Jarvis", "Bookstore"})
 @StackTrace(false)
 public class BookLoadEvent extends Event {
+    static final String NAME = "bookstore.BookLoadEvent";
+
     @Label("Path")
     private String path;
 
@@ -20,23 +22,31 @@ public class BookLoadEvent extends Event {
 
     public static BookLoadEvent begin(Path bookPdf) {
         BookLoadEvent event = new BookLoadEvent();
+        if (!event.isEnabled()) {
+            return null;
+        }
         event.path = String.valueOf(bookPdf);
         event.begin();
 
         return event;
     }
 
-    public void commitSuccess() {
-        success = true;
-        end();
-        commit();
+    public static void commitSuccess(BookLoadEvent event) {
+        if (event == null || !event.isEnabled() || !event.shouldCommit()) {
+            return;
+        }
+        event.success = true;
+        event.commit();
     }
 
-    public void commitException(Throwable t) {
-        exceptionMessage = Optional.ofNullable(t.getMessage())
+    public static void commitException(BookLoadEvent event, Throwable t) {
+        if (event == null || !event.isEnabled() || !event.shouldCommit()) {
+            return;
+        }
+
+        event.exceptionMessage = Optional.ofNullable(t.getMessage())
                 .map(m -> t.getClass().getName() + ": " + m.substring(0, Math.min(m.length(), 1000)))
                 .orElse(t.getClass().getName());
-        end();
-        commit();
+        event.commit();
     }
 }

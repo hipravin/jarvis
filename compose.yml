@@ -8,8 +8,8 @@ services:
       - "5005:5005"
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx512m 
-        -XX:StartFlightRecording=dumponexit=true,maxsize=20m,maxage=30d,filename=/application/diagnostic/jarvis.jfr
-        -XX:StartFlightRecording=duration=60s,filename=/application/diagnostic/jarvis-startup.jfr
+        -XX:StartFlightRecording=dumponexit=true,maxsize=20m,maxage=30d,settings=profile,filename=/application/diagnostic/jarvis.jfr
+        -XX:StartFlightRecording=duration=120s,settings=profile,filename=/application/diagnostic/jarvis-startup.jfr
         -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/application/diagnostic
       - SECRETS_PROPERTIES_PATH=/application/secrets.properties
       - BOOKSTORE_LOADER_DIR=/data/bookstore
