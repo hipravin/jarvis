@@ -61,17 +61,20 @@ public class GithubSearchService implements SearchService {
                 .collect(Collectors.groupingBy(csi -> approvedAuthorOrOthers.apply(GithubUtils.safeGetLogin(csi)),
                         LinkedHashMap::new, Collectors.toList()));
 
-
         return byAuthor.entrySet().stream()
                 .map(e -> toExcerpt(e.getKey(), e.getValue(), query, queryTerms))
                 .toList();
     }
 
-    private Excerpt toExcerpt(String author, List<CodeSearchItem> codeSearchItems, String query, Set<String> queryTerms) {
+    private Excerpt toExcerpt(String authorGroup, List<CodeSearchItem> codeSearchItems, String query, Set<String> queryTerms) {
+        Map<String, Long> individualAuthorCounts =  codeSearchItems.stream()
+                .collect(Collectors.groupingBy(GithubUtils::safeGetLogin, Collectors.counting()));
+
         return Excerpt.builder()
                 .source(GITHUB)
-                .title(emptyToOthers(author) + ": " + codeSearchItems.size(), githubApiClient.buildUserSearchUrl(author, query))
+                .title(emptyToOthers(authorGroup) + ": " + codeSearchItems.size(), githubApiClient.buildUserSearchUrl(authorGroup, query))
                 .mainHtml(shortDescription(codeSearchItems, queryTerms))
+                .metadata(Map.of(Excerpt.METADATA_GH_USERS, individualAuthorCounts))
                 .build();
     }
 

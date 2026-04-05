@@ -5,6 +5,7 @@ import hipravin.jarvis.engine.model.InformationSource;
 import hipravin.jarvis.enginev2.dto.Excerpt;
 import hipravin.jarvis.enginev2.dto.SearchRequest;
 import hipravin.jarvis.enginev2.dto.SearchResponse;
+import hipravin.jarvis.statistic.StatisticConsumer;
 import hipravin.jarvis.statistic.StatisticService;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 import static hipravin.jarvis.engine.model.InformationSource.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 
@@ -31,6 +32,10 @@ class AggregatingSearchServiceIT {
     @Autowired
     @MockitoSpyBean
     StatisticService statisticService;
+
+    @Autowired
+    @MockitoSpyBean
+    StatisticConsumer statisticConsumer;
 
     @Test
     void searchSample() throws Exception {
@@ -55,9 +60,9 @@ class AggregatingSearchServiceIT {
         shallowCheckFirstOfKind(response, STACKEXCHANGE);
         shallowCheckFirstOfKind(response, GOOGLE_BOOKS);
 
-        Thread.sleep(1000);
-
+        Thread.sleep(1500);
         verify(statisticService, atLeastOnce()).searchCompleted(any());
+        verify(statisticConsumer, atLeastOnce()).searchStatListener(any(), any(), anyInt(), anyLong());
     }
 
     void shallowCheckFirstOfKind(SearchResponse response, InformationSource source) {

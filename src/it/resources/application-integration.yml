@@ -1,9 +1,11 @@
 #KEYCLOAK_URL: http://localhost:8080
-KAFKA_BOOTSTRAP_SERVERS: localhost:9092
-
+#KAFKA_BOOTSTRAP_SERVERS: localhost:9092
 spring:
   config:
     import: optional:${SECRETS_PROPERTIES_PATH:file:./secrets-integration.properties}
+
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
 
   flyway:
     enabled: true

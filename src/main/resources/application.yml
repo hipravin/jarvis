@@ -14,7 +14,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
     consumer:
-      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+#      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
       max-poll-records: 500
       key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
@@ -24,7 +24,7 @@ spring:
         spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
 #        spring.json.value.default.type: hipravin.sampleskafka.dto.ClockTickEvent
         spring.json.trusted.packages: "*"
-        spring.json.use.type.headers: false
+#        spring.json.use.type.headers: false
     listener:
       ack-mode: batch #record ack is about 1000 times slower than batch
 
