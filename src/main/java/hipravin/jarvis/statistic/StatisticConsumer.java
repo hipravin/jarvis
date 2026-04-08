@@ -1,6 +1,5 @@
 package hipravin.jarvis.statistic;
 
-import hipravin.jarvis.enginev2.dto.Excerpt;
 import hipravin.jarvis.event.SearchCompletedEvent;
 import hipravin.jarvis.statistic.dto.SearchCompletedDto;
 import org.slf4j.Logger;
@@ -19,6 +18,12 @@ import org.springframework.stereotype.Component;
 public class StatisticConsumer {
     private static final Logger log = LoggerFactory.getLogger(StatisticConsumer.class);
 
+    private final StatisticProcessorServiceImpl statisticProcessorService;
+
+    public StatisticConsumer(StatisticProcessorServiceImpl statisticProcessorService) {
+        this.statisticProcessorService = statisticProcessorService;
+    }
+
     @RetryableTopic(attempts = "3", numPartitions = "20",
             dltStrategy = DltStrategy.FAIL_ON_ERROR,
             backOff = @BackOff(delay = 500, maxDelay = 10000, multiplier = 1.5))
@@ -30,6 +35,9 @@ public class StatisticConsumer {
 
         log.info("Received q [{}] from group1, partition-{} with offset-{}, topic {}",
                 searchCompletedDto.request().query(), partition, offset, topic);
+
+        statisticProcessorService.process(searchCompletedDto);
+
     }
 
     @DltHandler

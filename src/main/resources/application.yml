@@ -48,11 +48,12 @@ spring:
       hibernate:
         query:
           fail_on_pagination_over_collection_fetch: true
+
         default_schema: "jarvis"
         order_inserts: true
         order_updates: true
 
-        #        generate_statistics: true
+        generate_statistics: false #enabled in integration profile
         jdbc:
           batch_size: 100
           time_zone: UTC

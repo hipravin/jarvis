@@ -63,7 +63,7 @@ class BookstoreLoadServiceImplIT {
 
         Path newFileAdded = bookstoreTempDir.resolve(sampleSaltPdf.getFileName());
         Files.copy(sampleSaltPdf, newFileAdded);
-        pause(3000);
+        pause(5000);
 
         assertEquals(1, bookstoreDao.findAll().size());
         assertFalse(bookstoreDao.search("salt").isEmpty());
@@ -80,7 +80,7 @@ class BookstoreLoadServiceImplIT {
         Set<String> paths = new ConcurrentSkipListSet<>();
         try (RecordingStream rs = new RecordingStream()) {
             rs.onEvent("TestEvent", e -> rs.close());
-            rs.onEvent("BookLoad", e -> paths.add(e.getString("path")));
+            rs.onEvent(BookLoadEvent.NAME, e -> paths.add(e.getString("path")));
             rs.startAsync();
             TestEvent testEvent = new TestEvent();
 

@@ -7,24 +7,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class StatisticService {
-    private final Logger log = LoggerFactory.getLogger(StatisticService.class);
+@Service
+public class StatisticGathererService {
+    private final Logger log = LoggerFactory.getLogger(StatisticGathererService.class);
 
     private final KafkaTemplate<String, SearchCompletedDto> kafkaTemplate;
 
-    public StatisticService(KafkaTemplate<String, SearchCompletedDto> kafkaTemplate) {
+    public StatisticGathererService(KafkaTemplate<String, SearchCompletedDto> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
     @Async
     @EventListener(value = SearchCompletedEvent.class, condition = "@environment.getProperty('statistic.search.enabled') == 'true'")
-    public void searchCompleted(SearchCompletedEvent searchCompletedEvent) {
+    public void onSearchCompleted(SearchCompletedEvent searchCompletedEvent) {
         kafkaTemplate.send("search-stat-topic", SearchCompletedDto.fromEvent(searchCompletedEvent))
                 .whenComplete((sr, e) -> {
-                    log.info("Message has sent to kafka: {}", sr);
+                    log.debug("Message has sent to kafka: {}", sr);
                     if (e != null) {
                         log.error(e.getMessage(), e);
                     }

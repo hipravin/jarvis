@@ -10,6 +10,11 @@ spring:
   flyway:
     enabled: true
 
+  jpa:
+    properties:
+      hibernate:
+        generate_statistics: true
+
 bookstore:
   loader-root-path: "src/test/resources/data/bookstore"
   initialload:
@@ -23,5 +28,5 @@ logging:
 #    org.springframework.core.retry.RetryTemplate: DEBUG
 #    org.springframework.test.context.cache: DEBUG
 #    org.hibernate.engine.jdbc.spi.SqlExceptionHelper: OFF
-#    org.hibernate.SQL: DEBUG
+    org.hibernate: DEBUG
 #    org.postgresql: TRACE #log exact queries, even bytea content. Not suitable for prod because of verbosity

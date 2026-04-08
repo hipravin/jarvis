@@ -9,7 +9,7 @@ import java.util.Optional;
 @Category({"Jarvis", "Bookstore"})
 @StackTrace(false)
 public class BookLoadEvent extends Event {
-    static final String NAME = "bookstore.BookLoadEvent";
+    public static final String NAME = "bookstore.BookLoadEvent";
 
     @Label("Path")
     private String path;

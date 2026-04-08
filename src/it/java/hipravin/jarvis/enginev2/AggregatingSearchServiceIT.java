@@ -6,7 +6,7 @@ import hipravin.jarvis.enginev2.dto.Excerpt;
 import hipravin.jarvis.enginev2.dto.SearchRequest;
 import hipravin.jarvis.enginev2.dto.SearchResponse;
 import hipravin.jarvis.statistic.StatisticConsumer;
-import hipravin.jarvis.statistic.StatisticService;
+import hipravin.jarvis.statistic.StatisticGathererService;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ class AggregatingSearchServiceIT {
 
     @Autowired
     @MockitoSpyBean
-    StatisticService statisticService;
+    StatisticGathererService statisticService;
 
     @Autowired
     @MockitoSpyBean
@@ -61,8 +61,9 @@ class AggregatingSearchServiceIT {
         shallowCheckFirstOfKind(response, GOOGLE_BOOKS);
 
         Thread.sleep(1500);
-        verify(statisticService, atLeastOnce()).searchCompleted(any());
+        verify(statisticService, atLeastOnce()).onSearchCompleted(any());
         verify(statisticConsumer, atLeastOnce()).searchStatListener(any(), any(), anyInt(), anyLong());
+        Thread.sleep(20000);
     }
 
     void shallowCheckFirstOfKind(SearchResponse response, InformationSource source) {

@@ -23,8 +23,7 @@
         <pdfbox.version>3.0.4</pdfbox.version>
         <postgresql.version>42.7.10</postgresql.version>
         <testcontainers.postgresql.version>2.0.3</testcontainers.postgresql.version>
-        <flyway-maven-plugin.version>11.4.0</flyway-maven-plugin.version>
-        <flyway-core.version>12.0.1</flyway-core.version>
+        <flyway-maven-plugin.version>12.3.0</flyway-maven-plugin.version>
         <hsqldb.version>2.7.4</hsqldb.version>
         <git-commit-id-maven-plugin.version>9.0.2</git-commit-id-maven-plugin.version>
         <testcontainers.version>2.0.3</testcontainers.version>
@@ -315,7 +314,7 @@
                 <version>${hibernate-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                        <!--enableLazyInitialization property is deprecated and lazy init is enabled by default-->
+                        <!--enableLazyInitialization is deprecated and lazy init is enabled by default-->
                         <goals>
                             <goal>enhance</goal>
                         </goals>
@@ -362,6 +361,7 @@
                 </configuration>
             </plugin>
             <plugin>
+<!--                Flyway Undo is a commercial feature of Flyway and isn’t available in the Community Edition-->
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>${flyway-maven-plugin.version}</version>
