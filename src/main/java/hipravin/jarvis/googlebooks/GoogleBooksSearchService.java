@@ -43,14 +43,6 @@ public class GoogleBooksSearchService implements SearchService{
             return List.of();
         }
 
-        Function<BooksVolume, Link> volumeToLink = (bv) ->
-                new Link(bv.volumeInfo().title() + ", " +
-                        bv.yearPublished().orElse("n/a"),
-                        bv.volumeInfo().previewLink());
-
-        Function<BooksVolume, String> volumeToSnippet = (bv) ->
-                Optional.ofNullable(bv.searchInfo()).map(SearchInfo::textSnippet).orElse("n/a");
-
         return booksVolumes.items().stream()
                 .map(this::toExcerpt)
                 .toList();
