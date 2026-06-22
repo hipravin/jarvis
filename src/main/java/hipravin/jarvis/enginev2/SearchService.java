@@ -15,4 +15,14 @@ public interface SearchService {
         public static final int ORDER_3 = 3;
         public static final int ORDER_4 = 4;
     }
+
+    default SearchResponse errorResponse(String message) {
+        return SearchResponse.failed("%s: %s".formatted(getSource().alias(), message));
+    }
+
+    default SearchResponse errorResponse(Throwable t) {
+        var message = (t.getMessage() != null) ? t.getMessage() : "error";
+
+        return SearchResponse.failed("%s: %s".formatted(getSource().alias(), message));
+    }
 }

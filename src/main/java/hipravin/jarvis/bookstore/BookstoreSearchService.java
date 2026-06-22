@@ -30,7 +30,7 @@ public class BookstoreSearchService implements SearchService {
             return searchBookstore(request.query());
         } catch (RuntimeException e) {
             log.error("Search failed for query '{}': {}", request, e.getMessage(), e);
-            return SearchResponse.failed(e);
+            return errorResponse(e);
         }
     }
 

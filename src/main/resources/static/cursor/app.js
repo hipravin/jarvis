@@ -203,7 +203,7 @@
   function renderItems(items) {
     // `items` are normalized SearchResponse excerpts:
     // [{ source, title: { title, url }, main: { text /* HTML */ } }, ...]
-    if (!Array.isArray(items) || items.length === 0) return '';
+    if (!Array.isArray(items) || items.length === 0) return '0 results found';
 
     let html = '<div class="response-items">';
     for (const excerpt of items) {

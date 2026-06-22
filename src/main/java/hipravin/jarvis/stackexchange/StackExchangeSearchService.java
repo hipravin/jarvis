@@ -36,7 +36,7 @@ public class StackExchangeSearchService implements SearchService {
             return SearchResponse.success(excerptsDto);
         } catch (RuntimeException e) {
             log.error("Search failed for query '{}': {}", request, e.getMessage(), e);
-            return SearchResponse.failed(e);
+            return errorResponse(e);
         }
     }
 

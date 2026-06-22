@@ -220,6 +220,10 @@ header h2 {
     border: 1px solid black;
 }
 
+.search-error {
+    color: #dc2626;
+}
+
 @media (max-width: 490px) {
     .chatbot-toggler {
         right: 20px;

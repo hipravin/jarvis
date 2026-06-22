@@ -42,7 +42,7 @@ public class AggregatingSearchService implements SearchService {
                 .filter(service -> request.informationSources().contains(service.getSource()))
                 .map(service -> new ServiceQueryTask(service,
                         supplyAsync(() -> service.search(request), executor)
-                                .exceptionally(SearchResponse::failed)))
+                                .exceptionally(this::errorResponse)))
                 .toList();
 
         awaitCompletionAndLogTimedOut(executor, tasks, request);

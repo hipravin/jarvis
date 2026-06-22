@@ -66,6 +66,23 @@ const fillItems = (items, chatLi) => {
     });
 }
 
+const fillErrors = (errors, chatLi) => {
+    let responseItemsUl = chatLi.querySelector("ul");
+    if (!responseItemsUl) {
+        responseItemsUl = document.createElement("ul");
+        chatLi.appendChild(responseItemsUl);
+    }
+    responseItemsUl.className = "authors-ul";
+
+    errors.forEach((error) => {
+        const li = document.createElement("li");
+        li.innerHTML =
+            `<div class="search-error"><span>${error.message}</span></div>`;
+
+        responseItemsUl.appendChild(li);
+    });
+}
+
 const enabledSearchProviders = () => {
     const providers = [];
     if (ghToggle.classList.contains("provider-on")) {
@@ -110,8 +127,15 @@ const generateResponse = async (chatElement) => {
 
         messageElement.textContent = "";
         messageElement.textContent = data.response;
-        if (data.excerpts) {
-            fillItems(data.excerpts, messageElement)
+        if(data.errors) {
+            fillErrors(data.errors, messageElement);
+        }
+        if (data.excerpts && data.excerpts.length > 0) {
+            fillItems(data.excerpts, messageElement);
+        } else {
+            let messageDiv = document.createElement("div");
+            messageDiv.innerHTML = `<div class="response-item"><span>0 results found</span></div>`;
+            messageElement.appendChild(messageDiv);
         }
     } catch (error) {
         // Handle error
