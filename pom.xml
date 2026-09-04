@@ -41,6 +41,7 @@
         <argLine>-javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar</argLine>
         <testcontainers-postgresql.version>2.0.3</testcontainers-postgresql.version>
         <wiremock-spring-boot.version>4.0.9</wiremock-spring-boot.version>
+        <resilience4j-spring-boot4.version>2.4.0</resilience4j-spring-boot4.version>
     </properties>
 
     <repositories>
@@ -75,10 +76,9 @@
         </dependency>
 
         <dependency>
-            <!--            io.github.resilience4j:resilience4j-spring-boot4:2.3.1-SNAPSHOT-->
             <groupId>io.github.resilience4j</groupId>
             <artifactId>resilience4j-spring-boot4</artifactId>
-            <version>2.3.1-SNAPSHOT</version>
+            <version>${resilience4j-spring-boot4.version}</version>
         </dependency>
 
         <dependency>
