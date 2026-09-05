@@ -22,6 +22,7 @@ class GoogleBooksApiClientImplIT {
 
         bvs.items().stream()
                 .peek(bv -> System.out.println("\n" + bv.volumeInfo().title()))
+                .filter(bv -> bv.searchInfo() != null)
                 .map(bv -> bv.searchInfo().textSnippet())
                 .forEach(System.out::println);
     }
